@@ -34,8 +34,10 @@ export default function Home() {
       });
 
       if (response.ok) {
-        const content = await response.json();
-        setGeneratedContent(content);
+        const {output} = await response.json();
+
+        console.log('Contenu généré:', output);
+        setGeneratedContent({content: output, title: theme});
       } else {
         console.error('Erreur lors de la génération du contenu');
       }
