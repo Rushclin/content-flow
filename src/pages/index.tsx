@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-type Platform = 'wordpress' | 'twitter' | 'facebook' | 'linkedin' | 'reddit';
+type Platform = "wordpress" | "twitter" | "facebook" | "linkedin" | "reddit";
 
 interface GeneratedContent {
   title: string;
@@ -10,10 +10,11 @@ interface GeneratedContent {
 }
 
 export default function Home() {
-  const [theme, setTheme] = useState('');
-  const [details, setDetails] = useState('');
-  const [platform, setPlatform] = useState<Platform>('wordpress');
-  const [generatedContent, setGeneratedContent] = useState<GeneratedContent | null>(null);
+  const [theme, setTheme] = useState("");
+  const [details, setDetails] = useState("");
+  const [platform, setPlatform] = useState<Platform>("wordpress");
+  const [generatedContent, setGeneratedContent] =
+    useState<GeneratedContent | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -21,67 +22,69 @@ export default function Home() {
     setIsLoading(true);
 
     try {
-      const response = await fetch('https://automation.novalitix.com/webhook/generate-content', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          theme,
-          details,
-          platform,
-        }),
-      });
+      const response = await fetch(
+        "https://automation.novalitix.com/webhook/generate-content",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            theme,
+            details,
+            platform,
+          }),
+        }
+      );
 
       if (response.ok) {
-        const {output} = await response.json();
+        const { output } = await response.json();
 
-        console.log('Contenu généré:', output);
-        setGeneratedContent({content: output, title: theme});
+        setGeneratedContent({ content: output, title: theme });
       } else {
-        console.error('Erreur lors de la génération du contenu');
+        console.error("Erreur lors de la génération du contenu");
       }
     } catch (error) {
-      console.error('Erreur réseau:', error);
+      console.error("Erreur réseau:", error);
     } finally {
       setIsLoading(false);
     }
   };
 
   const exportToPDF = () => {
-    console.log('Export PDF en cours...');
+    console.log("Export PDF en cours...");
   };
 
   const exportToMarkdown = () => {
     if (!generatedContent) return;
-    
+
     let markdown = `# ${generatedContent.title}\n\n${generatedContent.content}`;
-    
+
     if (generatedContent.images?.length) {
-      markdown += '\n\n## Images\n';
-      generatedContent.images.forEach(img => {
+      markdown += "\n\n## Images\n";
+      generatedContent.images.forEach((img) => {
         markdown += `![Image](${img})\n`;
       });
     }
-    
+
     if (generatedContent.videos?.length) {
-      markdown += '\n\n## Vidéos\n';
-      generatedContent.videos.forEach(video => {
+      markdown += "\n\n## Vidéos\n";
+      generatedContent.videos.forEach((video) => {
         markdown += `[Vidéo](${video})\n`;
       });
     }
 
-    const blob = new Blob([markdown], { type: 'text/markdown' });
+    const blob = new Blob([markdown], { type: "text/markdown" });
     const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
+    const a = document.createElement("a");
     a.href = url;
-    a.download = 'content.md';
+    a.download = "content.md";
     a.click();
     URL.revokeObjectURL(url);
   };
 
   const publishContent = () => {
-    console.log('Publication en cours...');
+    console.log("Publication en cours...");
   };
 
   return (
@@ -96,10 +99,13 @@ export default function Home() {
             <h2 className="text-xl font-semibold mb-4 text-gray-800">
               Créer du contenu
             </h2>
-            
+
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <label htmlFor="theme" className="block text-sm font-medium text-gray-700 mb-1">
+                <label
+                  htmlFor="theme"
+                  className="block text-sm font-medium text-gray-700 mb-1"
+                >
                   Thème
                 </label>
                 <input
@@ -114,7 +120,10 @@ export default function Home() {
               </div>
 
               <div>
-                <label htmlFor="details" className="block text-sm font-medium text-gray-700 mb-1">
+                <label
+                  htmlFor="details"
+                  className="block text-sm font-medium text-gray-700 mb-1"
+                >
                   Détails
                 </label>
                 <textarea
@@ -129,7 +138,10 @@ export default function Home() {
               </div>
 
               <div>
-                <label htmlFor="platform" className="block text-sm font-medium text-gray-700 mb-1">
+                <label
+                  htmlFor="platform"
+                  className="block text-sm font-medium text-gray-700 mb-1"
+                >
                   Plateforme
                 </label>
                 <select
@@ -151,7 +163,7 @@ export default function Home() {
                 disabled={isLoading}
                 className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50"
               >
-                {isLoading ? 'Génération en cours...' : 'Générer le contenu'}
+                {isLoading ? "Génération en cours..." : "Générer le contenu"}
               </button>
             </form>
           </div>
@@ -160,7 +172,7 @@ export default function Home() {
             <h2 className="text-xl font-semibold mb-4 text-gray-800">
               Contenu généré
             </h2>
-            
+
             {generatedContent ? (
               <div className="space-y-4">
                 <div>
@@ -172,38 +184,44 @@ export default function Home() {
                   </div>
                 </div>
 
-                {generatedContent.images && generatedContent.images.length > 0 && (
-                  <div>
-                    <h4 className="font-medium text-gray-800 mb-2">Images:</h4>
-                    <div className="grid grid-cols-2 gap-2">
-                      {generatedContent.images.map((img, index) => (
-                        <img 
-                          key={index} 
-                          src={img} 
-                          alt={`Image ${index + 1}`}
-                          className="w-full h-32 object-cover rounded border"
-                        />
+                {generatedContent.images &&
+                  generatedContent.images.length > 0 && (
+                    <div>
+                      <h4 className="font-medium text-gray-800 mb-2">
+                        Images:
+                      </h4>
+                      <div className="grid grid-cols-2 gap-2">
+                        {generatedContent.images.map((img, index) => (
+                          <img
+                            key={index}
+                            src={img}
+                            alt={`Image ${index + 1}`}
+                            className="w-full h-32 object-cover rounded border"
+                          />
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                {generatedContent.videos &&
+                  generatedContent.videos.length > 0 && (
+                    <div>
+                      <h4 className="font-medium text-gray-800 mb-2">
+                        Vidéos:
+                      </h4>
+                      {generatedContent.videos.map((video, index) => (
+                        <a
+                          key={index}
+                          href={video}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="block text-blue-600 hover:underline mb-1"
+                        >
+                          Vidéo {index + 1}
+                        </a>
                       ))}
                     </div>
-                  </div>
-                )}
-
-                {generatedContent.videos && generatedContent.videos.length > 0 && (
-                  <div>
-                    <h4 className="font-medium text-gray-800 mb-2">Vidéos:</h4>
-                    {generatedContent.videos.map((video, index) => (
-                      <a 
-                        key={index}
-                        href={video}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="block text-blue-600 hover:underline mb-1"
-                      >
-                        Vidéo {index + 1}
-                      </a>
-                    ))}
-                  </div>
-                )}
+                  )}
 
                 <div className="flex space-x-2 pt-4 border-t">
                   <button
@@ -228,7 +246,8 @@ export default function Home() {
               </div>
             ) : (
               <p className="text-gray-500 italic">
-                Aucun contenu généré pour le moment. Remplissez le formulaire et cliquez sur "Générer le contenu".
+                Aucun contenu généré pour le moment. Remplissez le formulaire et
+                cliquez sur &quot;Générer le contenu&quot;.
               </p>
             )}
           </div>
