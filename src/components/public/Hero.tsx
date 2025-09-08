@@ -18,7 +18,7 @@ const Hero = () => {
           <div className="">
             <div className="my-5 flex flex-col items-center justify-center gap-1 text-slate-500">
               <Link
-                href="/register"
+                href="#FormGeneration"
                 className="recoleta relative mt-2 rounded-full bg-slate-500/90 p-2 hover:bg-slate-500 px-14 py-3 text-xl text-white hover:bg-orangePrimary md:px-14"
               >
                 Essayer gratuitement
