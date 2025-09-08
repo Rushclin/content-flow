@@ -1,13 +1,12 @@
 import Link from "next/link";
-import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { twMerge } from "tailwind-merge";
 import Logo from "../common/Logo";
 import { ArrowRightCircle } from "lucide-react";
 
 const Header = ({ hideMenu = false }) => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [hasToken, setHasToken] = useState(false);
+  const [, setIsMenuOpen] = useState(false);
+  const [, setHasToken] = useState(false);
   const [scrollStart, setScrollStart] = useState(0);
 
   useEffect(() => {
