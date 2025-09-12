@@ -1,3 +1,4 @@
+import { appConfig } from "@/config/app";
 import { SidebarProvider } from "@/context/SidebarContext";
 import "@/styles/globals.css";
 import type { AppProps } from "next/app";
@@ -12,15 +13,15 @@ const App = ({ Component, pageProps }: AppProps) => {
 
         <meta
           name="description"
-          content="Mon application Next.js avec une configuration optimisée"
+          content={appConfig.description}
         />
-        <meta name="keywords" content="Next.js, React, SEO, Application" />
-        <meta name="author" content="Ton Nom" />
+        <meta name="keywords" content="AI, Generation, Automation" />
+        <meta name="author" content="Rushclin Takam From Novalitix" />
 
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta name="theme-color" content="#0f172a" />
 
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href="/favicon.png" />
         <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
         <link rel="manifest" href="/manifest.json" />
 

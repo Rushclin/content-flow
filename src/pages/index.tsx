@@ -5,11 +5,10 @@ import PublicLayout from "@/layout/public/PublicLayout";
 
 const Home = () => {
   return (
-    <PublicLayout>
+    <PublicLayout title="Home">
       <Header />
       <Hero />
       <FormGeneration />
-      
     </PublicLayout>
   );
 };

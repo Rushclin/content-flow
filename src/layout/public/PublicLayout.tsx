@@ -17,7 +17,9 @@ const PublicLayout: React.FC<PublicLayoutProps> = ({
   return (
     <div>
       <Head>
-        <title>{title || appConfig.name}</title>
+        <title>
+          {title ? `${title} -- ${appConfig.name}` : `${appConfig.name}`}
+        </title>
         <meta
           property="description"
           content={description || appConfig.description}
