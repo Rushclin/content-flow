@@ -5,6 +5,7 @@ import Sidebar from "./Sidebar";
 import Backdrop from "./Backdrop";
 import Head from "next/head";
 import { appConfig } from "@/config/app";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
@@ -55,6 +56,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
           {children}
         </div>
       </div>
+      <LanguageSwitcher className="bottom-5" />
     </div>
   );
 };

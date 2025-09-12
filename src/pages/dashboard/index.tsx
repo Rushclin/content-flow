@@ -37,7 +37,6 @@ const Dashboard = () => {
   const [generatedContent, setGeneratedContent] =
     useState<GeneratedContent | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [showHistory, setShowHistory] = useState(false);
 
   const handleChange = (key: string, value: string) => {
     setForm((prev) => ({ ...prev, [key]: value }));

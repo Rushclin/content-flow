@@ -22,7 +22,7 @@ export default function LanguageSwitcher({ className = "" }) {
         { locale: savedLocale, scroll: false }
       );
     }
-  }, []);
+  }, [router]);
 
   const updateUserLanguage = useCallback(async (lang: string) => {
     console.log("New language => ", lang);
