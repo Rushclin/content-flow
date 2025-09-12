@@ -19,7 +19,7 @@ import {
   ArrowLeft,
 } from "lucide-react";
 import { appConfig } from "@/config/app";
-import DashboardLayout from "@/layout/admin/DashboardLayout";
+import DashboardLayout from "@/layout/dashboard";
 
 type Platform = "wordpress" | "twitter" | "facebook" | "linkedin" | "reddit";
 type Tone = "professionnel" | "amical" | "formel" | "décontracté";
@@ -106,7 +106,7 @@ const Dashboard = () => {
   }, [generatedContent]);
 
   return (
-    <DashboardLayout activeTab="dashboard" setActiveTab={() => {}}>
+    <DashboardLayout>
       <div className="min-h-screen bg-gray-50 flex">
         {/* Sidebar */}
         <div className="w-64 bg-white border-r border-gray-200 flex flex-col">

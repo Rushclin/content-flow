@@ -19,35 +19,33 @@
   }
 }
 
-
 @font-face {
-    font-family: "Recoleta";
-    src: url("/fonts/recoleta/Recoleta-Regular.ttf");
-    font-display: swap;
-    font-weight: 400;
+  font-family: "Recoleta";
+  src: url("/fonts/recoleta/Recoleta-Regular.ttf");
+  font-display: swap;
+  font-weight: 400;
 }
 
 @font-face {
-    font-family: "Recoleta";
-    src: url("/fonts/recoleta/Recoleta-Medium.ttf");
-    font-display: swap;
-    font-weight: 500;
+  font-family: "Recoleta";
+  src: url("/fonts/recoleta/Recoleta-Medium.ttf");
+  font-display: swap;
+  font-weight: 500;
 }
 
 @font-face {
-    font-family: "Recoleta";
-    src: url("/fonts/recoleta/Recoleta-SemiBold.ttf");
-    font-display: swap;
-    font-weight: 600;
+  font-family: "Recoleta";
+  src: url("/fonts/recoleta/Recoleta-SemiBold.ttf");
+  font-display: swap;
+  font-weight: 600;
 }
 
 @font-face {
-    font-family: "Recoleta";
-    src: url("/fonts/recoleta/Recoleta-Bold.ttf");
-    font-display: swap;
-    font-weight: 700;
+  font-family: "Recoleta";
+  src: url("/fonts/recoleta/Recoleta-Bold.ttf");
+  font-display: swap;
+  font-weight: 700;
 }
-
 
 body {
   background: var(--background);
@@ -55,77 +53,73 @@ body {
   font-family: "Inter", Arial, Helvetica, sans-serif;
 }
 
-/* Custom responsive breakpoints */
-@media (min-width: 475px) {
-  .xs\:block {
-    display: block;
-  }
-}
-
-/* Smooth scrolling for mobile */
 html {
   scroll-behavior: smooth;
   -webkit-text-size-adjust: 100%;
 }
 
 .recoleta {
-    font-family: "Recoleta";
+  font-family: "Recoleta";
 }
 
-/* Touch-friendly interactions */
-.touch-manipulation {
-  touch-action: manipulation;
+/* Adding CSS for Sidebar Layout */
+
+@utility menu-item {
+  @apply relative flex items-center w-full gap-3 px-3 py-2 font-light rounded-lg;
 }
 
-/* Custom scrollbar for webkit browsers */
-.scrollbar-thin {
-  scrollbar-width: thin;
-  scrollbar-color: rgb(209 213 219) rgb(243 244 246);
+@utility menu-item-active {
+  @apply bg-slate-100 text-slate-500;
 }
 
-.scrollbar-thin::-webkit-scrollbar {
-  width: 6px;
+@utility menu-item-inactive {
+  @apply text-gray-700 hover:bg-gray-100 group-hover:text-gray-700 ;
 }
 
-.scrollbar-thin::-webkit-scrollbar-track {
-  background: rgb(243 244 246);
-  border-radius: 3px;
+@utility menu-item-icon {
+  @apply text-gray-500 group-hover:text-gray-700;
 }
 
-.scrollbar-thin::-webkit-scrollbar-thumb {
-  background: rgb(209 213 219);
-  border-radius: 3px;
+@utility menu-item-icon-active {
+  @apply text-slate-500;
 }
 
-.scrollbar-thin::-webkit-scrollbar-thumb:hover {
-  background: rgb(156 163 175);
+@utility menu-item-icon-inactive {
+  @apply text-gray-500 group-hover:text-gray-700;
 }
 
-/* Line clamp utility */
-.line-clamp-2 {
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
+@utility menu-item-arrow {
+  @apply relative;
 }
 
-/* Focus styles for accessibility */
-.focus-visible:focus-visible {
-  outline: 2px solid rgb(139 92 246);
-  outline-offset: 2px;
+@utility menu-item-arrow-active {
+  @apply rotate-180 text-slate-500;
 }
 
-/* Safe area handling for mobile devices */
-@supports (padding: max(0px)) {
-  .safe-area-inset {
-    padding-left: max(1rem, env(safe-area-inset-left));
-    padding-right: max(1rem, env(safe-area-inset-right));
-  }
+@utility menu-item-arrow-inactive {
+  @apply text-gray-500 group-hover:text-gray-700;
 }
 
-/* Prevent zoom on input focus for iOS */
-@media screen and (-webkit-min-device-pixel-ratio: 0) {
-  select, textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"] {
-    font-size: 16px;
-  }
+@utility menu-dropdown-item {
+  @apply relative flex items-center gap-3 rounded-lg px-3 py-2.5 font-medium text-[14px];
+}
+
+@utility menu-dropdown-item-active {
+  @apply bg-slate-50 text-slate-500;
+}
+
+@utility menu-dropdown-item-inactive {
+  @apply text-gray-700 hover:bg-gray-100;
+}
+
+@utility menu-dropdown-badge {
+  @apply block rounded-full px-2.5 py-0.5 text-xs font-medium uppercase text-slate-500;
+}
+
+@utility menu-dropdown-badge-active {
+  @apply bg-slate-100;
+}
+
+@utility menu-dropdown-badge-inactive {
+  @apply text-gray-100 bg-slate-50 group-hover:bg-slate-100;
 }
