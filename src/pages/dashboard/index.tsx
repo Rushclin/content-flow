@@ -19,7 +19,7 @@ import {
   ArrowLeft,
 } from "lucide-react";
 import { appConfig } from "@/config/app";
-import DashboardLayout from "@/layout/DashboardLayout";
+import DashboardLayout from "@/layout/admin/DashboardLayout";
 
 type Platform = "wordpress" | "twitter" | "facebook" | "linkedin" | "reddit";
 type Tone = "professionnel" | "amical" | "formel" | "décontracté";
