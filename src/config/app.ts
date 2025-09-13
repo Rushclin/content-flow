@@ -65,16 +65,19 @@ export const appConfig = {
       title: "News Article Generator",
       desc: "Generate professional news articles on various topics.",
       badge: "Paid plans only",
+      category: "content"
     },
     {
       icon: "💬",
       title: "Chat with MARKy",
       desc: "Easily create content by just chatting with AI.",
+      category: "HR"
     },
     {
       icon: "🎤",
       title: "AI Text-to-Speech",
       desc: "Generate audio from text using AI. Supports 30+ languages.",
+      category: "musique"
     },
     {
       icon: "🖼️",
