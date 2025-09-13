@@ -1,45 +1,51 @@
-import React, { useState } from "react";
-import InputForm from "@/components/common/InputForm";
+import React from "react";
 import { Loader2, Mail, Lock, ArrowRight } from "lucide-react";
 import Logo from "@/components/common/Logo";
 import Link from "next/link";
 import AuthLayout from "@/layout/auth";
 import Divider from "@/components/common/Divider";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import Input from "@/components/common/InputForm";
+
+const loginSchema = z.object({
+  email: z
+    .string()
+    .min(1, "L'email est obligatoire")
+    .email("Format d'email invalide"),
+  password: z
+    .string()
+    .min(1, "Le mot de passe est obligatoire")
+    .min(8, "Le mot de passe doit contenir au moins 8 caractères"),
+});
+
+type LoginFormData = z.infer<typeof loginSchema>;
 
 const LoginPage = () => {
-  const [form, setForm] = useState({
-    email: "",
-    password: "",
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting, isValid },
+  } = useForm<LoginFormData>({
+    resolver: zodResolver(loginSchema),
+    mode: "onChange",
   });
-  const [isLoading, setIsLoading] = useState(false);
 
-  const handleChange = (key: string, value: string) => {
-    setForm((prev) => ({ ...prev, [key]: value }));
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsLoading(true);
-
-    // Simulation d'un délai
+  const onSubmit = async (data: LoginFormData) => {
     await new Promise((resolve) => setTimeout(resolve, 1000));
-
-    console.log("Tentative de connexion avec:", form);
-    setIsLoading(false);
+    console.log("Tentative de connexion avec:", data);
   };
 
   return (
     <AuthLayout title="Se connecter">
       <div className="text-center mb-8">
         <div className="flex justify-center mb-6">
-          <Logo size={80} />
+          <Logo size={200} justLogo/>
         </div>
-        <h1 className="text-3xl font-bold text-gray-900 mb-2 montserat">
+        <h1 className="text-3xl font-light text-gray-900 mb-2 montserat py-4">
           Plateforme IA tout-en-un
         </h1>
-        <p className="text-gray-600">
-          Connectez-vous à votre compte ContentFlow
-        </p>
       </div>
 
       <div className="space-y-3 mb-8">
@@ -75,27 +81,28 @@ const LoginPage = () => {
 
       <Divider title="ou par email et mot de passe" className="mb-8" />
 
-      <form onSubmit={handleSubmit} className="space-y-5">
-        <InputForm
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+        <Input
+          {...register("email")}
           label="Adresse email"
           type="email"
-          value={form.email}
-          onChange={(val) => handleChange("email", val)}
           placeholder="votre@email.com"
           required
           inputClassName="pl-10 py-3 text-base border border-gray-300 rounded-lg focus:border-blue-500 focus:ring-blue-500"
           prefix={<Mail className="h-5 w-5 text-gray-400 ml-1" />}
           className="mt-4"
+          error={errors.email?.message}
         />
-        <InputForm
+
+        <Input
+          {...register("password")}
           label="Mot de passe"
           type="password"
-          value={form.password}
-          onChange={(val) => handleChange("password", val)}
           placeholder="Votre mot de passe"
           required
           inputClassName="pl-10 py-3 text-base border border-gray-300 rounded-lg focus:border-blue-500 focus:ring-blue-500"
           prefix={<Lock className="h-5 w-5 text-gray-400 ml-1" />}
+          error={errors.password?.message}
         />
 
         <div className="text-right">
@@ -109,13 +116,12 @@ const LoginPage = () => {
 
         <button
           type="submit"
-          disabled={isLoading || !form.email || !form.password}
+          disabled={isSubmitting || !isValid}
           className="w-full bg-slate-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-slate-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 flex items-center justify-center shadow-sm"
         >
-          {isLoading ? (
+          {isSubmitting ? (
             <>
-              <Loader2 className="w-5 h-5 mr-3 animate-spin" />
-              Connexion en cours...
+              <Loader2 className="w-4 h-4 animate-spin" />
             </>
           ) : (
             <>

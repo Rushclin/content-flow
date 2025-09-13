@@ -1,11 +1,11 @@
-import React, { ChangeEvent, useState, useMemo, useCallback } from "react";
+import React, { ChangeEvent, useState, useMemo, useCallback, forwardRef } from "react";
 import { twMerge } from "tailwind-merge";
 import { Eye, EyeOff } from "lucide-react";
 
 interface InputProps {
   label?: string;
-  value: string;
-  onChange: (value: string) => void;
+  value?: string;
+  onChange?: (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
   type?: "text" | "password" | "email" | "phone";
   textarea?: boolean;
   placeholder?: string;
@@ -17,9 +17,12 @@ interface InputProps {
   className?: string;
   inputClassName?: string;
   smallText?: string;
+  error?: string;
+  name?: string;
+  onBlur?: (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
 }
 
-const Input: React.FC<InputProps> = ({
+const Input = forwardRef<HTMLInputElement | HTMLTextAreaElement, InputProps>(({
   label,
   value,
   onChange,
@@ -34,20 +37,15 @@ const Input: React.FC<InputProps> = ({
   className,
   inputClassName,
   smallText,
-}) => {
-  const [error, setError] = useState<string | null>(null);
+  error,
+  name,
+  onBlur,
+  ...rest
+}, ref) => {
+  const displayError = error;
   const [showPassword, setShowPassword] = useState(false);
   const [customType, setCustomType] = useState(type);
 
-  const handleChange = (
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    const val = e.target.value;
-    if (validation) {
-      setError(validation(val) ? null : "Invalid input");
-    }
-    onChange(val);
-  };
 
   const handlePasswordToggle = useCallback(() => {
     setShowPassword(!showPassword);
@@ -70,7 +68,7 @@ const Input: React.FC<InputProps> = ({
     prefix ? "pl-10" : "pl-2",
     customSuffix ? "pr-12" : "pr-2",
     inputClassName,
-    error ? "ring-red-500" : ""
+    displayError ? "ring-red-500" : ""
   );
 
   return (
@@ -89,22 +87,30 @@ const Input: React.FC<InputProps> = ({
 
         {textarea ? (
           <textarea
+            ref={ref as React.Ref<HTMLTextAreaElement>}
             className={twMerge(baseClass, "resize-none h-32")}
-            value={value}
-            onChange={handleChange}
+            value={value || ""}
+            onChange={onChange}
+            onBlur={onBlur}
             placeholder={placeholder}
             disabled={disabled}
             required={required}
+            name={name}
+            {...rest}
           />
         ) : (
           <input
+            ref={ref as React.Ref<HTMLInputElement>}
             type={customType}
             className={baseClass}
             value={value}
-            onChange={handleChange}
+            onChange={onChange}
+            onBlur={onBlur}
             placeholder={placeholder}
             disabled={disabled}
             required={required}
+            name={name}
+            {...rest}
           />
         )}
 
@@ -114,13 +120,15 @@ const Input: React.FC<InputProps> = ({
           </div>
         )}
       </div>
-      {(smallText || error) && (
-        <small className={twMerge(error ? "text-red-500" : "text-gray-500")}>
-          {error || smallText}
+      {(smallText || displayError) && (
+        <small className={twMerge(displayError ? "text-red-500" : "text-gray-500")}>
+          {displayError || smallText}
         </small>
       )}
     </div>
   );
-};
+});
+
+Input.displayName = "Input";
 
 export default Input;
