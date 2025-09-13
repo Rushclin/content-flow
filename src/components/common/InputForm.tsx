@@ -66,7 +66,7 @@ const Input: React.FC<InputProps> = ({
   }, [type, showPassword, suffix, handlePasswordToggle]);
 
   const baseClass = twMerge(
-    "w-full rounded-md border-0 ring-1 ring-inset ring-gray-200 text-gray-900 placeholder:text-gray-400 focus:ring-1 focus:ring-inset focus:ring-slate-400 text-sm py-2",
+    "w-full rounded-md border-0 ring-1 ring-inset ring-slate-200 text-slate-900 placeholder:text-slate-400 focus:ring-0 focus:ring-inset focus:ring-slate-900 text-sm py-2",
     prefix ? "pl-10" : "pl-2",
     customSuffix ? "pr-12" : "pr-2",
     inputClassName,
