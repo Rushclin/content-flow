@@ -11,7 +11,7 @@ export const navItems: NavItem[] = [
   {
     icon: <House className="h-5 w-5 font-extralight" />,
     name: "Accueil",
-    path: "/dashboard",
+    path: "/home",
   },
   {
     icon: <Bot className="h-5 w-5 font-extralight" />,
