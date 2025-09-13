@@ -54,11 +54,11 @@ const ForgotPasswordForm = () => {
 
           <div className=" p-6 rounded-lg mb-8 text-left">
             <p className="text-gray-700 mb-4 font-medium">
-              Si vous ne recevez pas l'email dans les prochaines minutes :
+              Si vous ne recevez pas l&apos;email dans les prochaines minutes :
             </p>
             <ul className="text-gray-600 space-y-2">
               <li>• Vérifiez votre dossier spam</li>
-              <li>• Assurez-vous que l'adresse email est correcte</li>
+              <li>• Assurez-vous que l&apos;adresse email est correcte</li>
               <li>• Contactez le support si le problème persiste</li>
             </ul>
           </div>

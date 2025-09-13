@@ -32,7 +32,7 @@ const Input = forwardRef<HTMLInputElement | HTMLTextAreaElement, InputProps>(({
   required = false,
   prefix,
   suffix,
-  validation,
+  // validation,
   disabled = false,
   className,
   inputClassName,
