@@ -21,7 +21,7 @@ export const appConfig = {
   ],
   pupblicationTonalities: [
     {
-      value: "Professionnels",
+      value: "professionnel",
       label: "💼 Professionnels",
     },
     {
@@ -33,7 +33,7 @@ export const appConfig = {
       label: "🎩 Formel",
     },
     {
-      value: "Décontracté",
+      value: "décontracté",
       label: "😎 Décontracté",
     },
   ],

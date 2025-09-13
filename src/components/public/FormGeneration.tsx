@@ -3,6 +3,9 @@ import InputForm from "../common/InputForm";
 import { Loader2, Copy } from "lucide-react";
 import { appConfig } from "@/config/app";
 import axios from "axios";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
 
 type Platform = "wordpress" | "twitter" | "facebook" | "linkedin" | "reddit";
 type Tone = "professionnel" | "amical" | "formel" | "décontracté";
@@ -13,7 +16,7 @@ interface GeneratedContent {
   id: string;
   title: string;
   content: string;
-  platform: Platform;
+  platform: Platform | string;
   tone: Tone;
   length: Length;
   language: Language;
@@ -23,45 +26,66 @@ interface GeneratedContent {
   videos?: string[];
 }
 
-interface FormState {
-  subject: string;
-  targetAudience: string;
-  tone: Tone;
-  length: Length;
-  platform: Platform;
-  language: Language;
-}
+// Schéma de validation avec Zod
+const formGenerationSchema = z.object({
+  subject: z
+    .string()
+    .min(1, "Le sujet est obligatoire")
+    .min(10, "Le sujet doit contenir au moins 10 caractères")
+    .max(500, "Le sujet ne peut pas dépasser 500 caractères"),
+  targetAudience: z.string().min(1, "Le public cible est obligatoire"),
+  tone: z.enum(["professionnel", "amical", "formel", "décontracté"], {
+    message: "Veuillez sélectionner un ton valide"
+  }),
+  length: z.enum(["courte", "moyenne", "longue"], {
+    message: "Veuillez sélectionner une longueur valide"
+  }),
+  platform: z.enum(["LinkedIn", "Facebook", "Twitter/X", "WordPress", "Reddit"], {
+    message: "Veuillez sélectionner une plateforme valide"
+  }),
+  language: z.enum(["fr", "en", "es"], {
+    message: "Veuillez sélectionner une langue valide"
+  }),
+});
+
+type FormGenerationData = z.infer<typeof formGenerationSchema>;
 
 const FormGeneration = () => {
-  const [form, setForm] = useState<FormState>({
-    subject: "",
-    targetAudience: "Professionnels",
-    tone: "professionnel",
-    length: "moyenne",
-    platform: "linkedin",
-    language: "fr",
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting, isValid },
+    watch,
+  } = useForm<FormGenerationData>({
+    resolver: zodResolver(formGenerationSchema),
+    mode: "onChange",
+    defaultValues: {
+      subject: "",
+      targetAudience: "Professionnels",
+      tone: "professionnel",
+      length: "moyenne",
+      platform: "LinkedIn",
+      language: "fr",
+    },
   });
 
   const [generatedContent, setGeneratedContent] =
     useState<GeneratedContent | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleChange = (key: keyof FormState, value: string) => {
-    setForm((prev) => ({ ...prev, [key]: value }));
-  };
+  const watchedValues = watch();
 
-  const handleSubmit = useCallback(
-    async (e: React.FormEvent) => {
-      e.preventDefault();
+  const onSubmit = useCallback(
+    async (data: FormGenerationData) => {
       setIsLoading(true);
 
       try {
         const response = await axios.post(
           "https://automation.novalitix.com/webhook/generate-content",
           {
-            theme: form.subject,
-            details: `Public cible: ${form.targetAudience}, Ton: ${form.tone}, Longueur: ${form.length}`,
-            platform: form.platform,
+            theme: data.subject,
+            details: `Public cible: ${data.targetAudience}, Ton: ${data.tone}, Longueur: ${data.length}`,
+            platform: data.platform,
           },
           {
             headers: {
@@ -74,12 +98,12 @@ const FormGeneration = () => {
 
         const newContent: GeneratedContent = {
           id: Date.now().toString(),
-          title: form.subject,
+          title: data.subject,
           content: output,
-          platform: form.platform,
-          tone: form.tone,
-          length: form.length,
-          language: form.language,
+          platform: data.platform,
+          tone: data.tone,
+          length: data.length,
+          language: data.language,
           createdAt: new Date(),
           isFavorite: false,
         };
@@ -91,7 +115,7 @@ const FormGeneration = () => {
         setIsLoading(false);
       }
     },
-    [form]
+    []
   );
 
   const copyToClipboard = useCallback(() => {
@@ -107,17 +131,17 @@ const FormGeneration = () => {
       <h1 className="text-5xl recoleta">Essayez notre outil</h1>
       <p className="recoleta">Intuitif et convivial pour vos publications</p>
 
-      <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 sm:space-y-6">
         <div className="mt-5 border border-slate-200 shadow-2xs bg-white max-w-5xl mx-auto p-3 rounded-md">
           <div className="text-left">
             <InputForm
+              {...register("subject")}
               type="text"
               textarea
               label="Sujet de votre publication"
-              value={form.subject}
-              onChange={(val) => handleChange("subject", val)}
               placeholder="Ex: Les tendances marketing 2024..."
               required
+              error={errors.subject?.message}
             />
           </div>
 
@@ -126,9 +150,8 @@ const FormGeneration = () => {
               Public cible<span className="text-red-500">*</span>
             </label>
             <select
-              value={form.targetAudience}
-              onChange={(e) => handleChange("targetAudience", e.target.value)}
-              className="w-full px-3 py-2.5 sm:py-3 border-1 border-gray-200 rounded-md focus:outline-none transition-all duration-200 text-gray-700 appearance-none bg-white text-sm"
+              {...register("targetAudience")}
+              className={`w-full px-3 py-2.5 sm:py-3 border-1 border-gray-200 rounded-md focus:outline-none transition-all duration-200 text-gray-700 appearance-none bg-white text-sm ${errors.targetAudience ? 'border-red-500' : ''}`}
             >
               {appConfig.targetPeoples.map((people) => (
                 <option key={people.value} value={people.value}>
@@ -136,6 +159,9 @@ const FormGeneration = () => {
                 </option>
               ))}
             </select>
+            {errors.targetAudience && (
+              <p className="text-red-500 text-sm mt-1">{errors.targetAudience.message}</p>
+            )}
           </div>
 
           <div className="text-left mt-5">
@@ -143,9 +169,8 @@ const FormGeneration = () => {
               Ton de la publication<span className="text-red-500">*</span>
             </label>
             <select
-              value={form.tone}
-              onChange={(e) => handleChange("tone", e.target.value)}
-              className="w-full px-3 py-2.5 sm:py-3 border-1 border-gray-200 rounded-md focus:outline-none transition-all duration-200 text-gray-700 appearance-none bg-white text-sm"
+              {...register("tone")}
+              className={`w-full px-3 py-2.5 sm:py-3 border-1 border-gray-200 rounded-md focus:outline-none transition-all duration-200 text-gray-700 appearance-none bg-white text-sm ${errors.tone ? 'border-red-500' : ''}`}
             >
               {appConfig.pupblicationTonalities.map((tonality) => (
                 <option key={tonality.value} value={tonality.value}>
@@ -153,6 +178,9 @@ const FormGeneration = () => {
                 </option>
               ))}
             </select>
+            {errors.tone && (
+              <p className="text-red-500 text-sm mt-1">{errors.tone.message}</p>
+            )}
           </div>
 
           <div className="mt-5 text-left">
@@ -162,17 +190,15 @@ const FormGeneration = () => {
                 <label
                   key={len}
                   className={`relative flex items-center justify-center p-2 sm:p-3 border-1 rounded-md cursor-pointer transition-all duration-200 ${
-                    form.length === len
+                    watchedValues.length === len
                       ? "border-slate-500 bg-slate-50 text-slate-700"
                       : "border-gray-200 hover:border-slate-300 text-gray-600"
                   }`}
                 >
                   <input
+                    {...register("length")}
                     type="radio"
-                    name="length"
                     value={len}
-                    checked={form.length === len}
-                    onChange={(e) => handleChange("length", e.target.value)}
                     className="sr-only"
                   />
                   <span className="text-xs sm:text-sm font-medium capitalize">
@@ -186,6 +212,9 @@ const FormGeneration = () => {
                 </label>
               ))}
             </div>
+            {errors.length && (
+              <p className="text-red-500 text-sm mt-1">{errors.length.message}</p>
+            )}
           </div>
 
           <div className="text-left mt-5">
@@ -193,9 +222,8 @@ const FormGeneration = () => {
               Format de rendu<span className="text-red-500">*</span>
             </label>
             <select
-              value={form.platform}
-              onChange={(e) => handleChange("platform", e.target.value)}
-              className="w-full px-3 py-2.5 sm:py-3 border-1 border-gray-200 rounded-md focus:outline-none transition-all duration-200 text-gray-700 appearance-none bg-white text-sm"
+              {...register("platform")}
+              className={`w-full px-3 py-2.5 sm:py-3 border-1 border-gray-200 rounded-md focus:outline-none transition-all duration-200 text-gray-700 appearance-none bg-white text-sm ${errors.platform ? 'border-red-500' : ''}`}
             >
               {appConfig.platforms.map((p) => (
                 <option key={p.value} value={p.value}>
@@ -203,14 +231,17 @@ const FormGeneration = () => {
                 </option>
               ))}
             </select>
+            {errors.platform && (
+              <p className="text-red-500 text-sm mt-1">{errors.platform.message}</p>
+            )}
           </div>
 
           <button
             type="submit"
-            disabled={isLoading}
-            className="recoleta w-full mt-5 bg-gradient-to-r from-slate-600 to-slate-400 text-white py-2.5 sm:py-3 px-4 rounded-md"
+            disabled={isSubmitting || isLoading || !isValid}
+            className="recoleta w-full mt-5 bg-gradient-to-r from-slate-600 to-slate-400 text-white py-2.5 sm:py-3 px-4 rounded-md disabled:opacity-50"
           >
-            {isLoading ? (
+            {isSubmitting || isLoading ? (
               <Loader2 className="animate-spin h-4 w-4 mx-auto" />
             ) : (
               "Générer le contenu"

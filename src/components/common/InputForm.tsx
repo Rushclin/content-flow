@@ -89,7 +89,7 @@ const Input = forwardRef<HTMLInputElement | HTMLTextAreaElement, InputProps>(({
           <textarea
             ref={ref as React.Ref<HTMLTextAreaElement>}
             className={twMerge(baseClass, "resize-none h-32")}
-            value={value || ""}
+            value={value}
             onChange={onChange}
             onBlur={onBlur}
             placeholder={placeholder}
