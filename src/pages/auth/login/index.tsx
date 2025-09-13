@@ -1,5 +1,5 @@
 import React from "react";
-import { Loader2, Mail, Lock, ArrowRight } from "lucide-react";
+import { Loader2, ArrowRight } from "lucide-react";
 import Logo from "@/components/common/Logo";
 import Link from "next/link";
 import AuthLayout from "@/layout/auth";
@@ -41,7 +41,7 @@ const LoginPage = () => {
     <AuthLayout title="Se connecter">
       <div className="text-center mb-8">
         <div className="flex justify-center mb-6">
-          <Logo size={200} justLogo/>
+          <Logo size={200} justLogo />
         </div>
         <h1 className="text-3xl font-light text-gray-900 mb-2 montserat py-4">
           Plateforme IA tout-en-un
@@ -88,8 +88,7 @@ const LoginPage = () => {
           type="email"
           placeholder="votre@email.com"
           required
-          inputClassName="pl-10 py-3 text-base border border-gray-300 rounded-lg focus:border-blue-500 focus:ring-blue-500"
-          prefix={<Mail className="h-5 w-5 text-gray-400 ml-1" />}
+          inputClassName="pl-5 py-3 text-base border border-gray-300 rounded-lg focus:border-blue-500 focus:ring-blue-500"
           className="mt-4"
           error={errors.email?.message}
         />
@@ -100,14 +99,13 @@ const LoginPage = () => {
           type="password"
           placeholder="Votre mot de passe"
           required
-          inputClassName="pl-10 py-3 text-base border border-gray-300 rounded-lg focus:border-blue-500 focus:ring-blue-500"
-          prefix={<Lock className="h-5 w-5 text-gray-400 ml-1" />}
+          inputClassName="pl-5 py-3 text-base border border-gray-300 rounded-lg focus:border-blue-500 focus:ring-blue-500"
           error={errors.password?.message}
         />
 
         <div className="text-right">
           <Link
-            href="/forgot-password"
+            href="/auth/forgot-password"
             className="text-sm text-blue-600 hover:text-blue-500 font-medium transition-colors"
           >
             Mot de passe oublié ?
@@ -137,7 +135,7 @@ const LoginPage = () => {
         <p className="text-gray-600 text-sm">
           Pas encore de compte ?{" "}
           <Link
-            href="/register"
+            href="/auth/register"
             className="text-blue-600 hover:text-blue-500 font-semibold transition-colors"
           >
             Créer un compte

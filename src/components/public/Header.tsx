@@ -69,13 +69,13 @@ const Header = ({ hideMenu = false }) => {
       <div className="flex items-center justify-between gap-2">
         <>
           <Link
-            href="/login"
+            href="/auth/login"
             className="cursor-pointer rounded-full p-2 px-5 text-center text-slate-500 bg-slate-200 hover:bg-slate-300 lg:w-28 transition-colors "
           >
             Login
           </Link>
           <Link
-            href="/register"
+            href="/auth/register"
             className="flex cursor-pointer items-center justify-evenly rounded-full bg-slate-500/90 p-2 px-2 text-white hover:bg-slate-500 md:w-32"
           >
             Register
