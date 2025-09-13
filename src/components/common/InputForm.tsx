@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState, useMemo } from "react";
+import React, { ChangeEvent, useState, useMemo, useCallback } from "react";
 import { twMerge } from "tailwind-merge";
 import { Eye, EyeOff } from "lucide-react";
 
@@ -49,10 +49,10 @@ const Input: React.FC<InputProps> = ({
     onChange(val);
   };
 
-  const handlePasswordToggle = () => {
+  const handlePasswordToggle = useCallback(() => {
     setShowPassword(!showPassword);
     setCustomType(customType === "password" ? "text" : "password");
-  };
+  }, [showPassword, customType]);
 
   const customSuffix = useMemo(() => {
     if (type === "password") {
@@ -63,7 +63,7 @@ const Input: React.FC<InputProps> = ({
       );
     }
     return suffix;
-  }, [type, showPassword, suffix]);
+  }, [type, showPassword, suffix, handlePasswordToggle]);
 
   const baseClass = twMerge(
     "w-full rounded-md border-0 ring-1 ring-inset ring-gray-200 text-gray-900 placeholder:text-gray-400 focus:ring-1 focus:ring-inset focus:ring-slate-400 text-sm py-2",

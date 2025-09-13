@@ -101,18 +101,6 @@ const FormGeneration = () => {
     }
   }, [generatedContent]);
 
-  const shareContent = useCallback(() => {
-    if (generatedContent && navigator.share) {
-      navigator
-        .share({
-          title: generatedContent.title,
-          text: generatedContent.content,
-        })
-        .catch((err) => console.error("Erreur partage :", err));
-    } else {
-      alert("Partage non disponible sur ce navigateur.");
-    }
-  }, [generatedContent]);
 
   return (
     <div id="FormGeneration" className="text-center my-10">
