@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import axios from "axios";
 import {
   Copy,
@@ -53,6 +53,41 @@ const Dashboard = () => {
       length: string;
     };
   }>>([]);
+
+  // Charger l'historique depuis localStorage au montage
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem("cf_conversation_history");
+      if (raw) {
+        const parsed = JSON.parse(raw) as Array<{
+          type: 'user' | 'ai';
+          content: string;
+          timestamp: string;
+          metadata?: { platform: string; tone: string; length: string };
+        }>;
+        const withDates = parsed.map((m) => ({
+          ...m,
+          timestamp: new Date(m.timestamp),
+        }));
+        setConversationHistory(withDates);
+      }
+    } catch (err) {
+      console.error("Impossible de charger l'historique", err);
+    }
+  }, []);
+
+  // Persister l'historique à chaque modification
+  useEffect(() => {
+    try {
+      const serializable = conversationHistory.map((m) => ({
+        ...m,
+        timestamp: m.timestamp.toISOString(),
+      }));
+      localStorage.setItem("cf_conversation_history", JSON.stringify(serializable));
+    } catch (err) {
+      console.error("Impossible d'enregistrer l'historique", err);
+    }
+  }, [conversationHistory]);
 
   const handleChange = (key: string, value: string) => {
     setForm((prev) => ({ ...prev, [key]: value }));
@@ -371,7 +406,7 @@ const Dashboard = () => {
                   type="submit"
                   onClick={handleSubmit}
                   disabled={isLoading || !form.subject.trim()}
-                  className="absolute bottom-5 right-5 w-8 h-8 bg-blue-300 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 flex items-center justify-center"
+                  className="absolute bottom-5 right-5 w-8 h-8 bg-blue-400 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 flex items-center justify-center"
                 >
                   {isLoading ? (
                     <Loader2 className="w-4 h-4 animate-spin" />
