@@ -56,7 +56,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
           {children}
         </div>
       </div>
-      <LanguageSwitcher className="bottom-5" />
+      <LanguageSwitcher className="bottom-5 z-70" />
     </div>
   );
 };
