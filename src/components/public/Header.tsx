@@ -63,7 +63,7 @@ const Header = ({ hideMenu = false }) => {
             </a>
           </li>
           <li className="relative">
-            <a href="/pricing" className="relative inline-flex items-center">
+            <a href="#PricingSection" className="relative inline-flex items-center">
               Pricing
             </a>
           </li>
