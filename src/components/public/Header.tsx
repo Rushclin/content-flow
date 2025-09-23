@@ -34,8 +34,11 @@ const Header = ({ hideMenu = false }) => {
           (scrollStart > 80 ? " bg-white py-10 md:p-10" : " py-10 md:p-14")
       )}
     >
-      <div className="logo">
+      <div className="logo hidden md:block">
         <Logo size={140} />
+      </div>
+       <div className="logo md:hidden">
+        <Logo size={140} justLogo />
       </div>
       <div className={twMerge("hidden " + (hideMenu ? "" : " md:flex"))}>
         <ul className="text-md flex justify-between text-slate-800 md:gap-4 xl:gap-12">

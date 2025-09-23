@@ -2,33 +2,28 @@ import Link from "next/link";
 import Logo from "../common/Logo";
 import { appConfig } from "@/config/app";
 import {
-  Facebook,
-  Twitter,
-  Linkedin,
-  Instagram,
-  Youtube,
   Mail,
 } from "lucide-react";
 
 const Footer = () => {
   const socialLinks = [
     {
-      icon: Facebook,
+      icon: "📘",
       href: "https://facebook.com/novalitix",
       label: "Facebook",
     },
-    { icon: Twitter, href: "https://twitter.com/novalitix", label: "Twitter" },
+    { icon: "🐦", href: "https://twitter.com/novalitix", label: "Twitter" },
     {
-      icon: Linkedin,
+      icon: "💼",
       href: "https://linkedin.com/company/novalitix",
       label: "LinkedIn",
     },
     {
-      icon: Instagram,
+      icon: "📸",
       href: "https://instagram.com/novalitix",
       label: "Instagram",
     },
-    { icon: Youtube, href: "https://youtube.com/@novalitix", label: "YouTube" },
+    { icon: "🎥", href: "https://youtube.com/@novalitix", label: "YouTube" },
     { icon: Mail, href: "mailto:contact@novalitix.com", label: "Email" },
   ];
 
@@ -45,17 +40,20 @@ const Footer = () => {
             </p>
             <div className="flex space-x-4">
               {socialLinks.map((social) => {
-                const Icon = social.icon;
                 return (
                   <a
                     key={social.label}
                     href={social.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-slate-800 hover:text-slate-900 transition-colors duration-200"
+                    className="text-slate-800 hover:text-slate-900 transition-colors duration-200 text-xl"
                     aria-label={social.label}
                   >
-                    <Icon className="h-5 w-5" />
+                    {typeof social.icon === "string" ? (
+                      <span>{social.icon}</span>
+                    ) : (
+                      <social.icon className="h-5 w-5" />
+                    )}
                   </a>
                 );
               })}
