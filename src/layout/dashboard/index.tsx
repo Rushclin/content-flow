@@ -11,12 +11,14 @@ interface DashboardLayoutProps {
   children: React.ReactNode;
   title?: string;
   description?: string;
+  actions?: React.ReactNode;
 }
 
 const DashboardLayout: React.FC<DashboardLayoutProps> = ({
   children,
   description,
   title,
+  actions
 }) => {
   const { isExpanded, isHovered, isMobileOpen } = useSidebar();
 
@@ -51,7 +53,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
       <div
         className={`flex-1 transition-all  duration-300 ease-in-out ${mainContentMargin}`}
       >
-        <Header />
+        <Header actions={actions} />
         <div className="p-4 mx-auto max-w-(--breakpoint-2xl) md:p-6">
           {children}
         </div>
