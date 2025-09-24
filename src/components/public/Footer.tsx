@@ -2,28 +2,33 @@ import Link from "next/link";
 import Logo from "../common/Logo";
 import { appConfig } from "@/config/app";
 import {
+  Facebook,
+  Instagram,
+  Linkedin,
   Mail,
+  Twitter,
+  Youtube,
 } from "lucide-react";
 
 const Footer = () => {
   const socialLinks = [
     {
-      icon: "📘",
+      icon: Facebook,
       href: "https://facebook.com/novalitix",
       label: "Facebook",
     },
-    { icon: "🐦", href: "https://twitter.com/novalitix", label: "Twitter" },
+    { icon: Twitter, href: "https://twitter.com/novalitix", label: "Twitter" },
     {
-      icon: "💼",
+      icon: Linkedin,
       href: "https://linkedin.com/company/novalitix",
       label: "LinkedIn",
     },
     {
-      icon: "📸",
+      icon: Instagram,
       href: "https://instagram.com/novalitix",
       label: "Instagram",
     },
-    { icon: "🎥", href: "https://youtube.com/@novalitix", label: "YouTube" },
+    { icon: Youtube, href: "https://youtube.com/@novalitix", label: "YouTube" },
     { icon: Mail, href: "mailto:contact@novalitix.com", label: "Email" },
   ];
 
