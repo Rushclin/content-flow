@@ -6,7 +6,7 @@ import AuthLayout from "@/layout/auth";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import Input from "@/components/common/InputForm";
+import Input from "@/components/common/Input";
 
 // Schéma de validation avec zod
 const forgotPasswordSchema = z.object({

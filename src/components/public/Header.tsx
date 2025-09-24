@@ -73,13 +73,13 @@ const Header = ({ hideMenu = false }) => {
         <>
           <Link
             href="/auth/login"
-            className="cursor-pointer rounded-full p-2 px-5 text-center text-slate-500 bg-slate-200 hover:bg-slate-300 lg:w-28 transition-colors "
+            className="cursor-pointer rounded-full p-2 px-5 text-center text-white bg-primary/90 transition-colors ease-in hover:bg-primary lg:w-28 "
           >
             Login
           </Link>
           <Link
             href="/auth/register"
-            className="flex cursor-pointer items-center justify-evenly rounded-full bg-slate-500/90 p-2 px-2 text-white hover:bg-slate-500 md:w-32"
+            className="flex cursor-pointer items-center justify-evenly rounded-full bg-primary/90 p-2 px-2 text-white hover:bg-primary md:w-32"
           >
             Register
             <span className="hidden md:inline-block">
