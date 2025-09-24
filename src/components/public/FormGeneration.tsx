@@ -1,25 +1,23 @@
 import React, { useState, useCallback } from "react";
-import InputForm from "../common/InputForm";
-import { Loader2, Copy } from "lucide-react";
+import InputForm from "../common/Input";
+import { Copy } from "lucide-react";
 import { appConfig } from "@/config/app";
 import axios from "axios";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-
-type Platform = "wordpress" | "twitter" | "facebook" | "linkedin" | "reddit";
-type Tone = "professionnel" | "amical" | "formel" | "décontracté";
-type Length = "courte" | "moyenne" | "longue";
-type Language = "fr" | "en" | "es";
+import Select from "../common/Select";
+import RadioCardGroup from "../common/RadioGroup";
+import Button from "../common/Button";
 
 interface GeneratedContent {
   id: string;
   title: string;
   content: string;
-  platform: Platform | string;
-  tone: Tone;
-  length: Length;
-  language: Language;
+  platform: string;
+  tone: string;
+  length: string;
+  language: string;
   createdAt: Date;
   isFavorite: boolean;
   images?: string[];
@@ -35,16 +33,19 @@ const formGenerationSchema = z.object({
     .max(500, "Le sujet ne peut pas dépasser 500 caractères"),
   targetAudience: z.string().min(1, "Le public cible est obligatoire"),
   tone: z.enum(["professionnel", "amical", "formel", "décontracté"], {
-    message: "Veuillez sélectionner un ton valide"
+    message: "Veuillez sélectionner un ton valide",
   }),
   length: z.enum(["courte", "moyenne", "longue"], {
-    message: "Veuillez sélectionner une longueur valide"
+    message: "Veuillez sélectionner une longueur valide",
   }),
-  platform: z.enum(["LinkedIn", "Facebook", "Twitter/X", "WordPress", "Reddit"], {
-    message: "Veuillez sélectionner une plateforme valide"
-  }),
+  platform: z.enum(
+    ["LinkedIn", "Facebook", "Twitter/X", "WordPress", "Reddit"],
+    {
+      message: "Veuillez sélectionner une plateforme valide",
+    }
+  ),
   language: z.enum(["fr", "en", "es"], {
-    message: "Veuillez sélectionner une langue valide"
+    message: "Veuillez sélectionner une langue valide",
   }),
 });
 
@@ -55,7 +56,7 @@ const FormGeneration = () => {
     register,
     handleSubmit,
     formState: { errors, isSubmitting, isValid },
-    watch,
+    control,
   } = useForm<FormGenerationData>({
     resolver: zodResolver(formGenerationSchema),
     mode: "onChange",
@@ -73,50 +74,45 @@ const FormGeneration = () => {
     useState<GeneratedContent | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  const watchedValues = watch();
+  const onSubmit = useCallback(async (data: FormGenerationData) => {
+    setIsLoading(true);
 
-  const onSubmit = useCallback(
-    async (data: FormGenerationData) => {
-      setIsLoading(true);
-
-      try {
-        const response = await axios.post(
-          "https://automation.novalitix.com/webhook/generate-content",
-          {
-            theme: data.subject,
-            details: `Public cible: ${data.targetAudience}, Ton: ${data.tone}, Longueur: ${data.length}`,
-            platform: data.platform,
-          },
-          {
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        );
-
-        const { output } = response.data;
-
-        const newContent: GeneratedContent = {
-          id: Date.now().toString(),
-          title: data.subject,
-          content: output,
+    try {
+      const response = await axios.post(
+        "https://automation.novalitix.com/webhook/generate-content",
+        {
+          theme: data.subject,
+          details: `Public cible: ${data.targetAudience}, Ton: ${data.tone}, Longueur: ${data.length}`,
           platform: data.platform,
-          tone: data.tone,
-          length: data.length,
-          language: data.language,
-          createdAt: new Date(),
-          isFavorite: false,
-        };
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
-        setGeneratedContent(newContent);
-      } catch (error) {
-        console.error("Erreur réseau:", error);
-      } finally {
-        setIsLoading(false);
-      }
-    },
-    []
-  );
+      const { output } = response.data;
+
+      const newContent: GeneratedContent = {
+        id: Date.now().toString(),
+        title: data.subject,
+        content: output,
+        platform: data.platform,
+        tone: data.tone,
+        length: data.length,
+        language: data.language,
+        createdAt: new Date(),
+        isFavorite: false,
+      };
+
+      setGeneratedContent(newContent);
+    } catch (error) {
+      console.error("Erreur réseau:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
 
   const copyToClipboard = useCallback(() => {
     if (generatedContent) {
@@ -125,13 +121,15 @@ const FormGeneration = () => {
     }
   }, [generatedContent]);
 
-
   return (
     <div id="FormGeneration" className="text-center my-10">
       <h1 className="text-5xl recoleta">Essayez notre outil</h1>
       <p className="recoleta">Intuitif et convivial pour vos publications</p>
 
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 sm:space-y-6">
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="space-y-4 sm:space-y-6"
+      >
         <div className="mt-5 border border-slate-200 shadow-2xs bg-white max-w-5xl mx-auto p-3 rounded-md">
           <div className="text-left">
             <InputForm
@@ -145,112 +143,66 @@ const FormGeneration = () => {
             />
           </div>
 
-          <div className="text-left mt-5">
-            <label className="mb-1 text-gray-600 font-medium">
-              Public cible<span className="text-red-500">*</span>
-            </label>
-            <select
-              {...register("targetAudience")}
-              className={`w-full px-3 py-2.5 sm:py-3 border-1 border-gray-200 rounded-md focus:outline-none transition-all duration-200 text-gray-700 appearance-none bg-white text-sm ${errors.targetAudience ? 'border-red-500' : ''}`}
-            >
-              {appConfig.targetPeoples.map((people) => (
-                <option key={people.value} value={people.value}>
-                  {people.label}
-                </option>
-              ))}
-            </select>
-            {errors.targetAudience && (
-              <p className="text-red-500 text-sm mt-1">{errors.targetAudience.message}</p>
-            )}
-          </div>
+          <Select
+            label=" Public cible"
+            {...register("targetAudience")}
+            required
+            options={appConfig.targetPeoples}
+            error={errors.targetAudience?.message}
+            placeholder="Sélectionne une audiance"
+          />
 
-          <div className="text-left mt-5">
-            <label className="mb-1 text-gray-600 font-medium">
-              Ton de la publication<span className="text-red-500">*</span>
-            </label>
-            <select
-              {...register("tone")}
-              className={`w-full px-3 py-2.5 sm:py-3 border-1 border-gray-200 rounded-md focus:outline-none transition-all duration-200 text-gray-700 appearance-none bg-white text-sm ${errors.tone ? 'border-red-500' : ''}`}
-            >
-              {appConfig.pupblicationTonalities.map((tonality) => (
-                <option key={tonality.value} value={tonality.value}>
-                  {tonality.label}
-                </option>
-              ))}
-            </select>
-            {errors.tone && (
-              <p className="text-red-500 text-sm mt-1">{errors.tone.message}</p>
-            )}
-          </div>
+          <Select
+            label="Ton de la publication"
+            {...register("tone")}
+            required
+            options={appConfig.pupblicationTonalities}
+            error={errors.tone?.message}
+            placeholder="Sélectionne un ton"
+            className="my-5"
+          />
 
-          <div className="mt-5 text-left">
-            <label className="text-slate-500">Longueur du contenu</label>
-            <div className="grid grid-cols-3 gap-1.5 sm:gap-2">
-              {(["courte", "moyenne", "longue"] as Length[]).map((len) => (
-                <label
-                  key={len}
-                  className={`relative flex items-center justify-center p-2 sm:p-3 border-1 rounded-md cursor-pointer transition-all duration-200 ${
-                    watchedValues.length === len
-                      ? "border-slate-500 bg-slate-50 text-slate-700"
-                      : "border-gray-200 hover:border-slate-300 text-gray-600"
-                  }`}
-                >
-                  <input
-                    {...register("length")}
-                    type="radio"
-                    value={len}
-                    className="sr-only"
-                  />
-                  <span className="text-xs sm:text-sm font-medium capitalize">
-                    {len === "courte"
-                      ? "📝"
-                      : len === "moyenne"
-                      ? "📄"
-                      : "📚"}{" "}
-                    {len}
-                  </span>
-                </label>
-              ))}
-            </div>
-            {errors.length && (
-              <p className="text-red-500 text-sm mt-1">{errors.length.message}</p>
+          <Controller
+            name="length"
+            control={control}
+            render={({ field }) => (
+              <RadioCardGroup
+                name="length"
+                label="Longueur du contenu"
+                value={field.value}
+                onChange={(e) => field.onChange(e.target.value)}
+                options={[
+                  { value: "courte", label: "courte" },
+                  { value: "moyenne", label: "moyenne" },
+                  { value: "longue", label: "longue" },
+                ]}
+                error={errors.length?.message}
+              />
             )}
-          </div>
+          />
 
-          <div className="text-left mt-5">
-            <label className="mb-1 text-slate-500 font-medium">
-              Format de rendu<span className="text-red-500">*</span>
-            </label>
-            <select
-              {...register("platform")}
-              className={`w-full px-3 py-2.5 sm:py-3 border-1 border-gray-200 rounded-md focus:outline-none transition-all duration-200 text-gray-700 appearance-none bg-white text-sm ${errors.platform ? 'border-red-500' : ''}`}
-            >
-              {appConfig.platforms.map((p) => (
-                <option key={p.value} value={p.value}>
-                  {p.label}
-                </option>
-              ))}
-            </select>
-            {errors.platform && (
-              <p className="text-red-500 text-sm mt-1">{errors.platform.message}</p>
-            )}
-          </div>
+          <Select
+            label="Format de rendu"
+            {...register("platform")}
+            required
+            options={appConfig.platforms}
+            error={errors.platform?.message}
+            placeholder="Sélectionne une plateforme"
+            className="my-5"
+          />
 
-          <button
+          <Button
             type="submit"
-            disabled={isSubmitting || isLoading || !isValid}
-            className="recoleta w-full mt-5 bg-gradient-to-r from-slate-600 to-slate-400 text-white py-2.5 sm:py-3 px-4 rounded-md disabled:opacity-50"
+            loading={isSubmitting || isLoading}
+            disabled={!isValid}
+            className="rounded-full bg-primary"
           >
-            {isSubmitting || isLoading ? (
-              <Loader2 className="animate-spin h-4 w-4 mx-auto" />
-            ) : (
-              "Générer le contenu"
-            )}
-          </button>
+            {" "}
+            Générer le contenu
+          </Button>
         </div>
       </form>
 
-      {/* Affichage du contenu généré */}
       {generatedContent && (
         <div className="mt-8 max-w-5xl mx-auto p-4 border rounded-md bg-gray-50 text-left space-y-4">
           <h2 className="text-xl font-semibold">{generatedContent.title}</h2>

@@ -6,9 +6,6 @@ import {
   Download,
   Sparkles,
   Zap,
-  Target,
-  Palette,
-  Globe,
   Settings,
   X,
 } from "lucide-react";
@@ -39,7 +36,7 @@ const Dashboard = () => {
     platform: "linkedin" as Platform,
   });
 
-  const [generatedContent, setGeneratedContent] =
+  const [_, setGeneratedContent] =
     useState<GeneratedContent | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [showSettings, setShowSettings] = useState(false);

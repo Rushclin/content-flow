@@ -7,7 +7,7 @@ import Divider from "@/components/common/Divider";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import Input from "@/components/common/InputForm";
+import Input from "@/components/common/Input";
 
 const loginSchema = z.object({
   email: z
