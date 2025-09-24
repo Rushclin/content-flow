@@ -56,7 +56,6 @@ const FormGeneration = () => {
     register,
     handleSubmit,
     formState: { errors, isSubmitting, isValid },
-    watch,
     control,
   } = useForm<FormGenerationData>({
     resolver: zodResolver(formGenerationSchema),

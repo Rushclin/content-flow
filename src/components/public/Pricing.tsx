@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Check, Star, Zap, Building } from "lucide-react";
+import { Check } from "lucide-react";
 import Badge from "../common/Badge";
 import { appConfig } from "@/config/app";
 
@@ -49,7 +49,7 @@ const Pricing = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {appConfig.plans.map((plan, index) => {
+          {appConfig.plans.map((plan) => {
             const Icon = plan.icon;
             const price = isYearly ? plan.price.yearly : plan.price.monthly;
             const yearlyTotal = plan.price.yearly * 12;
@@ -158,7 +158,7 @@ const Pricing = () => {
 
         <div className="text-center mt-16">
           <p className="text-slate-600 mb-4">
-            Besoin d'une solution sur mesure ?
+            Besoin d&apos;une solution sur mesure ?
           </p>
           <button className="bg-slate-800 text-white cursor-pointer px-8 py-3 rounded-full hover:bg-slate-900 transition-colors">
             Contactez notre équipe commerciale

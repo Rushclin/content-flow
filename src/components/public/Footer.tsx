@@ -83,7 +83,7 @@ const Footer = () => {
             </ul>
 
             <div className="bg-slate-800 p-4 rounded-lg">
-              <h4 className="text-white font-medium mb-2">Besoin d'aide ?</h4>
+              <h4 className="text-white font-medium mb-2">Besoin d&apos;aide ?</h4>
               <p className="text-gray-400 text-sm mb-3">
                 Contactez notre équipe support
               </p>
@@ -113,7 +113,7 @@ const Footer = () => {
                 href="/terms"
                 className="text-slate-800 hover:text-slate-900 transition-colors duration-200"
               >
-                Conditions d'utilisation
+                Conditions d&apos;utilisation
               </Link>
               <Link
                 href="/cookies"
