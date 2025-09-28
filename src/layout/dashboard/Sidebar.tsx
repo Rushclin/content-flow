@@ -2,9 +2,10 @@ import React, { useEffect, useRef, useState, useCallback } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useSidebar } from "@/context/SidebarContext";
-import { ChevronDown, Home } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 import Logo from "@/components/common/Logo";
 import { NavItem, navItems } from "@/navigation";
+import { SignedIn, UserButton } from "@clerk/nextjs";
 
 const Sidebar: React.FC = () => {
   const { isExpanded, isMobileOpen, isHovered, setIsHovered } = useSidebar();
@@ -222,18 +223,17 @@ const Sidebar: React.FC = () => {
       <div className="flex flex-col overflow-y-auto duration-300 ease-linear no-scrollbar">
         <nav className="mb-6">
           <div className="flex flex-col gap-4">
-            <div>
-              <h2
-                className={`mb-4 text-xs uppercase flex leading-[20px] text-gray-400 ${
-                  !isExpanded && !isHovered
-                    ? "lg:justify-center"
-                    : "justify-start"
-                }`}
-              >
-                {isExpanded || isHovered || isMobileOpen ? "Menu" : <Home />}
-              </h2>
-              {renderMenuItems(navItems, "main")}
-            </div>
+            {renderMenuItems(navItems, "main")}
+          </div>
+
+          <div
+            className={`absolute ${
+              isMobileOpen ? "bottom-24" : "bottom-5"
+            } right-10`}
+          >
+            <SignedIn>
+              <UserButton showName={isExpanded || isMobileOpen} />
+            </SignedIn>
           </div>
         </nav>
       </div>

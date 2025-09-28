@@ -1,5 +1,6 @@
 import { appConfig } from "@/config/app";
 import { SidebarProvider } from "@/context/SidebarContext";
+import { ClerkProvider } from "@clerk/nextjs";
 import "@/styles/globals.css";
 import type { AppProps } from "next/app";
 import Head from "next/head";
@@ -11,10 +12,7 @@ const App = ({ Component, pageProps }: AppProps) => {
         <meta charSet="UTF-8" />
         <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
 
-        <meta
-          name="description"
-          content={appConfig.description}
-        />
+        <meta name="description" content={appConfig.description} />
         <meta name="keywords" content="AI, Generation, Automation" />
         <meta name="author" content="Rushclin Takam From Novalitix" />
 
@@ -24,11 +22,17 @@ const App = ({ Component, pageProps }: AppProps) => {
         <link rel="icon" href="/favicon.png" />
         <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
         <link rel="manifest" href="/manifest.json" />
-
       </Head>
-      <SidebarProvider>
-        <Component {...pageProps} />
-      </SidebarProvider>
+      <ClerkProvider
+        {...pageProps}
+        appearance={{
+          cssLayerName: "clerk",
+        }}
+      >
+        <SidebarProvider>
+          <Component {...pageProps} />
+        </SidebarProvider>
+      </ClerkProvider>
     </>
   );
 };
