@@ -5,6 +5,7 @@ import { useSidebar } from "@/context/SidebarContext";
 import { ChevronDown } from "lucide-react";
 import Logo from "@/components/common/Logo";
 import { NavItem, navItems } from "@/navigation";
+import { SignedIn, UserButton } from "@clerk/nextjs";
 
 const Sidebar: React.FC = () => {
   const { isExpanded, isMobileOpen, isHovered, setIsHovered } = useSidebar();
@@ -223,6 +224,16 @@ const Sidebar: React.FC = () => {
         <nav className="mb-6">
           <div className="flex flex-col gap-4">
             {renderMenuItems(navItems, "main")}
+          </div>
+
+          <div
+            className={`absolute ${
+              isMobileOpen ? "bottom-24" : "bottom-5"
+            } right-10`}
+          >
+            <SignedIn>
+              <UserButton showName={isExpanded || isMobileOpen} />
+            </SignedIn>
           </div>
         </nav>
       </div>

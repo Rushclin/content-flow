@@ -35,11 +35,11 @@ const Header: React.FC<HeaderProps> = ({ actions }) => {
   }, []);
 
   return (
-    <header className="sticky top-0 flex w-full bg-white border-gray-200 z-10">
+    <header className="sticky top-0 flex w-full bg-white border-gray-200 z-100">
       <div className="flex flex-col items-center justify-between grow lg:flex-row lg:px-6">
         <div className="flex items-center justify-between w-full gap-2 px-3 py-3 sm:gap-4 lg:px-0 lg:py-4">
           <button
-            className="items-center justify-center w-10 h-10  z-10 lg:flex lg:h-11 lg:w-11 cursor-pointer"
+            className="items-center justify-center w-10 h-10  z-100 lg:flex lg:h-11 lg:w-11 cursor-pointer"
             onClick={handleToggle}
             aria-label="Toggle Sidebar"
           >
