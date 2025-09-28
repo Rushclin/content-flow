@@ -1,12 +1,6 @@
 import { appConfig } from "@/config/app";
 import { SidebarProvider } from "@/context/SidebarContext";
-import {
-  ClerkProvider,
-  SignInButton,
-  SignedIn,
-  SignedOut,
-  UserButton,
-} from "@clerk/nextjs";
+import { ClerkProvider } from "@clerk/nextjs";
 import "@/styles/globals.css";
 import type { AppProps } from "next/app";
 import Head from "next/head";
@@ -35,9 +29,6 @@ const App = ({ Component, pageProps }: AppProps) => {
           cssLayerName: "clerk",
         }}
       >
-        <SignedIn>
-          <UserButton />
-        </SignedIn>
         <SidebarProvider>
           <Component {...pageProps} />
         </SidebarProvider>
