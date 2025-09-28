@@ -3,17 +3,12 @@ import { useEffect, useState } from "react";
 import { twMerge } from "tailwind-merge";
 import Logo from "../common/Logo";
 import { ArrowRightCircle } from "lucide-react";
+import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
 
 const Header = ({ hideMenu = false }) => {
   const [, setIsMenuOpen] = useState(false);
-  const [, setHasToken] = useState(false);
   const [scrollStart, setScrollStart] = useState(0);
 
-  useEffect(() => {
-    if (typeof localStorage !== "undefined") {
-      setHasToken(!!localStorage.getItem("token"));
-    }
-  }, []);
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > scrollStart) {
@@ -37,7 +32,7 @@ const Header = ({ hideMenu = false }) => {
       <div className="logo hidden md:block">
         <Logo size={140} />
       </div>
-       <div className="logo md:hidden">
+      <div className="logo md:hidden">
         <Logo size={140} justLogo />
       </div>
       <div className={twMerge("hidden " + (hideMenu ? "" : " md:flex"))}>
@@ -63,7 +58,10 @@ const Header = ({ hideMenu = false }) => {
             </a>
           </li>
           <li className="relative">
-            <a href="#PricingSection" className="relative inline-flex items-center">
+            <a
+              href="#PricingSection"
+              className="relative inline-flex items-center"
+            >
               Pricing
             </a>
           </li>
@@ -71,26 +69,21 @@ const Header = ({ hideMenu = false }) => {
       </div>
       <div className="flex items-center justify-between gap-2">
         <>
-          <Link
-            href="/auth/login"
-            className="cursor-pointer rounded-full p-2 px-5 text-center text-white bg-primary/90 transition-colors ease-in hover:bg-primary lg:w-28 "
-          >
-            Login
-          </Link>
-          <Link
-            href="/auth/register"
-            className="flex cursor-pointer items-center justify-evenly rounded-full bg-primary/90 p-2 px-2 text-white hover:bg-primary md:w-32"
-          >
-            Register
-            <span className="hidden md:inline-block">
-              <ArrowRightCircle className="h-4 w-4" />
-            </span>
-          </Link>
+          <SignedOut>
+            <SignInButton>
+              <button className="cursor-pointer flex items-center rounded-full p-2 px-5 text-center text-white bg-primary/90 transition-colors ease-in hover:bg-primary">
+                Se connecter
+                <ArrowRightCircle className="h-4 w-4 ml-2" />
+              </button>
+            </SignInButton>
+          </SignedOut>
+          <SignedIn>
+            <UserButton />
+          </SignedIn>
         </>
       </div>
     </div>
   );
-}
+};
 
-
-export default Header
+export default Header;

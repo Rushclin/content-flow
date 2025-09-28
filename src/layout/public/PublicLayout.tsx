@@ -1,4 +1,4 @@
-import LanguageSwitcher from "@/components/LanguageSwitcher";
+// import LanguageSwitcher from "@/components/LanguageSwitcher";
 import { appConfig } from "@/config/app";
 import Head from "next/head";
 import React from "react";
@@ -28,7 +28,7 @@ const PublicLayout: React.FC<PublicLayoutProps> = ({
       </Head>
       <div>
         {children}
-        <LanguageSwitcher className="bottom-5" />
+        {/* <LanguageSwitcher className="bottom-5" /> */}
       </div>
     </div>
   );
