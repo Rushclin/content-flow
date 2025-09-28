@@ -1,6 +1,7 @@
 import { Building, Star, Zap } from "lucide-react";
 
 export const appConfig = {
+  n8nBaseUrl: process.env["NEXT_PUBLIC_N8N_BASE_URL"],
   name: "Content Flow Toolbox",
   description: "Generate content fastly",
   targetPeoples: [

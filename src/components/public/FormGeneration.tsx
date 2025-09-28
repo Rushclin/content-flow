@@ -79,7 +79,8 @@ const FormGeneration = () => {
 
     try {
       const response = await axios.post(
-        "https://automation.novalitix.com/webhook/generate-content",
+        appConfig.n8nBaseUrl ||
+          "https://automation.novalitix.com/webhook/generate-content",
         {
           theme: data.subject,
           details: `Public cible: ${data.targetAudience}, Ton: ${data.tone}, Longueur: ${data.length}`,
