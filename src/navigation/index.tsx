@@ -22,7 +22,10 @@ export const navItems: NavItem[] = [
   {
     icon: <Bot className="h-5 w-5 font-extralight" />,
     name: "Générateur",
-    subItems: [{ name: "Nouveau chat", path: "/generate" }],
+    subItems: [
+      { name: "Nouveau chat", path: "/generate" },
+      // { name: "Historique", path: "/generate/history" }
+    ],
   },
   {
     icon: <MessageCircleDashedIcon className="h-5 w-5 font-extralight" />,

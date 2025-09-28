@@ -1,4 +1,5 @@
 import { useState, useCallback, useEffect } from "react";
+import { useRouter } from "next/router";
 import axios from "axios";
 import {
   Copy,
@@ -8,13 +9,12 @@ import {
   Zap,
   Settings,
   X,
+  History,
 } from "lucide-react";
 import { appConfig } from "@/config/app";
 import DashboardLayout from "@/layout/dashboard";
-
-type Platform = "wordpress" | "twitter" | "facebook" | "linkedin" | "reddit";
-type Tone = "professionnel" | "amical" | "formel" | "décontracté";
-type Length = "courte" | "moyenne" | "longue";
+import { Platform, Tone, Length } from "@/types/chat";
+import { useUser } from "@clerk/nextjs";
 
 interface GeneratedContent {
   id: string;
@@ -28,6 +28,9 @@ interface GeneratedContent {
 }
 
 const Dashboard = () => {
+  const { user } = useUser();
+  const router = useRouter();
+
   const [form, setForm] = useState({
     subject: "",
     targetAudience: "Professionnels",
@@ -39,8 +42,10 @@ const Dashboard = () => {
   const [_, setGeneratedContent] = useState<GeneratedContent | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
+  const [currentConversationId, setCurrentConversationId] = useState<string | null>(null);
   const [conversationHistory, setConversationHistory] = useState<
     Array<{
+      id?: string;
       type: "user" | "ai";
       content: string;
       timestamp: Date;
@@ -52,27 +57,73 @@ const Dashboard = () => {
     }>
   >([]);
 
-  // Charger l'historique depuis localStorage au montage
+  // Charger une conversation existante si spécifiée dans l'URL
   useEffect(() => {
-    try {
-      const raw = localStorage.getItem("cf_conversation_history");
-      if (raw) {
-        const parsed = JSON.parse(raw) as Array<{
-          type: "user" | "ai";
-          content: string;
-          timestamp: string;
-          metadata?: { platform: string; tone: string; length: string };
-        }>;
-        const withDates = parsed.map((m) => ({
-          ...m,
-          timestamp: new Date(m.timestamp),
-        }));
-        setConversationHistory(withDates);
+    const loadConversation = async () => {
+      const conversationId = router.query.conversation as string;
+      if (conversationId && user) {
+        try {
+          const response = await axios.get(`/api/generation/conversation/${conversationId}`);
+          if (response.data.success) {
+            const conversation = response.data.data;
+            setCurrentConversationId(conversation.id);
+
+            // Convertir les messages en format pour l'affichage
+            const messages = conversation.messages.map((msg: any) => ({
+              id: msg.id,
+              type: msg.senderType === "USER" ? "user" : "ai",
+              content: msg.content,
+              timestamp: new Date(msg.createdAt),
+              metadata: msg.contentJson?.metadata,
+            }));
+
+            setConversationHistory(messages);
+
+            // Mettre à jour les paramètres de forme avec ceux de la conversation
+            if (conversation.meta) {
+              setForm(prev => ({
+                ...prev,
+                platform: conversation.meta.platform || prev.platform,
+                tone: conversation.meta.tone || prev.tone,
+                length: conversation.meta.length || prev.length,
+                targetAudience: conversation.meta.audience || prev.targetAudience,
+              }));
+            }
+          }
+        } catch (error) {
+          console.error("Erreur lors du chargement de la conversation:", error);
+        }
       }
-    } catch (err) {
-      console.error("Impossible de charger l'historique", err);
+    };
+
+    if (router.isReady) {
+      loadConversation();
     }
-  }, []);
+  }, [router.isReady, router.query.conversation, user]);
+
+  // Charger l'historique depuis localStorage au montage (fallback)
+  useEffect(() => {
+    if (!router.query.conversation) {
+      try {
+        const raw = localStorage.getItem("cf_conversation_history");
+        if (raw) {
+          const parsed = JSON.parse(raw) as Array<{
+            type: "user" | "ai";
+            content: string;
+            timestamp: string;
+            metadata?: { platform: string; tone: string; length: string };
+          }>;
+          const withDates = parsed.map((m) => ({
+            ...m,
+            timestamp: new Date(m.timestamp),
+          }));
+          setConversationHistory(withDates);
+        }
+      } catch (err) {
+        console.error("Impossible de charger l'historique", err);
+      }
+    }
+  }, [router.query.conversation]);
 
   // Persister l'historique à chaque modification
   useEffect(() => {
@@ -92,6 +143,36 @@ const Dashboard = () => {
 
   const handleChange = (key: string, value: string) => {
     setForm((prev) => ({ ...prev, [key]: value }));
+  };
+
+  const startNewConversation = () => {
+    setCurrentConversationId(null);
+    setConversationHistory([]);
+    setForm(prev => ({ ...prev, subject: "" }));
+  };
+
+  const saveToDatabase = async (userMessage: string, aiMessage: string) => {
+    try {
+      const response = await axios.post("/api/generation/save", {
+        conversationId: currentConversationId,
+        userMessage,
+        aiMessage,
+        platform: form.platform,
+        tone: form.tone,
+        length: form.length,
+        audience: form.targetAudience,
+        userId: user!.id
+      });
+
+      if (response.data.success) {
+        const { conversation } = response.data.data;
+        if (!currentConversationId) {
+          setCurrentConversationId(conversation.id);
+        }
+      }
+    } catch (error) {
+      console.error("Erreur lors de la sauvegarde:", error);
+    }
   };
 
   const handleSubmit = useCallback(
@@ -153,9 +234,14 @@ const Dashboard = () => {
 
         setConversationHistory((prev) => [...prev, userMessage, aiMessage]);
         setGeneratedContent(newContent);
+
+        // Sauvegarder en base de données
+        await saveToDatabase(form.subject, output);
+
+        // Réinitialiser le champ de saisie pour permettre une nouvelle question
+        setForm(prev => ({ ...prev, subject: "" }));
       } catch (error) {
         console.error("Erreur lors de la génération:", error);
-        // En cas d'erreur, afficher un message d'erreur
         alert("Erreur lors de la génération du contenu. Veuillez réessayer.");
       } finally {
         setIsLoading(false);
@@ -442,11 +528,29 @@ const Dashboard = () => {
               </button>
             </div>
 
-            <div className="text-center mt-3">
+            <div className="text-center mt-3 space-y-2">
               <p className="text-xs text-gray-500">
                 Content Flow peut faire des erreurs. Envisagez de vérifier les
                 informations importantes.
               </p>
+              <div className="flex items-center justify-center space-x-4">
+                {conversationHistory.length > 0 && (
+                  <button
+                    onClick={startNewConversation}
+                    className="text-xs text-green-600 hover:text-green-800 transition-colors flex items-center space-x-1"
+                  >
+                    <Sparkles className="w-3 h-3" />
+                    <span>Nouvelle conversation</span>
+                  </button>
+                )}
+                <a
+                  href="/generate/history"
+                  className="text-xs text-purple-600 hover:text-purple-800 transition-colors flex items-center space-x-1"
+                >
+                  <History className="w-3 h-3" />
+                  <span>Voir l'historique</span>
+                </a>
+              </div>
             </div>
           </div>
         </div>

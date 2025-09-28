@@ -20,37 +20,63 @@ enum SenderType {
   EXTERNAL
 }
 
+enum ConversationType {
+  CHAT
+  GENERATION
+  VOICE
+}
+
+enum GenerationPlatform {
+  WORDPRESS
+  TWITTER
+  FACEBOOK
+  LINKEDIN
+  REDDIT
+}
+
+enum GenerationTone {
+  PROFESSIONNEL
+  AMICAL
+  FORMEL
+  DECONTRACTE
+}
+
+enum GenerationLength {
+  COURTE
+  MOYENNE
+  LONGUE
+}
+
 model User {
   id         String   @id @default(uuid())
-  keycloakId String?  @unique // stocke l'ID provenant de Keycloak (sub)
+  clerkId    String?  @unique // stocke l'ID provenant de Clerk
   email      String?  @unique
   name       String?
   avatarUrl  String?
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
 
-  conversations ConversationParticipant[]
-  // messages      Message[]                 @relation(fields: [id], references: [id]) // helper relation
+  conversations       ConversationParticipant[]
+  ownedConversations  Conversation[]
+  generationHistories GenerationHistory[]
 
-  deletedAt    DateTime?
-  Conversation Conversation[]
-
+  deletedAt DateTime?
 }
 
 model Conversation {
-  id          String    @id @default(uuid())
+  id          String           @id @default(uuid())
   title       String?
-  isGroup     Boolean   @default(false)
-  createdById String // owner / creator
-  createdBy   User      @relation(fields: [createdById], references: [id], onDelete: Cascade)
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  type        ConversationType @default(CHAT)
+  isGroup     Boolean          @default(false)
+  createdById String
+  createdBy   User             @relation(fields: [createdById], references: [id], onDelete: Cascade)
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
   archivedAt  DateTime?
   deletedAt   DateTime?
 
   participants ConversationParticipant[]
-
-  // messages Message[] @relation("ConversationMessages", onDelete: Cascade)
+  messages     Message[]
 
   lastMessageAt DateTime?
   meta          Json? // any extra metadata
@@ -80,7 +106,7 @@ model Message {
 
   senderUserId String? // nullable for assistant/system messages
   senderType   SenderType @default(USER)
-  content      String? // plain text
+  content      String? @db.LongText // plain text
   contentJson  Json? // structured content (blocks, embeddings refs, choices, etc)
 
   metadata  Json?
@@ -91,8 +117,8 @@ model Message {
 
   sequence Int? // optional monotonic sequence number in conversation
 
-  // conversation Conversation @relation("ConversationMessages", fields: [conversationId], references: [id])
-  // senderUser   User?        @relation("UserMessages", fields: [senderUserId], references: [id], onDelete: SetNull)
+  conversation Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  attachments  Attachment[]
 
   @@index([conversationId, createdAt])
   @@index([senderUserId])
@@ -109,7 +135,27 @@ model Attachment {
   metadata  Json?
   createdAt DateTime @default(now())
 
-  // message    Message  @relation(fields: [messageId], references: [id], onDelete: Cascade)
+  message Message @relation(fields: [messageId], references: [id], onDelete: Cascade)
 
   @@index([messageId])
+}
+
+model GenerationHistory {
+  id        String   @id @default(uuid())
+  userId    String
+  subject   String   @db.Text
+  content   String   @db.LongText
+  platform  GenerationPlatform
+  tone      GenerationTone
+  length    GenerationLength
+  audience  String?
+  metadata  Json?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, createdAt])
+  @@index([platform])
+  @@index([createdAt])
 }
