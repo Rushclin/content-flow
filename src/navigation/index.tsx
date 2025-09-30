@@ -1,4 +1,10 @@
-import { Blend, Bot, History, House, MessageCircleDashedIcon } from "lucide-react";
+import {
+  Blend,
+  Bot,
+  History,
+  House,
+  MessageCircleDashedIcon,
+} from "lucide-react";
 
 export type NavItem = {
   name: string;
@@ -16,7 +22,10 @@ export const navItems: NavItem[] = [
   {
     icon: <Bot className="h-5 w-5 font-extralight" />,
     name: "Générateur",
-    path: "/generate",
+    subItems: [
+      { name: "Nouveau chat", path: "/generate" },
+      // { name: "Historique", path: "/generate/history" }
+    ],
   },
   {
     icon: <MessageCircleDashedIcon className="h-5 w-5 font-extralight" />,

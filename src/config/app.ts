@@ -1,6 +1,7 @@
-import { Building, Star, Zap } from "lucide-react";
+import { Bot, Building, MessageCircle, Star, Zap } from "lucide-react";
 
 export const appConfig = {
+  n8nBaseUrl: process.env["NEXT_PUBLIC_N8N_BASE_URL"],
   name: "Content Flow Toolbox",
   description: "Generate content fastly",
   targetPeoples: [
@@ -63,56 +64,28 @@ export const appConfig = {
   ],
   features: [
     {
-      icon: "📰",
-      title: "News Article Generator",
-      desc: "Generate professional news articles on various topics.",
-      badge: "Paid plans only",
+      icon: Bot,
+      title: "Generateur Inteligent d'article",
+      desc: "Generez vos articles professionnels avec Content flow.",
+      badge: "Gratuit",
       category: "content",
+      href:"/generate"
     },
     {
-      icon: "💬",
-      title: "Chat with MARKy",
-      desc: "Easily create content by just chatting with AI.",
+      icon: MessageCircle,
+      title: "Simple chat",
+      badge: "Gratuit",
+      desc: "Obtenez un chat simple et éfficace pour marquer vos journées.",
       category: "HR",
+      href:"/generate"
+
     },
     {
-      icon: "🎤",
-      title: "AI Text-to-Speech",
+      icon: Bot,
+      title: "Text-to-Speech AI",
       desc: "Generate audio from text using AI. Supports 30+ languages.",
       category: "musique",
-    },
-    {
-      icon: "🖼️",
-      title: "AI Art & Images",
-      desc: "Generate stunning images and art with AI. Express ideas. Stand out.",
-    },
-    {
-      icon: "🎥",
-      title: "AI Video Generator",
-      desc: "Create videos with AI. Transform text or images into engaging video content.",
-    },
-    {
-      icon: "🗣️",
-      title: "AI Talking Videos",
-      desc: "Upload an image, enter text, and create realistic talking videos with AI.",
-    },
-    {
-      icon: "📷",
-      title: "AI Photo Generator",
-      desc: "Generate realistic photos with AI. Create custom images for any purpose.",
-      badge: "New",
-    },
-    {
-      icon: "👤",
-      title: "AI Headshot Generator",
-      desc: "Generate professional headshots with AI. For LinkedIn, email signatures, and more.",
-      badge: "New",
-    },
-    {
-      icon: "👤",
-      title: "AI Headshot Generator",
-      desc: "Generate professional headshots with AI. For LinkedIn, email signatures, and more.",
-      badge: "New",
+      href:"/generate"
     },
   ],
   plans: [

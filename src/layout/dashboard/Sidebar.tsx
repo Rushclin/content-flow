@@ -5,11 +5,61 @@ import { useSidebar } from "@/context/SidebarContext";
 import { ChevronDown } from "lucide-react";
 import Logo from "@/components/common/Logo";
 import { NavItem, navItems } from "@/navigation";
-import { SignedIn, UserButton } from "@clerk/nextjs";
+import { SignedIn, UserButton, useUser } from "@clerk/nextjs";
+import axios from "axios";
 
 const Sidebar: React.FC = () => {
   const { isExpanded, isMobileOpen, isHovered, setIsHovered } = useSidebar();
   const pathname = usePathname();
+  const { user } = useUser();
+
+  const [conversations, setConversations] = useState<Array<{ id: string; title: string }>>([]);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const fetchHistory = async () => {
+    if (!user?.id) return;
+
+    setIsLoading(true);
+    try {
+      const response = await axios.get(
+        `/api/generation/history?userId=${user.id}`
+      );
+      if (response.data.success) {
+        setConversations(response.data.data);
+      }
+    } catch (error) {
+      console.error("Erreur lors du chargement de l'historique:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchHistory();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user?.id]);
+
+  // fusionner les items du menu statique + historique récupéré
+  const dynamicNavItems: NavItem[] = navItems.map((item) => {
+    if (item.name === "Générateur") {
+      return {
+        ...item,
+        subItems: [
+          ...(item.subItems || []),
+          // {
+          //   name: "Historique",
+          //   path: "/generate/history",
+          // },
+          // Injecter les conversations ici
+          ...conversations.map((conv) => ({
+            name: conv.title || "Sans titre",
+            path: `/generate/history/${conv.id}`,
+          })),
+        ],
+      };
+    }
+    return item;
+  });
 
   const renderMenuItems = (
     navItems: NavItem[],
@@ -129,6 +179,11 @@ const Sidebar: React.FC = () => {
                     </Link>
                   </li>
                 ))}
+                {isLoading && (
+                  <li className="text-xs italic text-gray-400">
+                    Chargement...
+                  </li>
+                )}
               </ul>
             </div>
           )}
@@ -150,7 +205,7 @@ const Sidebar: React.FC = () => {
 
   useEffect(() => {
     let submenuMatched = false;
-    const items = navItems;
+    const items = dynamicNavItems;
     items.forEach((nav, index) => {
       if (nav.subItems) {
         nav.subItems.forEach((subItem) => {
@@ -223,7 +278,7 @@ const Sidebar: React.FC = () => {
       <div className="flex flex-col overflow-y-auto duration-300 ease-linear no-scrollbar">
         <nav className="mb-6">
           <div className="flex flex-col gap-4">
-            {renderMenuItems(navItems, "main")}
+            {renderMenuItems(dynamicNavItems, "main")}
           </div>
 
           <div

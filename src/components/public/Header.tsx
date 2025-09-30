@@ -79,6 +79,9 @@ const Header = ({ hideMenu = false }) => {
           </SignedOut>
           <SignedIn>
             <UserButton showName />
+             <Link href="/home" className="cursor-pointer flex items-center rounded-full p-2 px-5 text-center text-white bg-primary/90 transition-colors ease-in hover:bg-primary">
+                Dashboard
+              </Link>
           </SignedIn>
         </>
       </div>
