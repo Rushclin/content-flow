@@ -98,3 +98,15 @@ export interface ConversationWithMessages {
   meta?: ConversationMetadata;
   messages: MessageData[];
 }
+
+export interface ChatMessageType {
+  id?: string;
+  type: "user" | "ai";
+  content: string;
+  timestamp: Date;
+  metadata?: {
+    platform?: string;
+    tone?: string;
+    length?: string;
+  };
+}
