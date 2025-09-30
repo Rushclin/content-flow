@@ -1,29 +1,10 @@
 import prisma from "@/lib/db";
+import { ConversationWithMessages } from "@/types/chat";
 import { ConversationType, SenderType } from "@prisma/client";
-
-export interface ConversationWithMessages {
-  id: string;
-  title?: string | null;
-  type: ConversationType;
-  createdById: string;
-  createdAt: Date;
-  updatedAt: Date;
-  lastMessageAt?: Date | null;
-  meta?: any;
-  messages: Array<{
-    id: string;
-    content?: string | null;
-    contentJson?: any;
-    senderType: SenderType;
-    senderUserId?: string | null;
-    createdAt: Date;
-    isDeleted: boolean;
-  }>;
-}
 
 export class ConversationDBService {
   async findById(id: string, userId: string): Promise<ConversationWithMessages | null> {
-    return prisma.conversation.findUnique({
+    const conversation = await prisma.conversation.findUnique({
       where: {
         id,
         createdById: userId,
@@ -36,9 +17,27 @@ export class ConversationDBService {
         },
       },
     });
+
+    if (!conversation) return null;
+
+    return {
+      ...conversation,
+      title: conversation.title || "Conversation sans titre",
+      lastMessageAt: conversation.lastMessageAt || conversation.createdAt,
+      meta: conversation.meta as any,
+      messages: conversation.messages.map((msg) => ({
+        id: msg.id,
+        content: msg.content || "",
+        contentJson: msg.contentJson,
+        senderType: msg.senderType,
+        senderUserId: msg.senderUserId,
+        createdAt: msg.createdAt,
+        isDeleted: msg.isDeleted,
+      })),
+    };
   }
 
-  async findByUserId(userId: string, type?: ConversationType, limit = 50) {
+  async findByUserId(userId: string, type?: ConversationType, limit = 50): Promise<ConversationWithMessages[]> {
     const whereCondition: any = {
       createdById: userId,
       deletedAt: null,
@@ -48,7 +47,7 @@ export class ConversationDBService {
       whereCondition.type = type;
     }
 
-    return prisma.conversation.findMany({
+    const conversations = await prisma.conversation.findMany({
       where: whereCondition,
       include: {
         messages: {
@@ -59,6 +58,22 @@ export class ConversationDBService {
       orderBy: { lastMessageAt: "desc" },
       take: limit,
     });
+
+    return conversations.map((conversation) => ({
+      ...conversation,
+      title: conversation.title || "Conversation sans titre",
+      lastMessageAt: conversation.lastMessageAt || conversation.createdAt,
+      meta: conversation.meta as any,
+      messages: conversation.messages.map((msg) => ({
+        id: msg.id,
+        content: msg.content || "",
+        contentJson: msg.contentJson,
+        senderType: msg.senderType,
+        senderUserId: msg.senderUserId,
+        createdAt: msg.createdAt,
+        isDeleted: msg.isDeleted,
+      })),
+    }));
   }
 
   async create(data: {
