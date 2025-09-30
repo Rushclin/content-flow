@@ -18,7 +18,7 @@ const Button: React.FC<ButtonProps> = ({
   const isDisabled = disabled || loading;
 
   const baseClass = twMerge(
-    "recoleta w-full mt-5 bg-gradient-to-r from-slate-600 to-slate-400 text-white py-2.5 sm:py-3 px-4 rounded-md disabled:opacity-50 transition-all duration-200",
+    "recoleta w-full mt-5 bg-gradient-to-r cursor-pointer from-slate-600 to-slate-400 text-white py-2.5 sm:py-3 px-4 rounded-md disabled:opacity-50 transition-all duration-200",
     className
   );
 

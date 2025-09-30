@@ -47,7 +47,7 @@ const ChatMessage: React.FC<ChatMessageProps> = ({
     >
       <div className="max-w-3xl">
         {message.type === "user" ? (
-          <div className="bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-2xl rounded-br-md px-6 py-4 shadow-lg">
+          <div className="bg-primary/90  text-white rounded-2xl rounded-br-md px-6 py-4 shadow-xs">
             <p className="text-lg font-medium">{message.content}</p>
             {message.metadata && (
               <div className="mt-2 text-sm opacity-90">
@@ -71,12 +71,12 @@ const ChatMessage: React.FC<ChatMessageProps> = ({
           </div>
         ) : (
           <div className="flex items-start space-x-3">
-            <div className="w-8 h-8 bg-gradient-to-r from-purple-600 to-indigo-600 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+            <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center flex-shrink-0 mt-1">
               <Sparkles className="w-4 h-4 text-white" />
             </div>
 
             <div className="flex-1">
-              <div className="bg-white border border-gray-200 rounded-2xl rounded-bl-md px-6 py-4 shadow-sm">
+              <div className="bg-white border border-primary rounded-2xl rounded-bl-md px-6 py-4 shadow-sm">
                 <div className="prose max-w-none">
                   <p className="text-gray-800 whitespace-pre-line leading-relaxed text-lg">
                     {message.content}
@@ -85,7 +85,7 @@ const ChatMessage: React.FC<ChatMessageProps> = ({
               </div>
 
               {showActions && (
-                <div className="flex items-center space-x-4 mt-3 ml-11">
+                <div className="flex items-center space-x-4 mt-3">
                   <button
                     onClick={handleCopy}
                     className="flex items-center space-x-1 text-sm text-gray-500 hover:text-gray-700 transition-colors"
