@@ -23,7 +23,7 @@ interface GeneratedContent {
   isFavorite: boolean;
 }
 
-const Dashboard = () => {
+const GenerateChatPage = () => {
   const { user } = useUser();
   const router = useRouter();
 
@@ -38,8 +38,12 @@ const Dashboard = () => {
   const [_, setGeneratedContent] = useState<GeneratedContent | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
-  const [currentConversationId, setCurrentConversationId] = useState<string | null>(null);
-  const [conversationHistory, setConversationHistory] = useState<ChatMessageType[]>([]);
+  const [currentConversationId, setCurrentConversationId] = useState<
+    string | null
+  >(null);
+  const [conversationHistory, setConversationHistory] = useState<
+    ChatMessageType[]
+  >([]);
 
   // Charger une conversation existante si spécifiée dans l'URL
   useEffect(() => {
@@ -47,30 +51,35 @@ const Dashboard = () => {
       const conversationId = router.query.conversation as string;
       if (conversationId && user) {
         try {
-          const response = await axios.get(`/api/generation/conversation/${conversationId}`);
+          const response = await axios.get(
+            `/api/generation/conversation/${conversationId}`
+          );
           if (response.data.success) {
             const conversation = response.data.data;
             setCurrentConversationId(conversation.id);
 
             // Convertir les messages en format pour l'affichage
-            const messages: ChatMessageType[] = conversation.messages.map((msg: any) => ({
-              id: msg.id,
-              type: msg.senderType === "USER" ? "user" : "ai",
-              content: msg.content,
-              timestamp: new Date(msg.createdAt),
-              metadata: msg.contentJson?.metadata,
-            }));
+            const messages: ChatMessageType[] = conversation.messages.map(
+              (msg: any) => ({
+                id: msg.id,
+                type: msg.senderType === "USER" ? "user" : "ai",
+                content: msg.content,
+                timestamp: new Date(msg.createdAt),
+                metadata: msg.contentJson?.metadata,
+              })
+            );
 
             setConversationHistory(messages);
 
             // Mettre à jour les paramètres de forme avec ceux de la conversation
             if (conversation.meta) {
-              setForm(prev => ({
+              setForm((prev) => ({
                 ...prev,
                 platform: conversation.meta.platform || prev.platform,
                 tone: conversation.meta.tone || prev.tone,
                 length: conversation.meta.length || prev.length,
-                targetAudience: conversation.meta.audience || prev.targetAudience,
+                targetAudience:
+                  conversation.meta.audience || prev.targetAudience,
               }));
             }
           }
@@ -132,7 +141,7 @@ const Dashboard = () => {
   const startNewConversation = () => {
     setCurrentConversationId(null);
     setConversationHistory([]);
-    setForm(prev => ({ ...prev, subject: "" }));
+    setForm((prev) => ({ ...prev, subject: "" }));
   };
 
   const saveToDatabase = async (userMessage: string, aiMessage: string) => {
@@ -145,7 +154,7 @@ const Dashboard = () => {
         tone: form.tone,
         length: form.length,
         audience: form.targetAudience,
-        userId: user!.id
+        userId: user!.id,
       });
 
       if (response.data.success) {
@@ -159,79 +168,76 @@ const Dashboard = () => {
     }
   };
 
-  const handleSubmit = useCallback(
-    async () => {
-      setIsLoading(true);
+  const handleSubmit = useCallback(async () => {
+    setIsLoading(true);
 
-      try {
-        const response = await axios.post(
-          appConfig.n8nBaseUrl ||
-            "https://automation.novalitix.com/webhook/generate-content",
-          {
-            theme: form.subject,
-            details: `Public cible: ${form.targetAudience}, Ton: ${form.tone}, Longueur: ${form.length}`,
-            platform: form.platform,
+    try {
+      const response = await axios.post(
+        appConfig.n8nBaseUrl ||
+          "https://automation.novalitix.com/webhook/generate-content",
+        {
+          theme: form.subject,
+          details: `Public cible: ${form.targetAudience}, Ton: ${form.tone}, Longueur: ${form.length}`,
+          platform: form.platform,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
           },
-          {
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        );
+        }
+      );
 
-        const { output } = response.data;
+      const { output } = response.data;
 
-        const newContent: GeneratedContent = {
-          id: Date.now().toString(),
-          title: form.subject,
-          content: output,
+      const newContent: GeneratedContent = {
+        id: Date.now().toString(),
+        title: form.subject,
+        content: output,
+        platform: form.platform,
+        tone: form.tone,
+        length: form.length,
+        createdAt: new Date(),
+        isFavorite: false,
+      };
+
+      // Ajouter à l'historique de conversation
+      const userMessage: ChatMessageType = {
+        type: "user" as const,
+        content: form.subject,
+        timestamp: new Date(),
+        metadata: {
           platform: form.platform,
           tone: form.tone,
           length: form.length,
-          createdAt: new Date(),
-          isFavorite: false,
-        };
+        },
+      };
 
-        // Ajouter à l'historique de conversation
-        const userMessage: ChatMessageType = {
-          type: "user" as const,
-          content: form.subject,
-          timestamp: new Date(),
-          metadata: {
-            platform: form.platform,
-            tone: form.tone,
-            length: form.length,
-          },
-        };
+      const aiMessage: ChatMessageType = {
+        type: "ai" as const,
+        content: output,
+        timestamp: new Date(),
+        metadata: {
+          platform: form.platform,
+          tone: form.tone,
+          length: form.length,
+        },
+      };
 
-        const aiMessage: ChatMessageType = {
-          type: "ai" as const,
-          content: output,
-          timestamp: new Date(),
-          metadata: {
-            platform: form.platform,
-            tone: form.tone,
-            length: form.length,
-          },
-        };
+      setConversationHistory((prev) => [...prev, userMessage, aiMessage]);
+      setGeneratedContent(newContent);
 
-        setConversationHistory((prev) => [...prev, userMessage, aiMessage]);
-        setGeneratedContent(newContent);
+      // Sauvegarder en base de données
+      await saveToDatabase(form.subject, output);
 
-        // Sauvegarder en base de données
-        await saveToDatabase(form.subject, output);
-
-        // Réinitialiser le champ de saisie pour permettre une nouvelle question
-        setForm(prev => ({ ...prev, subject: "" }));
-      } catch (error) {
-        console.error("Erreur lors de la génération:", error);
-        alert("Erreur lors de la génération du contenu. Veuillez réessayer.");
-      } finally {
-        setIsLoading(false);
-      }
-    },
-    [form]
-  );
+      // Réinitialiser le champ de saisie pour permettre une nouvelle question
+      setForm((prev) => ({ ...prev, subject: "" }));
+    } catch (error) {
+      console.error("Erreur lors de la génération:", error);
+      alert("Erreur lors de la génération du contenu. Veuillez réessayer.");
+    } finally {
+      setIsLoading(false);
+    }
+  }, [form]);
 
   return (
     <DashboardLayout title="Générateur de Contenu">
@@ -254,7 +260,7 @@ const Dashboard = () => {
             ) : (
               <ChatEmptyState
                 icon={Sparkles}
-                title="Content Flow"
+                title={appConfig.name}
                 description="Décrivez le contenu que vous souhaitez créer et notre IA le générera pour vous."
               />
             )}
@@ -301,7 +307,7 @@ const Dashboard = () => {
                 )}
                 <a
                   href="/generate/history"
-                  className="text-xs text-purple-600 hover:text-purple-800 transition-colors flex items-center space-x-1"
+                  className="text-xs text-primary/90 hover:text-primary transition-colors flex items-center space-x-1"
                 >
                   <History className="w-3 h-3" />
                   <span>Voir l'historique</span>
@@ -315,4 +321,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default GenerateChatPage;

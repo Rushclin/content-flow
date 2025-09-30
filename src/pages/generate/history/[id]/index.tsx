@@ -10,6 +10,7 @@ import {
   MessageCircle,
   ExternalLink,
   RefreshCw,
+  Loader2,
 } from "lucide-react";
 import DashboardLayout from "@/layout/dashboard";
 import { useUser } from "@clerk/nextjs";
@@ -117,10 +118,9 @@ const ConversationDetailPage = () => {
   if (isLoading) {
     return (
       <DashboardLayout title="Détails de la conversation">
-        <div className="flex items-center justify-center h-full">
+        <div className="flex items-center justify-center h-[70vh]">
           <div className="text-center">
-            <RefreshCw className="w-8 h-8 animate-spin text-purple-600 mx-auto mb-4" />
-            <p className="text-gray-600">Chargement de la conversation...</p>
+            <Loader2 className="w-8 h-8 animate-spin text-primary mx-auto mb-4" />
           </div>
         </div>
       </DashboardLayout>
@@ -138,13 +138,13 @@ const ConversationDetailPage = () => {
             <h3 className="text-lg font-semibold text-gray-900 mb-2">
               {error}
             </h3>
-            <button
+            <Button
               onClick={() => router.push("/generate/history")}
-              className="flex items-center space-x-2 mx-auto px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
+              className="flex items-center space-x-2 mx-auto px-4 py-2 bg-red-400 text-white rounded-full hover:bg-red-700 transition-colors"
             >
               <ArrowLeft className="w-4 h-4" />
               <span>Retour à l'historique</span>
-            </button>
+            </Button>
           </div>
         </div>
       </DashboardLayout>
@@ -165,13 +165,13 @@ const ConversationDetailPage = () => {
             <p className="text-gray-600 mb-4">
               Cette conversation n'existe pas ou a été supprimée.
             </p>
-            <button
+            <Button
               onClick={() => router.push("/generate/history")}
-              className="flex items-center space-x-2 mx-auto px-4 py-2 bg-purple-600  text-white rounded-lg hover:bg-purple-700  transition-colors"
+              className="flex items-center space-x-2 mx-auto px-4 py-2 bg-red-400 text-white rounded-full hover:bg-red-700 transition-colors"
             >
               <ArrowLeft className="w-4 h-4" />
               <span>Retour à l'historique</span>
-            </button>
+            </Button>
           </div>
         </div>
       </DashboardLayout>
@@ -294,9 +294,7 @@ const ConversationDetailPage = () => {
 
         <div className="mt-8 text-center">
           <div className=" border  border-primary rounded-xl p-6 recoleta">
-            <h3
-              className="text-lg  font-semibold text-gray-900 mb-2"
-            >
+            <h3 className="text-lg  font-semibold text-gray-900 mb-2">
               Voulez-vous continuer cette conversation ?
             </h3>
             <p className="text-gray-600 mb-4">
@@ -306,9 +304,7 @@ const ConversationDetailPage = () => {
               onClick={continueConversation}
               className="inline-flex w-auto items-center  space-x-2 mx-auto px-6 py-3 bg-primary/80  text-white rounded-full hover:bg-primary  transition-colors"
             >
-              <ExternalLink
-                className="w-5  h-5"
-              />
+              <ExternalLink className="w-5  h-5" />
               <span>Continuer la conversation</span>
             </Button>
           </div>
