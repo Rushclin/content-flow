@@ -84,7 +84,7 @@ const HistoryCard: React.FC<HistoryCardProps> = ({
 
         {isExpanded ? (
           <div className="space-y-4 mb-4">
-            {conversation.messages.map((message, msgIndex) => (
+            {conversation.messages.map((message) => (
               <div
                 key={message.id}
                 className={`flex ${

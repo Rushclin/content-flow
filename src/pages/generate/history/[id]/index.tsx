@@ -9,7 +9,6 @@ import {
   Calendar,
   MessageCircle,
   ExternalLink,
-  RefreshCw,
   Loader2,
 } from "lucide-react";
 import DashboardLayout from "@/layout/dashboard";
@@ -45,7 +44,7 @@ const ConversationDetailPage = () => {
         setConversation(conv);
 
         // Convertir les messages au format ChatMessageType
-        const messages: ChatMessageType[] = conv.messages.map((msg: any) => ({
+        const messages: ChatMessageType[] = conv.messages.map((msg: { id: string; senderType: string; content: string; createdAt: string; contentJson?: { metadata?: unknown } }) => ({
           id: msg.id,
           type: msg.senderType === "USER" ? "user" : "ai",
           content: msg.content,
@@ -54,11 +53,12 @@ const ConversationDetailPage = () => {
         }));
         setChatMessages(messages);
       }
-    } catch (error: any) {
-      console.error("Erreur lors du chargement de la conversation:", error);
-      if (error.response?.status === 404) {
+    } catch (error: unknown) {
+      const err = error as { response?: { status?: number } };
+      console.error("Erreur lors du chargement de la conversation:", err);
+      if (err.response?.status === 404) {
         setError("Conversation non trouvée");
-      } else if (error.response?.status === 401) {
+      } else if (err.response?.status === 401) {
         setError("Non autorisé");
       } else {
         setError("Erreur lors du chargement de la conversation");
@@ -72,6 +72,7 @@ const ConversationDetailPage = () => {
     if (!user) return;
 
     fetchConversation(user.id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id, user?.id]);
 
   const copyToClipboard = (content: string) => {
@@ -143,7 +144,7 @@ const ConversationDetailPage = () => {
               className="flex items-center space-x-2 mx-auto px-4 py-2 bg-red-400 text-white rounded-full hover:bg-red-700 transition-colors"
             >
               <ArrowLeft className="w-4 h-4" />
-              <span>Retour à l'historique</span>
+              <span>Retour à l&apos;historique</span>
             </Button>
           </div>
         </div>
@@ -163,14 +164,14 @@ const ConversationDetailPage = () => {
               Conversation non trouvée
             </h3>
             <p className="text-gray-600 mb-4">
-              Cette conversation n'existe pas ou a été supprimée.
+              Cette conversation n&apos;existe pas ou a été supprimée.
             </p>
             <Button
               onClick={() => router.push("/generate/history")}
               className="flex items-center space-x-2 mx-auto px-4 py-2 bg-red-400 text-white rounded-full hover:bg-red-700 transition-colors"
             >
               <ArrowLeft className="w-4 h-4" />
-              <span>Retour à l'historique</span>
+              <span>Retour à l&apos;historique</span>
             </Button>
           </div>
         </div>
@@ -187,7 +188,7 @@ const ConversationDetailPage = () => {
             className="flex items-center space-x-2 text-white bg-primary/80 rounded-full py-1 px-3 hover:bg-primary  mb-4 transition-colors cursor-pointer"
           >
             <ArrowLeft className="w-3 h-3" />
-            <span className="text-xs">Retour à l'historique</span>
+            <span className="text-xs">Retour à l&apos;historique</span>
           </button>
 
           <div className="bg-white border border-primary/30 rounded-md p-6 shadow-sm">

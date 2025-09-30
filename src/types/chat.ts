@@ -38,7 +38,7 @@ export interface GenerationHistory {
   tone: Tone;
   length: Length;
   audience?: string;
-  metadata?: Record<string, any>;
+  metadata?: Record<string, unknown>;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -73,7 +73,7 @@ export interface ConversationHistory {
 export interface MessageData {
   id: string;
   content: string;
-  contentJson?: any;
+  contentJson?: Record<string, unknown>;
   senderType: SenderType;
   senderUserId?: string | null;
   createdAt: Date;

@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState } from "react";
-import { ArrowUpRight, Loader2, Settings, X, Zap } from "lucide-react";
+import { ArrowUpRight, Loader2, Settings, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import Button from "../common/Button";
 

@@ -1,24 +1,17 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import {
-  Download,
-  Sparkles,
   Calendar,
-  Filter,
   Search,
   RefreshCw,
   MessageCircle,
-  ExternalLink,
   MessageSquare,
   Loader2,
 } from "lucide-react";
 import DashboardLayout from "@/layout/dashboard";
 import { useUser } from "@clerk/nextjs";
 import StatCard from "@/components/chat/StatCard";
-import Button from "@/components/common/Button";
 import Input from "@/components/common/Input";
-import Select from "@/components/common/Select";
-import { appConfig } from "@/config/app";
 import { ConversationWithMessages } from "@/services";
 import HistoryCard from "@/components/chat/history/HistoryCard";
 
@@ -33,7 +26,6 @@ const GenerationHistoryPage = () => {
   >([]);
   const [isLoading, setIsLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
-  const [platformFilter, setPlatformFilter] = useState<string>("all");
   const [expandedConversations, setExpandedConversations] = useState<
     Set<string>
   >(new Set());
@@ -60,6 +52,7 @@ const GenerationHistoryPage = () => {
 
   useEffect(() => {
     fetchHistory();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user?.id]); // Déclencher quand l'utilisateur est chargé
 
   useEffect(() => {
@@ -75,15 +68,9 @@ const GenerationHistoryPage = () => {
       );
     }
 
-    if (platformFilter !== "all") {
-      filtered = filtered.filter(
-        (conversation) =>
-          conversation.meta?.platform?.toLowerCase() === platformFilter
-      );
-    }
 
     setFilteredConversations(filtered);
-  }, [conversations, searchTerm, platformFilter]);
+  }, [conversations, searchTerm]);
 
   const toggleConversation = (conversationId: string) => {
     const newExpanded = new Set(expandedConversations);
@@ -224,6 +211,7 @@ const GenerationHistoryPage = () => {
               const isExpanded = expandedConversations.has(conversation.id);
               return (
                 <HistoryCard
+                  key={conversation.id}
                   conversation={conversation}
                   isExpanded={isExpanded}
                   toggleConversation={toggleConversation}

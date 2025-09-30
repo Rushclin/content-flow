@@ -11,7 +11,7 @@ export interface ConversationCreateData {
   type: ConversationType;
   createdById: string;
   lastMessageAt: Date;
-  meta?: any;
+  meta?: Record<string, unknown>;
 }
 
 export interface MessageCreateData {
@@ -19,7 +19,7 @@ export interface MessageCreateData {
   senderUserId?: string;
   senderType: "USER" | "ASSISTANT" | "SYSTEM" | "EXTERNAL";
   content: string;
-  contentJson?: any;
+  contentJson?: Record<string, unknown>;
 }
 
 export interface GenerationHistoryCreateData {
@@ -30,13 +30,17 @@ export interface GenerationHistoryCreateData {
   tone: GenerationTone;
   length: GenerationLength;
   audience?: string;
-  metadata?: any;
+  metadata?: Record<string, unknown>;
 }
 
 export class GenerationDBService {
   async saveConversation(data: ConversationCreateData) {
+    const { meta, ...rest } = data;
     return prisma.conversation.create({
-      data,
+      data: {
+        ...rest,
+        meta: meta as never,
+      },
     });
   }
 
@@ -78,8 +82,12 @@ export class GenerationDBService {
   }
 
   async saveMessage(data: MessageCreateData) {
+    const { contentJson, ...rest } = data;
     return prisma.message.create({
-      data,
+      data: {
+        ...rest,
+        ...(contentJson !== undefined && { contentJson: contentJson as never }),
+      },
     });
   }
 
@@ -94,8 +102,12 @@ export class GenerationDBService {
   }
 
   async saveGenerationHistory(data: GenerationHistoryCreateData) {
+    const { metadata, ...rest } = data;
     return prisma.generationHistory.create({
-      data,
+      data: {
+        ...rest,
+        ...(metadata !== undefined && { metadata: metadata as never }),
+      },
     });
   }
 

@@ -1,5 +1,6 @@
 import { useState, useCallback, useEffect } from "react";
 import { useRouter } from "next/router";
+import Link from "next/link";
 import axios from "axios";
 import { Sparkles, History } from "lucide-react";
 import { appConfig } from "@/config/app";
@@ -35,6 +36,7 @@ const GenerateChatPage = () => {
     platform: "linkedin" as Platform,
   });
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_, setGeneratedContent] = useState<GeneratedContent | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
@@ -60,7 +62,7 @@ const GenerateChatPage = () => {
 
             // Convertir les messages en format pour l'affichage
             const messages: ChatMessageType[] = conversation.messages.map(
-              (msg: any) => ({
+              (msg: { id: string; senderType: string; content: string; createdAt: string; contentJson?: { metadata?: unknown } }) => ({
                 id: msg.id,
                 type: msg.senderType === "USER" ? "user" : "ai",
                 content: msg.content,
@@ -237,6 +239,7 @@ const GenerateChatPage = () => {
     } finally {
       setIsLoading(false);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [form]);
 
   return (
@@ -305,13 +308,13 @@ const GenerateChatPage = () => {
                     <span>Nouvelle conversation</span>
                   </button>
                 )}
-                <a
+                <Link
                   href="/generate/history"
                   className="text-xs text-primary/90 hover:text-primary transition-colors flex items-center space-x-1"
                 >
                   <History className="w-3 h-3" />
-                  <span>Voir l'historique</span>
-                </a>
+                  <span>Voir l&apos;historique</span>
+                </Link>
               </div>
             </div>
           }

@@ -13,7 +13,7 @@ const Sidebar: React.FC = () => {
   const pathname = usePathname();
   const { user } = useUser();
 
-  const [conversations, setConversations] = useState<any[]>([]);
+  const [conversations, setConversations] = useState<Array<{ id: string; title: string }>>([]);
   const [isLoading, setIsLoading] = useState(false);
 
   const fetchHistory = async () => {
@@ -36,6 +36,7 @@ const Sidebar: React.FC = () => {
 
   useEffect(() => {
     fetchHistory();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user?.id]);
 
   // fusionner les items du menu statique + historique récupéré
