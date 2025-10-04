@@ -9,7 +9,7 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
@@ -106,7 +106,7 @@ model Message {
 
   senderUserId String? // nullable for assistant/system messages
   senderType   SenderType @default(USER)
-  content      String? @db.LongText // plain text
+  content      String? @db.Text // plain text
   contentJson  Json? // structured content (blocks, embeddings refs, choices, etc)
 
   metadata  Json?
@@ -144,7 +144,7 @@ model GenerationHistory {
   id        String   @id @default(uuid())
   userId    String
   subject   String   @db.Text
-  content   String   @db.LongText
+  content   String   @db.Text
   platform  GenerationPlatform
   tone      GenerationTone
   length    GenerationLength
