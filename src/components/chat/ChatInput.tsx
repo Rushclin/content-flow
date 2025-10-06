@@ -2,6 +2,7 @@ import React, { useRef, useEffect, useState } from "react";
 import { ArrowUpRight, Loader2, Settings, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import Button from "../common/Button";
+import { useTranslation } from "react-i18next";
 
 interface ChatInputProps {
   value: string;
@@ -28,6 +29,7 @@ const ChatInput: React.FC<ChatInputProps> = ({
   settingsPanel,
   footerContent,
 }) => {
+  const { t } = useTranslation();
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [textareaHeight, setTextareaHeight] = useState(56); // hauteur initiale (py-4 = 32px + 24px line-height)
   const [isMultiline, setIsMultiline] = useState(false);
@@ -73,12 +75,13 @@ const ChatInput: React.FC<ChatInputProps> = ({
               <div className="mb-4 p-4 bg-gray-50 rounded-xl border border-gray-200">
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="text-sm font-semibold text-gray-900">
-                    Paramètres de génération
+                    {t("generate.settings", "Paramètres de génération")}
                   </h3>
                   {onToggleSettings && (
                     <button
                       onClick={onToggleSettings}
                       className="text-gray-400 hover:text-gray-600 transition-colors"
+                      title={t("common.close", "Fermer")}
                     >
                       <X className="w-4 h-4" />
                     </button>

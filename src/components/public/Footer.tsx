@@ -9,8 +9,11 @@ import {
   Twitter,
   Youtube,
 } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 const Footer = () => {
+  const { t } = useTranslation();
+  
   const socialLinks = [
     {
       icon: Facebook,
@@ -41,7 +44,7 @@ const Footer = () => {
               <Logo size={200} justLogo />
             </div>
             <p className="text-base mb-6 leading-relaxed">
-              {appConfig.footer.description}
+              {t("footer.description", appConfig.footer.description)}
             </p>
             <div className="flex space-x-4">
               {socialLinks.map((social) => {
@@ -67,7 +70,7 @@ const Footer = () => {
 
           <div>
             <h3 className="text-slate-800 font-semibold mb-6">
-              Plus de Services
+              {t("footer.moreServices", "Plus de Services")}
             </h3>
             <ul className="space-y-3 mb-6">
               {appConfig.features.slice(1, 3).map((service) => (
@@ -83,9 +86,9 @@ const Footer = () => {
             </ul>
 
             <div className="bg-slate-800 p-4 rounded-lg">
-              <h4 className="text-white font-medium mb-2">Besoin d&apos;aide ?</h4>
+              <h4 className="text-white font-medium mb-2">{t("footer.needHelp", "Besoin d'aide ?")}</h4>
               <p className="text-gray-400 text-sm mb-3">
-                Contactez notre équipe support
+                {t("footer.contactSupport", "Contactez notre équipe support")}
               </p>
               <a
                 href="mailto:support@novalitix.com"
@@ -100,26 +103,26 @@ const Footer = () => {
         <div className="border-t border-slate-800 mt-12 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="text-slate-800 text-sm mb-4 md:mb-0">
-              © {new Date().getFullYear()} Novalitix. Tous droits réservés.
+              © {new Date().getFullYear()} Novalitix. {t("footer.allRightsReserved", "Tous droits réservés.")}
             </div>
             <div className="flex space-x-6 text-sm">
               <Link
                 href="/privacy"
                 className="text-slate-800 hover:text-slate-900 transition-colors duration-200"
               >
-                Confidentialité
+                {t("footer.privacy", "Confidentialité")}
               </Link>
               <Link
                 href="/terms"
                 className="text-slate-800 hover:text-slate-900 transition-colors duration-200"
               >
-                Conditions d&apos;utilisation
+                {t("footer.terms", "Conditions d'utilisation")}
               </Link>
               <Link
                 href="/cookies"
                 className="text-slate-800 hover:text-slate-900 transition-colors duration-200"
               >
-                Cookies
+                {t("footer.cookies", "Cookies")}
               </Link>
             </div>
           </div>

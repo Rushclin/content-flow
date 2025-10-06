@@ -1,6 +1,7 @@
 import { useRouter } from "next/router";
 import { useEffect, useCallback, ChangeEvent } from "react";
 import { twMerge } from "tailwind-merge";
+import { useTranslation } from "react-i18next";
 
 const LANGUAGES = {
   en: { full: "English", short: "EN", flag: "🇬🇧" },
@@ -9,9 +10,10 @@ const LANGUAGES = {
 
 export default function LanguageSwitcher({ className = "" }) {
   const router = useRouter();
+  const { t, i18n: i18nInstance } = useTranslation();
 
   useEffect(() => {
-    const savedLocale = localStorage.getItem("locale");
+    const savedLocale = localStorage.getItem("i18nextLng");
     if (savedLocale && savedLocale !== router.locale) {
       router.push(
         {
@@ -26,13 +28,19 @@ export default function LanguageSwitcher({ className = "" }) {
 
   const updateUserLanguage = useCallback(async (lang: string) => {
     console.log("New language => ", lang);
-  }, []);
+    // Update i18n language
+    i18nInstance.changeLanguage(lang);
+  }, [i18nInstance]);
 
   const onChange = useCallback(
     async (e: ChangeEvent<HTMLSelectElement>) => {
       const newLocale = e.target.value;
-      localStorage.setItem("locale", newLocale);
+      localStorage.setItem("i18nextLng", newLocale);
 
+      // Update i18n language immediately
+      i18nInstance.changeLanguage(newLocale);
+
+      // Use Next.js router to change locale
       router.push(
         {
           pathname: router.pathname,
@@ -55,7 +63,7 @@ export default function LanguageSwitcher({ className = "" }) {
       )}
     >
       <label className="sr-only hidden" htmlFor="language-switcher-desktop">
-        Choose your language
+        {t("common.chooseLanguage", "Choose your language")}
       </label>
       <select
         id="language-switcher-desktop"
@@ -75,6 +83,7 @@ export default function LanguageSwitcher({ className = "" }) {
         className="inline-block cursor-pointer border-none text-center text-sm transition-colors hover:bg-gray-50 lg:hidden"
         onChange={onChange}
         value={router.locale}
+        title={t("common.chooseLanguage", "Choose your language")}
       >
         {Object.entries(LANGUAGES).map(([key, { short, flag }]) => (
           <option key={key} value={key}>

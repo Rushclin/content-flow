@@ -9,6 +9,7 @@ import { z } from "zod";
 import Select from "../common/Select";
 import RadioCardGroup from "../common/RadioGroup";
 import Button from "../common/Button";
+import { useTranslation } from "react-i18next";
 
 interface GeneratedContent {
   id: string;
@@ -52,6 +53,7 @@ const formGenerationSchema = z.object({
 type FormGenerationData = z.infer<typeof formGenerationSchema>;
 
 const FormGeneration = () => {
+  const { t } = useTranslation();
   const {
     register,
     handleSubmit,
@@ -124,8 +126,8 @@ const FormGeneration = () => {
 
   return (
     <div id="FormGeneration" className="text-center my-10">
-      <h1 className="text-5xl recoleta">Essayez notre outil</h1>
-      <p className="recoleta">Intuitif et convivial pour vos publications</p>
+      <h1 className="text-5xl recoleta">{t("home.tryTool", "Essayez notre outil")}</h1>
+      <p className="recoleta">{t("home.intuitiveFriendly", "Intuitif et convivial pour vos publications")}</p>
 
       <form
         onSubmit={handleSubmit(onSubmit)}
@@ -137,29 +139,29 @@ const FormGeneration = () => {
               {...register("subject")}
               type="text"
               textarea
-              label="Sujet de votre publication"
-              placeholder="Ex: Les tendances marketing 2024..."
+              label={t("form.subject", "Sujet de votre publication")}
+              placeholder={t("form.subjectPlaceholder", "Ex: Les tendances marketing 2024...")}
               required
               error={errors.subject?.message}
             />
           </div>
 
           <Select
-            label=" Public cible"
+            label={t("form.targetAudience", "Public cible")}
             {...register("targetAudience")}
             required
             options={appConfig.targetPeoples}
             error={errors.targetAudience?.message}
-            placeholder="Sélectionne une audiance"
+            placeholder={t("form.selectAudience", "Sélectionne une audiance")}
           />
 
           <Select
-            label="Ton de la publication"
+            label={t("form.tone", "Ton de la publication")}
             {...register("tone")}
             required
             options={appConfig.pupblicationTonalities}
             error={errors.tone?.message}
-            placeholder="Sélectionne un ton"
+            placeholder={t("form.selectTone", "Sélectionne un ton")}
             className="my-5"
           />
 
@@ -169,13 +171,13 @@ const FormGeneration = () => {
             render={({ field }) => (
               <RadioCardGroup
                 name="length"
-                label="Longueur du contenu"
+                label={t("form.contentLength", "Longueur du contenu")}
                 value={field.value}
                 onChange={(e) => field.onChange(e.target.value)}
                 options={[
-                  { value: "courte", label: "courte" },
-                  { value: "moyenne", label: "moyenne" },
-                  { value: "longue", label: "longue" },
+                  { value: "courte", label: t("form.short", "courte") },
+                  { value: "moyenne", label: t("form.medium", "moyenne") },
+                  { value: "longue", label: t("form.long", "longue") },
                 ]}
                 error={errors.length?.message}
               />
@@ -183,12 +185,12 @@ const FormGeneration = () => {
           />
 
           <Select
-            label="Format de rendu"
+            label={t("form.renderFormat", "Format de rendu")}
             {...register("platform")}
             required
             options={appConfig.platforms}
             error={errors.platform?.message}
-            placeholder="Sélectionne une plateforme"
+            placeholder={t("form.selectPlatform", "Sélectionne une plateforme")}
             className="my-5"
           />
 
@@ -199,7 +201,7 @@ const FormGeneration = () => {
             className="rounded-full bg-primary"
           >
             {" "}
-            Générer le contenu
+            {t("form.generateContent", "Générer le contenu")}
           </Button>
         </div>
       </form>

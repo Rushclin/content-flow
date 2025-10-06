@@ -1,9 +1,12 @@
 import { TrendingUp, FileText, Users, Clock } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 const StatsCards = () => {
+  const { t } = useTranslation();
+  
   const stats = [
     {
-      name: "Contenus générés",
+      name: t("dashboard.stats.generatedContent", "Contenus générés"),
       value: "24",
       change: "+12%",
       changeType: "positive",
@@ -11,7 +14,7 @@ const StatsCards = () => {
       color: "purple"
     },
     {
-      name: "Vues totales",
+      name: t("dashboard.stats.totalViews", "Vues totales"),
       value: "1,234",
       change: "+8%",
       changeType: "positive",
@@ -19,7 +22,7 @@ const StatsCards = () => {
       color: "blue"
     },
     {
-      name: "Temps économisé",
+      name: t("dashboard.stats.timeSaved", "Temps économisé"),
       value: "12h",
       change: "+2h",
       changeType: "positive",
@@ -27,7 +30,7 @@ const StatsCards = () => {
       color: "green"
     },
     {
-      name: "Collaborateurs",
+      name: t("dashboard.stats.collaborators", "Collaborateurs"),
       value: "3",
       change: "+1",
       changeType: "positive",
@@ -62,7 +65,7 @@ const StatsCards = () => {
                   }`}>
                     {stat.change}
                   </span>
-                  <span className="text-sm text-gray-500 ml-1">vs mois dernier</span>
+                  <span className="text-sm text-gray-500 ml-1">{t("dashboard.stats.vsLastMonth", "vs mois dernier")}</span>
                 </div>
               </div>
               <div className={`w-12 h-12 bg-gradient-to-br ${getColorClasses(stat.color)} rounded-xl flex items-center justify-center shadow-lg`}>

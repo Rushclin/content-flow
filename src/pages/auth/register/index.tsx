@@ -8,6 +8,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import Input from "@/components/common/Input";
+import { useTranslation } from "react-i18next";
 
 const registerSchema = z
   .object({
@@ -40,6 +41,7 @@ const registerSchema = z
 type RegisterFormData = z.infer<typeof registerSchema>;
 
 const RegisterForm = () => {
+  const { t } = useTranslation();
   const {
     register,
     handleSubmit,
@@ -57,13 +59,13 @@ const RegisterForm = () => {
   };
 
   return (
-    <AuthLayout title="Inscription">
+    <AuthLayout title={t("auth.register.title", "Inscription")}>
       <div className="text-center mb-8">
         <div className="flex justify-center mb-6">
           <Logo size={200} justLogo />
         </div>
         <h1 className="text-3xl font-light text-gray-900 mb-2 montserat py-4">
-          Plateforme IA tout-en-un
+          {t("auth.register.subtitle", "Plateforme IA tout-en-un")}
         </h1>
       </div>
 
@@ -87,23 +89,23 @@ const RegisterForm = () => {
               d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
             />
           </svg>
-          S&apos;inscrire avec Google
+          {t("auth.register.signUpWithGoogle", "S'inscrire avec Google")}
         </button>
 
         <button className="w-full bg-[#1877F2] text-white py-3 px-4 rounded-lg font-medium hover:bg-[#166FE5] transition-colors flex items-center justify-center text-sm shadow-sm">
           <svg className="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 24 24">
             <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
           </svg>
-          S&apos;inscrire avec Facebook
+          {t("auth.register.signUpWithFacebook", "S'inscrire avec Facebook")}
         </button>
       </div>
 
-      <Divider title="ou avec votre email" className="mb-8" />
+      <Divider title={t("auth.register.divider", "ou avec votre email")} className="mb-8" />
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
         <Input
           {...register("name")}
-          label="Nom complet"
+          label={t("auth.register.fullNameLabel", "Nom complet")}
           type="text"
           placeholder="Votre nom complet"
           required
@@ -113,7 +115,7 @@ const RegisterForm = () => {
 
         <Input
           {...register("email")}
-          label="Adresse email"
+          label={t("auth.register.emailLabel", "Adresse email")}
           type="email"
           placeholder="votre@email.com"
           required
@@ -123,7 +125,7 @@ const RegisterForm = () => {
 
         <Input
           {...register("password")}
-          label="Mot de passe"
+          label={t("auth.register.passwordLabel", "Mot de passe")}
           type="password"
           placeholder="Minimum 8 caractères"
           required
@@ -134,7 +136,7 @@ const RegisterForm = () => {
 
         <Input
           {...register("confirmPassword")}
-          label="Confirmer le mot de passe"
+          label={t("auth.register.confirmPasswordLabel", "Confirmer le mot de passe")}
           type="password"
           placeholder="Répétez votre mot de passe"
           required
@@ -151,7 +153,7 @@ const RegisterForm = () => {
             <Loader2 className="w-5 h-5 mr-3 animate-spin" />
           ) : (
             <>
-              Créer mon compte
+              {t("auth.register.createAccountButton", "Créer mon compte")}
               <ArrowRight className="w-4 h-4 ml-2" />
             </>
           )}
@@ -160,12 +162,12 @@ const RegisterForm = () => {
 
       <div className="text-center mt-6 pt-6 border-t border-gray-200">
         <p className="text-gray-600 text-sm">
-          Déjà un compte ?{" "}
+          {t("auth.register.haveAccount", "Déjà un compte ?")}{" "}
           <Link
             href="/auth/login"
             className="text-indigo-600 hover:text-indigo-500 font-semibold transition-colors"
           >
-            Se connecter
+            {t("auth.register.signInLink", "Se connecter")}
           </Link>
         </p>
       </div>

@@ -4,8 +4,20 @@ import { ClerkProvider } from "@clerk/nextjs";
 import "@/styles/globals.css";
 import type { AppProps } from "next/app";
 import Head from "next/head";
+import { useEffect } from "react";
+import { useRouter } from "next/router";
+import i18n from "@/lib/i18n";
 
 const App = ({ Component, pageProps }: AppProps) => {
+  const router = useRouter();
+
+  useEffect(() => {
+    // Initialize i18n with the current locale and sync on every locale change
+    if (router.locale) {
+      i18n.changeLanguage(router.locale);
+    }
+  }, [router.locale]);
+
   return (
     <>
       <Head>

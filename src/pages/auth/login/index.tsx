@@ -8,6 +8,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import Input from "@/components/common/Input";
+import { useTranslation } from "react-i18next";
 
 const loginSchema = z.object({
   email: z
@@ -23,6 +24,7 @@ const loginSchema = z.object({
 type LoginFormData = z.infer<typeof loginSchema>;
 
 const LoginPage = () => {
+  const { t } = useTranslation();
   const {
     register,
     handleSubmit,
@@ -38,13 +40,13 @@ const LoginPage = () => {
   };
 
   return (
-    <AuthLayout title="Se connecter">
+    <AuthLayout title={t("auth.login.title", "Se connecter")}>
       <div className="text-center mb-8">
         <div className="flex justify-center mb-6">
           <Logo size={200} justLogo />
         </div>
         <h1 className="text-3xl font-light text-gray-900 mb-2 montserat py-4">
-          Plateforme IA tout-en-un
+          {t("auth.login.subtitle", "Plateforme IA tout-en-un")}
         </h1>
       </div>
 
@@ -68,23 +70,23 @@ const LoginPage = () => {
               d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
             />
           </svg>
-          Continuer avec Google
+          {t("auth.login.continueWithGoogle", "Continuer avec Google")}
         </button>
 
         <button className="w-full bg-[#1877F2] text-white py-3 px-4 rounded-lg font-medium hover:bg-[#166FE5] transition-colors flex items-center justify-center text-sm shadow-sm">
           <svg className="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 24 24">
             <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
           </svg>
-          Continuer avec Facebook
+          {t("auth.login.continueWithFacebook", "Continuer avec Facebook")}
         </button>
       </div>
 
-      <Divider title="ou par email et mot de passe" className="mb-8" />
+      <Divider title={t("auth.login.divider", "ou par email et mot de passe")} className="mb-8" />
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
         <Input
           {...register("email")}
-          label="Adresse email"
+          label={t("auth.login.emailLabel", "Adresse email")}
           type="email"
           placeholder="votre@email.com"
           required
@@ -95,7 +97,7 @@ const LoginPage = () => {
 
         <Input
           {...register("password")}
-          label="Mot de passe"
+          label={t("auth.login.passwordLabel", "Mot de passe")}
           type="password"
           placeholder="Votre mot de passe"
           required
@@ -108,7 +110,7 @@ const LoginPage = () => {
             href="/auth/forgot-password"
             className="text-sm text-blue-600 hover:text-blue-500 font-medium transition-colors"
           >
-            Mot de passe oublié ?
+            {t("auth.login.forgotPassword", "Mot de passe oublié ?")}
           </Link>
         </div>
 
@@ -123,7 +125,7 @@ const LoginPage = () => {
             </>
           ) : (
             <>
-              Se connecter
+              {t("auth.login.signInButton", "Se connecter")}
               <ArrowRight className="w-4 h-4 ml-2" />
             </>
           )}
@@ -133,12 +135,12 @@ const LoginPage = () => {
       <Divider className="my-10" title="ou alors" />
       <div className="text-center">
         <p className="text-gray-600 text-sm">
-          Pas encore de compte ?{" "}
+          {t("auth.login.noAccount", "Pas encore de compte ?")}{" "}
           <Link
             href="/auth/register"
             className="text-blue-600 hover:text-blue-500 font-semibold transition-colors"
           >
-            Créer un compte
+            {t("auth.login.createAccount", "Créer un compte")}
           </Link>
         </p>
       </div>

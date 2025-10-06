@@ -9,8 +9,8 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider = "sqlite"
+  url      = "file:./dev.db"
 }
 
 enum SenderType {
@@ -106,7 +106,7 @@ model Message {
 
   senderUserId String? // nullable for assistant/system messages
   senderType   SenderType @default(USER)
-  content      String? @db.Text // plain text
+  content      String? // plain text
   contentJson  Json? // structured content (blocks, embeddings refs, choices, etc)
 
   metadata  Json?
@@ -143,8 +143,8 @@ model Attachment {
 model GenerationHistory {
   id        String   @id @default(uuid())
   userId    String
-  subject   String   @db.Text
-  content   String   @db.Text
+  subject   String
+  content   String
   platform  GenerationPlatform
   tone      GenerationTone
   length    GenerationLength

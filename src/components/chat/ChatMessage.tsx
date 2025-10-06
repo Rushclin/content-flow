@@ -1,5 +1,6 @@
 import React from "react";
 import { Copy, Download, Sparkles } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { ChatMessageType } from "@/types/chat";
 
 interface ChatMessageProps {
@@ -17,6 +18,7 @@ const ChatMessage: React.FC<ChatMessageProps> = ({
   index = 0,
   showActions = true,
 }) => {
+  const { t } = useTranslation();
   const handleCopy = () => {
     if (onCopy) {
       onCopy(message.content);
@@ -91,14 +93,14 @@ const ChatMessage: React.FC<ChatMessageProps> = ({
                     className="flex items-center space-x-1 text-sm text-gray-500 hover:text-gray-700 transition-colors"
                   >
                     <Copy className="w-4 h-4" />
-                    <span>Copier</span>
+                    <span>{t("generate.history.copy", "Copier")}</span>
                   </button>
                   <button
                     onClick={handleDownload}
                     className="flex items-center space-x-1 text-sm text-gray-500 hover:text-gray-700 transition-colors"
                   >
                     <Download className="w-4 h-4" />
-                    <span>Télécharger</span>
+                    <span>{t("generate.history.download", "Télécharger")}</span>
                   </button>
                 </div>
               )}
@@ -111,7 +113,7 @@ const ChatMessage: React.FC<ChatMessageProps> = ({
             message.type === "user" ? "text-right" : "text-left ml-11"
           }`}
         >
-          {message.type === "user" ? "Vous" : "Content Flow"} •{" "}
+          {message.type === "user" ? t("generate.history.you", "Vous") : "Content Flow"} •{" "}
           {message.timestamp.toLocaleTimeString()}
         </div>
       </div>

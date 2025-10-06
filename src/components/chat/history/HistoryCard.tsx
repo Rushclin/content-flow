@@ -1,6 +1,7 @@
 import { ConversationWithMessages } from "@/types/chat";
 import { Download, ExternalLink, MessageCircle, Sparkles } from "lucide-react";
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 interface HistoryCardProps {
   conversation: ConversationWithMessages;
@@ -13,10 +14,11 @@ const HistoryCard: React.FC<HistoryCardProps> = ({
   isExpanded,
   toggleConversation,
 }) => {
+  const { t } = useTranslation();
   const downloadConversation = (conversation: ConversationWithMessages) => {
     const content = conversation.messages
       .map((msg) => {
-        const sender = msg.senderType === "USER" ? "Vous" : "Content Flow";
+        const sender = msg.senderType === "USER" ? t("generate.history.you", "Vous") : "Content Flow";
         const timestamp = new Date(msg.createdAt).toLocaleString();
         return `[${timestamp}] ${sender}: ${msg.content}`;
       })
@@ -45,7 +47,7 @@ const HistoryCard: React.FC<HistoryCardProps> = ({
                 {conversation.title}
               </h3>
               <span className="bg-blue-100 text-blue-700 px-2 py-1 rounded-full text-xs font-medium">
-                {conversation.messages.length} messages
+                {t("generate.history.messagesCount", "{{count}} messages", { count: conversation.messages.length })}
               </span>
             </div>
 
@@ -149,14 +151,14 @@ const HistoryCard: React.FC<HistoryCardProps> = ({
               className="flex items-center space-x-2 text-sm text-primary/70 hover:text-primary transition-colors cursor-pointer"
             >
               <MessageCircle className="w-4 h-4" />
-              <span>{isExpanded ? "Réduire" : "Voir conversation"}</span>
+              <span>{isExpanded ? t("generate.history.collapse", "Réduire") : t("generate.history.viewConversation", "Voir conversation")}</span>
             </button>
             <button
               onClick={() => downloadConversation(conversation)}
               className="flex items-center space-x-2 text-sm text-primary/60 hover:text-primary cursor-pointer transition-colors"
             >
               <Download className="w-4 h-4" />
-              <span>Télécharger</span>
+              <span>{t("generate.history.download", "Télécharger")}</span>
             </button>
           </div>
 
@@ -165,7 +167,7 @@ const HistoryCard: React.FC<HistoryCardProps> = ({
             className="flex items-center space-x-2 text-sm text-purple-600 hover:text-purple-800 transition-colors"
           >
             <ExternalLink className="w-4 h-4" />
-            <span>Continuer</span>
+            <span>{t("generate.history.continue", "Continuer")}</span>
           </a>
         </div>
       </div>

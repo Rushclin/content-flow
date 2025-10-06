@@ -7,11 +7,13 @@ import Logo from "@/components/common/Logo";
 import { NavItem, navItems } from "@/navigation";
 import { SignedIn, UserButton, useUser } from "@clerk/nextjs";
 import axios from "axios";
+import { useTranslation } from "react-i18next";
 
 const Sidebar: React.FC = () => {
   const { isExpanded, isMobileOpen, isHovered, setIsHovered } = useSidebar();
   const pathname = usePathname();
   const { user } = useUser();
+  const { t } = useTranslation();
 
   const [conversations, setConversations] = useState<Array<{ id: string; title: string }>>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -28,7 +30,7 @@ const Sidebar: React.FC = () => {
         setConversations(response.data.data);
       }
     } catch (error) {
-      console.error("Erreur lors du chargement de l'historique:", error);
+      console.error(t("sidebar.error"), error);
     } finally {
       setIsLoading(false);
     }
@@ -52,7 +54,7 @@ const Sidebar: React.FC = () => {
           // },
           // Injecter les conversations ici
           ...conversations.map((conv) => ({
-            name: conv.title || "Sans titre",
+            name: conv.title || t("common.untitled", "Sans titre"),
             path: `/generate/history/${conv.id}`,
           })),
         ],
@@ -91,7 +93,9 @@ const Sidebar: React.FC = () => {
                 {nav.icon}
               </span>
               {(isExpanded || isHovered || isMobileOpen) && (
-                <span className={`menu-item-text`}>{nav.name}</span>
+                <span className={`menu-item-text`}>
+                  {nav.nameKey ? t(nav.nameKey, nav.name) : nav.name}
+                </span>
               )}
               {(isExpanded || isHovered || isMobileOpen) && (
                 <ChevronDown
@@ -122,7 +126,9 @@ const Sidebar: React.FC = () => {
                   {nav.icon}
                 </span>
                 {(isExpanded || isHovered || isMobileOpen) && (
-                  <span className={`menu-item-text`}>{nav.name}</span>
+                <span className={`menu-item-text`}>
+                  {nav.nameKey ? t(nav.nameKey, nav.name) : nav.name}
+                </span>
                 )}
               </Link>
             )
@@ -151,7 +157,7 @@ const Sidebar: React.FC = () => {
                           : "menu-dropdown-item-inactive"
                       }`}
                     >
-                      {subItem.name}
+                      {subItem.nameKey ? t(subItem.nameKey, subItem.name) : subItem.name}
                       <span className="flex items-center gap-1 ml-auto">
                         {subItem.new && (
                           <span
@@ -181,7 +187,7 @@ const Sidebar: React.FC = () => {
                 ))}
                 {isLoading && (
                   <li className="text-xs italic text-gray-400">
-                    Chargement...
+                    {t("sidebar.loading")}
                   </li>
                 )}
               </ul>

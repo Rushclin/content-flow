@@ -1,6 +1,7 @@
 import React from "react";
 import { appConfig } from "@/config/app";
 import { Platform, Tone, Length } from "@/types/chat";
+import { useTranslation } from "react-i18next";
 
 interface GenerationSettingsProps {
   targetAudience: string;
@@ -23,16 +24,18 @@ const GenerationSettings: React.FC<GenerationSettingsProps> = ({
   onLengthChange,
   onPlatformChange,
 }) => {
+  const { t } = useTranslation();
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
       <div>
         <label className="block text-xs font-medium text-gray-700 mb-1">
-          Public cible
+          {t("generate.targetAudience", "Public cible")}
         </label>
         <select
           value={targetAudience}
           onChange={(e) => onTargetAudienceChange(e.target.value)}
           className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-sm"
+          title={t("generate.targetAudience", "Public cible")}
         >
           {appConfig.targetPeoples.map((people) => (
             <option key={people.value} value={people.value}>
@@ -44,12 +47,13 @@ const GenerationSettings: React.FC<GenerationSettingsProps> = ({
 
       <div>
         <label className="block text-xs font-medium text-gray-700 mb-1">
-          Ton de la publication
+          {t("generate.tone", "Ton de la publication")}
         </label>
         <select
           value={tone}
           onChange={(e) => onToneChange(e.target.value as Tone)}
           className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-sm"
+          title={t("generate.tone", "Ton de la publication")}
         >
           {appConfig.pupblicationTonalities.map((tonality) => (
             <option key={tonality.value} value={tonality.value}>
@@ -61,7 +65,7 @@ const GenerationSettings: React.FC<GenerationSettingsProps> = ({
 
       <div>
         <label className="block text-xs font-medium text-gray-700 mb-1">
-          Longueur du contenu
+          {t("generate.length", "Longueur du contenu")}
         </label>
         <div className="grid grid-cols-3 gap-1">
           {(["courte", "moyenne", "longue"] as Length[]).map((len) => (
@@ -83,12 +87,13 @@ const GenerationSettings: React.FC<GenerationSettingsProps> = ({
 
       <div>
         <label className="block text-xs font-medium text-gray-700 mb-1">
-          Plateforme
+          {t("generate.platform", "Plateforme")}
         </label>
         <select
           value={platform}
           onChange={(e) => onPlatformChange(e.target.value as Platform)}
           className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-sm"
+          title={t("generate.platform", "Plateforme")}
         >
           {appConfig.platforms.map((p) => (
             <option key={p.value} value={p.value.toLowerCase()}>

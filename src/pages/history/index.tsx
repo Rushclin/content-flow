@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import DashboardLayout from "@/layout/dashboard";
 import { Copy, Trash2, Download, Sparkles } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 type HistoryMessage = {
   type: "user" | "ai";
@@ -10,6 +11,7 @@ type HistoryMessage = {
 };
 
 const HistoryPage = () => {
+  const { t } = useTranslation();
   const [items, setItems] = useState<HistoryMessage[]>([]);
 
   useEffect(() => {
@@ -33,7 +35,7 @@ const HistoryPage = () => {
 
   const handleCopyAll = async () => {
     const text = items
-      .map((m) => `${m.type === "user" ? "Vous" : "Content Flow"} (${m.timestamp.toLocaleString()}):\n${m.content}`)
+      .map((m) => `${m.type === "user" ? t("history.you", "Vous") : "Content Flow"} (${m.timestamp.toLocaleString()}):\n${m.content}`)
       .join("\n\n");
     await navigator.clipboard.writeText(text);
   };
@@ -51,24 +53,24 @@ const HistoryPage = () => {
   }, [items]);
 
   return (
-    <DashboardLayout title="Historique">
+    <DashboardLayout title={t("history.title", "Historique")}>
       <div className="flex-1 overflow-hidden bg-white relative h-full">
         {/* En-tête collant avec actions */}
         <div className="sticky top-0 z-10 bg-white/80 backdrop-blur border-b border-gray-100">
           <div className="max-w-4xl mx-auto px-6 py-3 flex items-center justify-between">
-            <h1 className="text-base font-semibold text-gray-900">Historique des conversations</h1>
+            <h1 className="text-base font-semibold text-gray-900">{t("history.conversationsTitle", "Historique des conversations")}</h1>
             <div className="flex items-center gap-2">
               <button
                 onClick={handleCopyAll}
                 className="px-3 py-2 text-sm border rounded-lg text-gray-700 hover:bg-gray-50 flex items-center gap-1"
               >
-                <Copy className="w-4 h-4" /> Copier tout
+                <Copy className="w-4 h-4" /> {t("history.copyAll", "Copier tout")}
               </button>
               <button
                 onClick={handleClear}
                 className="px-3 py-2 text-sm border rounded-lg text-red-600 border-red-200 hover:bg-red-50 flex items-center gap-1"
               >
-                <Trash2 className="w-4 h-4" /> Effacer
+                <Trash2 className="w-4 h-4" /> {t("history.clear", "Effacer")}
               </button>
             </div>
           </div>
@@ -100,7 +102,7 @@ const HistoryPage = () => {
                             {m.type === 'user' ? (
                               <div className="bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-2xl rounded-br-md px-6 py-4 shadow">
                                 <div className="text-sm opacity-90 mb-1">
-                                  Vous • {m.timestamp.toLocaleTimeString()}
+                                  {t("history.you", "Vous")} • {m.timestamp.toLocaleTimeString()}
                                 </div>
                                 <div className="text-lg font-medium whitespace-pre-line">{m.content}</div>
                                 {m.metadata && (
@@ -126,7 +128,7 @@ const HistoryPage = () => {
                                       onClick={() => navigator.clipboard.writeText(m.content)}
                                       className="flex items-center gap-1 text-sm text-gray-500 hover:text-gray-700"
                                     >
-                                      <Copy className="w-4 h-4" /> Copier
+                                      <Copy className="w-4 h-4" /> {t("history.copy", "Copier")}
                                     </button>
                                     <button
                                       onClick={() => {
@@ -140,7 +142,7 @@ const HistoryPage = () => {
                                       }}
                                       className="flex items-center gap-1 text-sm text-gray-500 hover:text-gray-700"
                                     >
-                                      <Download className="w-4 h-4" /> Télécharger
+                                      <Download className="w-4 h-4" /> {t("history.download", "Télécharger")}
                                     </button>
                                   </div>
                                 </div>

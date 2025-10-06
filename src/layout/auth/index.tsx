@@ -1,6 +1,7 @@
 import React from "react";
 import Head from "next/head";
 import { appConfig } from "@/config/app";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
 
 interface AuthLayoutProps {
   children: React.ReactNode;
@@ -58,7 +59,7 @@ const AuthLayout: React.FC<AuthLayoutProps> = ({
           )}
         </div>
       </div>
-      {/* <LanguageSwitcher className="bottom-5" /> */}
+      <LanguageSwitcher className="bottom-5" />
     </div>
   );
 };

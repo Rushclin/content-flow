@@ -2,19 +2,41 @@ import { useState } from "react";
 import { Check } from "lucide-react";
 import Badge from "../common/Badge";
 import { appConfig } from "@/config/app";
+import { useTranslation } from "react-i18next";
 
 const Pricing = () => {
+  const { t } = useTranslation();
   const [isYearly, setIsYearly] = useState(false);
+
+  // Plans traduits dynamiquement
+  const getTranslatedPlans = () => {
+    return appConfig.plans.map(plan => {
+      const planKey = plan.name.toLowerCase();
+      return {
+        ...plan,
+        name: t(`pricing.plans.${planKey}.name`, plan.name),
+        description: t(`pricing.plans.${planKey}.description`, plan.description),
+        badge: t(`pricing.plans.${planKey}.badge`, plan.badge),
+        buttonText: t(`pricing.plans.${planKey}.buttonText`, plan.buttonText),
+        features: plan.features.map(feature => 
+          t(`pricing.plans.${planKey}.features.${feature}`, feature)
+        ),
+        limitations: plan.limitations?.map(limitation => 
+          t(`pricing.plans.${planKey}.limitations.${limitation}`, limitation)
+        ) || []
+      };
+    });
+  };
 
   return (
     <section className="py-20 bg-gradient-to-b from-slate-50 to-white" id="PricingSection">
       <div className="max-w-7xl mx-auto px-6">
         <div className="text-center mb-16">
           <h2 className="text-4xl font-bold text-slate-900 mb-4 recoleta">
-            Choisissez votre plan
+            {t("pricing.title", "Choisissez votre plan")}
           </h2>
           <p className="text-xl text-slate-600 mb-8">
-            Des solutions adaptées à tous vos besoins de création de contenu IA
+            {t("pricing.subtitle", "Des solutions adaptées à tous vos besoins de création de contenu IA")}
           </p>
 
           <div className="flex items-center justify-center space-x-4">
@@ -23,13 +45,14 @@ const Pricing = () => {
                 !isYearly ? "text-slate-900" : "text-slate-500"
               }`}
             >
-              Mensuel
+              {t("pricing.monthly", "Mensuel")}
             </span>
             <button
               onClick={() => setIsYearly(!isYearly)}
               className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
                 isYearly ? "bg-primary" : "bg-slate-300"
               }`}
+              title={t("pricing.toggleBilling", "Basculer entre mensuel et annuel")}
             >
               <span
                 className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
@@ -42,14 +65,14 @@ const Pricing = () => {
                 isYearly ? "text-slate-900" : "text-slate-500"
               }`}
             >
-              Annuel
+              {t("pricing.annual", "Annuel")}
             </span>
             <Badge title="-20% 🎉" />
           </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {appConfig.plans.map((plan) => {
+          {getTranslatedPlans().map((plan) => {
             const Icon = plan.icon;
             const price = isYearly ? plan.price.yearly : plan.price.monthly;
             const yearlyTotal = plan.price.yearly * 12;
@@ -68,7 +91,7 @@ const Pricing = () => {
                 {plan.popular && (
                   <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
                     <span className="bg-primary text-white px-4 py-1 rounded-full text-sm font-medium">
-                      ⭐ Le plus populaire
+                      ⭐ {t("pricing.mostPopular", "Le plus populaire")}
                     </span>
                   </div>
                 )}
@@ -158,10 +181,10 @@ const Pricing = () => {
 
         <div className="text-center mt-16">
           <p className="text-slate-600 mb-4">
-            Besoin d&apos;une solution sur mesure ?
+            {t("pricing.customSolution", "Besoin d'une solution sur mesure ?")}
           </p>
           <button className="bg-slate-800 text-white cursor-pointer px-8 py-3 rounded-full hover:bg-slate-900 transition-colors">
-            Contactez notre équipe commerciale
+            {t("pricing.contactSales", "Contactez notre équipe commerciale")}
           </button>
         </div>
       </div>

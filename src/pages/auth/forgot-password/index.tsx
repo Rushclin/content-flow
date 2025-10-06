@@ -7,6 +7,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import Input from "@/components/common/Input";
+import { useTranslation } from "react-i18next";
 
 // Schéma de validation avec zod
 const forgotPasswordSchema = z.object({
@@ -19,6 +20,7 @@ const forgotPasswordSchema = z.object({
 type ForgotPasswordFormData = z.infer<typeof forgotPasswordSchema>;
 
 const ForgotPasswordForm = () => {
+  const { t } = useTranslation();
   const [isEmailSent, setIsEmailSent] = useState(false);
   const [submittedEmail, setSubmittedEmail] = useState("");
 
@@ -42,19 +44,19 @@ const ForgotPasswordForm = () => {
 
   if (isEmailSent) {
     return (
-      <AuthLayout title="Email envoyé">
+      <AuthLayout title={t("auth.forgotPassword.emailSent", "Email envoyé")}>
         <div className="text-center">
           <h1 className="text-3xl font-bold text-gray-900 mb-4">
-            Vérifiez votre boîte mail
+            {t("auth.forgotPassword.checkEmail", "Vérifiez votre boîte mail")}
           </h1>
           <p className="text-gray-600 text-lg mb-6">
-            Nous avons envoyé un lien de réinitialisation à{" "}
+            {t("auth.forgotPassword.resetLinkSent", "Nous avons envoyé un lien de réinitialisation à")}{" "}
             <strong>{submittedEmail}</strong>
           </p>
 
           <div className=" p-6 rounded-lg mb-8 text-left">
             <p className="text-gray-700 mb-4 font-medium">
-              Si vous ne recevez pas l&apos;email dans les prochaines minutes :
+              {t("auth.forgotPassword.ifNoEmail", "Si vous ne recevez pas l'email dans les prochaines minutes :")}
             </p>
             <ul className="text-gray-600 space-y-2">
               <li>• Vérifiez votre dossier spam</li>
@@ -68,7 +70,7 @@ const ForgotPasswordForm = () => {
               onClick={() => setIsEmailSent(false)}
               className="w-full bg-slate-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-slate-700 transition-all duration-200"
             >
-              Réessayer avec une autre adresse
+              {t("auth.forgotPassword.tryAgain", "Réessayer avec une autre adresse")}
             </button>
 
             <Link
@@ -76,7 +78,7 @@ const ForgotPasswordForm = () => {
               className="w-full bg-white border border-gray-300 text-gray-700 py-3 px-6 rounded-lg font-medium hover:bg-gray-50 transition-colors flex items-center justify-center"
             >
               <ArrowLeft className="w-4 h-4 mr-2" />
-              Retour à la connexion
+              {t("auth.forgotPassword.backToLogin", "Retour à la connexion")}
             </Link>
           </div>
         </div>
@@ -85,24 +87,23 @@ const ForgotPasswordForm = () => {
   }
 
   return (
-    <AuthLayout title="Mot de passe oublié">
+    <AuthLayout title={t("auth.forgotPassword.title", "Mot de passe oublié")}>
       <div className="text-center mb-8">
         <div className="flex justify-center mb-6">
           <Logo size={150} justLogo />
         </div>
         <h1 className="text-3xl font-bold text-gray-900 mb-4">
-          Mot de passe oublié ?
+          {t("auth.forgotPassword.subtitle", "Mot de passe oublié ?")}
         </h1>
         <p className="text-gray-600">
-          Pas de problème ! Entrez votre adresse email et nous vous enverrons un
-          lien pour réinitialiser votre mot de passe.
+          {t("auth.forgotPassword.description", "Pas de problème ! Entrez votre adresse email et nous vous enverrons un lien pour réinitialiser votre mot de passe.")}
         </p>
       </div>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
         <Input
           {...register("email")}
-          label="Adresse email"
+          label={t("auth.forgotPassword.emailLabel", "Adresse email")}
           type="email"
           placeholder="votre@email.com"
           required
@@ -118,10 +119,10 @@ const ForgotPasswordForm = () => {
           {isSubmitting ? (
             <>
               <Loader2 className="w-5 h-5 mr-3 animate-spin" />
-              Envoi en cours...
+              {t("auth.forgotPassword.sending", "Envoi en cours...")}
             </>
           ) : (
-            "Envoyer le lien de réinitialisation"
+            t("auth.forgotPassword.sendResetLink", "Envoyer le lien de réinitialisation")
           )}
         </button>
       </form>
@@ -132,7 +133,7 @@ const ForgotPasswordForm = () => {
           className="text-slate-600 hover:text-slate-500 font-medium flex items-center justify-center"
         >
           <ArrowLeft className="w-4 h-4 mr-2" />
-          Retour à la connexion
+          {t("auth.forgotPassword.backToLogin", "Retour à la connexion")}
         </Link>
       </div>
     </AuthLayout>
