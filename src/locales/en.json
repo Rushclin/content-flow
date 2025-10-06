@@ -33,25 +33,6 @@
     "moreTools": "More tools",
     "voiceToVoice": "Voice to voice"
   },
-  "auth": {
-    "login": "Login",
-    "register": "Register",
-    "logout": "Logout",
-    "forgotPassword": "Forgot password?",
-    "email": "Email",
-    "password": "Password",
-    "confirmPassword": "Confirm password",
-    "firstName": "First name",
-    "lastName": "Last name",
-    "loginButton": "Sign in",
-    "registerButton": "Sign up",
-    "resetPasswordButton": "Reset password",
-    "alreadyHaveAccount": "Already have an account?",
-    "dontHaveAccount": "Don't have an account?",
-    "loginError": "Login error",
-    "registerError": "Registration error",
-    "passwordResetSent": "Password reset email sent"
-  },
   "generation": {
     "title": "Content Generator",
     "subtitle": "Generate professional content quickly",
@@ -125,19 +106,6 @@
     "unauthorized": "Unauthorized",
     "loadError": "Error loading conversation"
   },
-  "dashboard": {
-    "welcome": "Welcome",
-    "stats": "Statistics",
-    "recentActivity": "Recent activity",
-    "quickActions": "Quick actions",
-    "totalGenerations": "Total generations",
-    "totalChats": "Total chats",
-    "thisMonth": "This month",
-    "lastMonth": "Last month",
-    "generateContent": "Generate content",
-    "startChat": "Start chat",
-    "viewHistory": "View history"
-  },
   "auth": {
     "login": {
       "title": "Sign in",
@@ -190,15 +158,6 @@
     "privacy": "Privacy",
     "terms": "Terms of Service",
     "cookies": "Cookies"
-  },
-  "history": {
-    "title": "History",
-    "conversationsTitle": "Conversation History",
-    "copyAll": "Copy all",
-    "clear": "Clear",
-    "you": "You",
-    "copy": "Copy",
-    "download": "Download"
   },
   "dashboard": {
     "home": {
@@ -365,58 +324,6 @@
     "pricing": "Pricing",
     "signIn": "Sign in",
     "dashboard": "Dashboard"
-  },
-  "home": {
-    "title": "Content Flow Toolbox",
-    "subtitle": "Generate content fastly",
-    "description": "Generate your professional articles with Content Flow.",
-    "getStarted": "Get started",
-    "learnMore": "Learn more",
-    "hero": {
-      "title": "Generate your articles more easily with Content Flow Toolbox",
-      "tryFree": "Try for free",
-      "noCreditCard": "No credit card required"
-    },
-    "tryTool": "Try our tool",
-    "intuitiveFriendly": "Intuitive and user-friendly for your publications",
-    "features": {
-      "title": "Features",
-      "subtitle": "Discover our powerful tools",
-      "intelligentGenerator": {
-        "title": "Intelligent Article Generator",
-        "description": "Generate your professional articles with Content flow.",
-        "badge": "Free"
-      },
-      "simpleChat": {
-        "title": "Simple chat",
-        "description": "Get a simple and efficient chat to mark your days.",
-        "badge": "Free"
-      },
-      "textToSpeech": {
-        "title": "Text-to-Speech AI",
-        "description": "Generate audio from text using AI. Supports 30+ languages.",
-        "badge": "Pro"
-      }
-    },
-    "pricing": {
-      "title": "Pricing",
-      "subtitle": "Choose the plan that suits you",
-      "basic": {
-        "name": "Basic",
-        "price": "Free",
-        "description": "Perfect to get started"
-      },
-      "pro": {
-        "name": "Pro",
-        "price": "$9.99/month",
-        "description": "For professionals"
-      },
-      "enterprise": {
-        "name": "Enterprise",
-        "price": "Custom",
-        "description": "For large teams"
-      }
-    }
   },
   "sidebar": {
     "menu": "Menu",

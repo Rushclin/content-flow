@@ -229,7 +229,7 @@ const Sidebar: React.FC = () => {
     if (!submenuMatched) {
       setOpenSubmenu(null);
     }
-  }, [pathname, isActive]);
+  }, [pathname, isActive, dynamicNavItems]);
 
   useEffect(() => {
     if (openSubmenu !== null) {
