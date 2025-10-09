@@ -1,9 +1,13 @@
 import { Html, Head, Main, NextScript } from "next/document";
 
-export default function Document() {
+const Document = () => {
   return (
-    <Html>
+    <Html lang="fr">
       <Head>
+        <meta property="og:type" content="website" />
+        <meta property="og:site_name" content="Content Flow Toolbox" />
+        <meta property="og:locale" content="fr_FR" />
+
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link
           rel="preconnect"
@@ -25,4 +29,6 @@ export default function Document() {
       </body>
     </Html>
   );
-}
+};
+
+export default Document;
