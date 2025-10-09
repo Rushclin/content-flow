@@ -8,7 +8,7 @@ const LANGUAGES = {
   fr: { full: "Français", short: "FR", flag: "🇫🇷" },
 };
 
-export default function LanguageSwitcher({ className = "" }) {
+const LanguageSwitcher = ({ className = "" }) => {
   const router = useRouter();
   const { t, i18n: i18nInstance } = useTranslation();
 
@@ -94,3 +94,5 @@ export default function LanguageSwitcher({ className = "" }) {
     </div>
   );
 }
+
+export default LanguageSwitcher;
