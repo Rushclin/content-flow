@@ -13,9 +13,11 @@ import { useUser } from "@clerk/nextjs";
 import StatCard from "@/components/chat/StatCard";
 import Input from "@/components/common/Input";
 import { ConversationWithMessages } from "@/services";
+import { useTranslation } from "react-i18next";
 import HistoryCard from "@/components/chat/history/HistoryCard";
 
 const GenerationHistoryPage = () => {
+  const { t } = useTranslation();
   const { user } = useUser();
 
   const [conversations, setConversations] = useState<
@@ -116,7 +118,7 @@ const GenerationHistoryPage = () => {
   }
 
   return (
-    <DashboardLayout title="Historique des Générations">
+    <DashboardLayout title={t("generate.history.title", "Historique des Générations")}>
       <div className="p-6 max-w-7xl mx-auto">
         <div className="mb-6 space-y-4 md:space-y-0 md:flex md:items-center md:justify-between">
           <div className="flex-1 max-w-md">
@@ -124,7 +126,7 @@ const GenerationHistoryPage = () => {
               prefix={
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
               }
-              placeholder="Rechercher dans l'historique..."
+              placeholder={t("generate.history.searchPlaceholder", "Rechercher dans l'historique...")}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
@@ -146,7 +148,7 @@ const GenerationHistoryPage = () => {
               className="flex items-center space-x-2 px-4 py-2 bg-primary/90 text-white rounded-full hover:bg-primary cursor-pointer transition-colors"
             >
               <RefreshCw className="w-4 h-4" />
-              <span>Actualiser</span>
+              <span>{t("generate.history.refresh", "Actualiser")}</span>
             </button>
           </div>
         </div>
@@ -156,7 +158,7 @@ const GenerationHistoryPage = () => {
             icon={MessageCircle}
             iconColor="text-purple-600"
             iconBg="bg-purple-100"
-            title="Conversations"
+            title={t("generate.history.conversations", "Conversations")}
             value={conversations.length}
           />
 
@@ -164,7 +166,7 @@ const GenerationHistoryPage = () => {
             icon={MessageSquare}
             iconColor="text-green-600"
             iconBg="bg-green-100"
-            title="Messages totaux"
+            title={t("generate.history.totalMessages", "Messages totaux")}
             value={conversations.reduce(
               (total, conv) => total + conv.messages.length,
               0
@@ -175,7 +177,7 @@ const GenerationHistoryPage = () => {
             icon={Calendar}
             iconColor="text-green-600"
             iconBg="bg-green-100"
-            title="Ce mois-ci"
+            title={t("generate.history.thisMonth", "Ce mois-ci")}
             value={
               conversations.filter((conv) => {
                 const now = new Date();
@@ -196,13 +198,13 @@ const GenerationHistoryPage = () => {
             </div>
             <h3 className="text-lg font-semibold text-slate-900 mb-2 recoleta">
               {conversations.length === 0
-                ? "Aucune conversation trouvée"
-                : "Aucun résultat ne correspond à vos critères"}
+                ? t("generate.history.noConversationsFound", "Aucune conversation trouvée")
+                : t("generate.history.noResultsFound", "Aucun résultat ne correspond à vos critères")}
             </h3>
             <p className="text-gray-600 recoleta">
               {conversations.length === 0
-                ? "Commencez par créer votre première conversation."
-                : "Essayez de modifier vos filtres de recherche."}
+                ? t("generate.history.startFirstConversation", "Commencez par créer votre première conversation.")
+                : t("generate.history.tryModifyFilters", "Essayez de modifier vos filtres de recherche.")}
             </p>
           </div>
         ) : (

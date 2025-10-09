@@ -1,8 +1,11 @@
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 const Hero = () => {
+  const { t } = useTranslation();
+  
   return (
     <div className="flex min-h-screen w-full flex-col items-center justify-center gap-0 mt-24">
       <div className="flex w-full flex-col items-center justify-between lg:flex-row">
@@ -11,7 +14,7 @@ const Hero = () => {
             className="recoleta flex flex-col justify-center gap-2 text-center text-5xl font-semibold leading-tight md:text-4xl lg:text-5xl 2xl:text-6xl"
             dangerouslySetInnerHTML={{
               __html:
-                "<span class='text-primary'>Générez vos articles plus facilement avec Content Flow Toolbox </span>",
+                `<span class='text-primary'>${t("home.hero.title", "Générez vos articles plus facilement avec Content Flow Toolbox")}</span>`,
             }}
           />
 
@@ -21,9 +24,9 @@ const Hero = () => {
                 href="#FormGeneration"
                 className="recoleta relative mt-2 rounded-full bg-primary/80 transition-colors ease-in p-2 hover:bg-primary px-14 py-3 text-xl text-white hover:bg-orangePrimary md:px-14"
               >
-                Essayer gratuitement
+                {t("home.hero.tryFree", "Essayer gratuitement")}
               </Link>
-              <small>Pas de carte de crédit requis</small>
+              <small>{t("home.hero.noCreditCard", "Pas de carte de crédit requis")}</small>
             </div>
           </div>
         </div>

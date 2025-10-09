@@ -4,10 +4,12 @@ import { twMerge } from "tailwind-merge";
 import Logo from "../common/Logo";
 import { ArrowRightCircle } from "lucide-react";
 import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
+import { useTranslation } from "react-i18next";
 
 const Header = ({ hideMenu = false }) => {
   const [, setIsMenuOpen] = useState(false);
   const [scrollStart, setScrollStart] = useState(0);
+  const { t } = useTranslation();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -38,17 +40,17 @@ const Header = ({ hideMenu = false }) => {
       <div className={twMerge("hidden " + (hideMenu ? "" : " md:flex"))}>
         <ul className="text-md flex justify-between text-slate-800 md:gap-4 xl:gap-12">
           <li>
-            <Link href={"/solutions"}>Solutions</Link>
+            <Link href={"/solutions"}>{t("header.solutions", "Solutions")}</Link>
           </li>
           <li>
-            <a href={"/reviews"}>Revues</a>
+            <a href={"/reviews"}>{t("header.reviews", "Revues")}</a>
           </li>
           <li>
-            <a href={"/ressource"}>Ressource</a>
+            <a href={"/ressource"}>{t("header.resources", "Ressource")}</a>
           </li>
           <li className="relative">
             <a href="/ai-voice" className="relative inline-flex items-center">
-              AI Voice
+              {t("header.aiVoice", "AI Voice")}
               <span className="absolute -top-3 -right-6">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
                 <span className="relative inline-flex items-center px-2 py-0.5 rounded-full bg-red-500 text-white text-[10px] font-extralight">
@@ -62,7 +64,7 @@ const Header = ({ hideMenu = false }) => {
               href="#PricingSection"
               className="relative inline-flex items-center"
             >
-              Pricing
+              {t("header.pricing", "Pricing")}
             </a>
           </li>
         </ul>
@@ -72,7 +74,7 @@ const Header = ({ hideMenu = false }) => {
           <SignedOut>
             <SignInButton>
               <button className="cursor-pointer flex items-center rounded-full p-2 px-5 text-center text-white bg-primary/90 transition-colors ease-in hover:bg-primary">
-                Se connecter
+                {t("header.signIn", "Se connecter")}
                 <ArrowRightCircle className="h-4 w-4 ml-2" />
               </button>
             </SignInButton>
@@ -80,7 +82,7 @@ const Header = ({ hideMenu = false }) => {
           <SignedIn>
             <UserButton showName />
              <Link href="/home" className="cursor-pointer flex items-center rounded-full p-2 px-5 text-center text-white bg-primary/90 transition-colors ease-in hover:bg-primary">
-                Dashboard
+                {t("header.dashboard", "Dashboard")}
               </Link>
           </SignedIn>
         </>

@@ -1,0 +1,355 @@
+{
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "create": "Create",
+    "search": "Search",
+    "filter": "Filter",
+    "refresh": "Refresh",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "close": "Close",
+    "open": "Open",
+    "yes": "Yes",
+    "no": "No",
+    "untitled": "Untitled",
+    "chooseLanguage": "Choose your language"
+  },
+  "navigation": {
+    "home": "Home",
+    "dashboard": "Dashboard",
+    "generate": "Generator",
+    "history": "History",
+    "chat": "Chat",
+    "settings": "Settings",
+    "profile": "Profile",
+    "logout": "Logout",
+    "moreTools": "More tools",
+    "voiceToVoice": "Voice to voice"
+  },
+  "generation": {
+    "title": "Content Generator",
+    "subtitle": "Generate professional content quickly",
+    "platform": "Platform",
+    "tone": "Tone",
+    "length": "Length",
+    "audience": "Audience",
+    "subject": "Subject",
+    "generate": "Generate",
+    "generating": "Generating...",
+    "generated": "Generated content",
+    "copy": "Copy",
+    "download": "Download",
+    "share": "Share",
+    "save": "Save",
+    "history": "History",
+    "newGeneration": "New generation",
+    "platforms": {
+      "linkedin": "LinkedIn",
+      "facebook": "Facebook",
+      "twitter": "Twitter/X",
+      "wordpress": "WordPress",
+      "reddit": "Reddit"
+    },
+    "tones": {
+      "professional": "Professional",
+      "friendly": "Friendly",
+      "formal": "Formal",
+      "casual": "Casual"
+    },
+    "lengths": {
+      "short": "Short",
+      "medium": "Medium",
+      "long": "Long"
+    },
+    "audiences": {
+      "professionals": "Professionals",
+      "students": "Students",
+      "entrepreneurs": "Entrepreneurs",
+      "general": "General public"
+    }
+  },
+  "chat": {
+    "title": "Chat",
+    "subtitle": "Get a simple and efficient chat",
+    "sendMessage": "Send message",
+    "typeMessage": "Type your message...",
+    "emptyState": "No conversations",
+    "emptyStateDescription": "Start a new conversation",
+    "newChat": "New chat",
+    "conversationHistory": "Conversation history",
+    "loading": "Loading messages...",
+    "error": "Loading error",
+    "retry": "Retry"
+  },
+  "history": {
+    "title": "History",
+    "subtitle": "Your previous generations",
+    "emptyState": "No history",
+    "emptyStateDescription": "Your generations will appear here",
+    "search": "Search history",
+    "filter": "Filter by",
+    "date": "Date",
+    "platform": "Platform",
+    "tone": "Tone",
+    "view": "View",
+    "delete": "Delete",
+    "download": "Download",
+    "share": "Share",
+    "conversationNotFound": "Conversation not found",
+    "unauthorized": "Unauthorized",
+    "loadError": "Error loading conversation"
+  },
+  "auth": {
+    "login": {
+      "title": "Sign in",
+      "subtitle": "All-in-one AI Platform",
+      "continueWithGoogle": "Continue with Google",
+      "continueWithFacebook": "Continue with Facebook",
+      "divider": "or with email and password",
+      "emailLabel": "Email address",
+      "passwordLabel": "Password",
+      "forgotPassword": "Forgot password?",
+      "signInButton": "Sign in",
+      "noAccount": "Don't have an account?",
+      "createAccount": "Create an account"
+    },
+    "register": {
+      "title": "Sign up",
+      "subtitle": "All-in-one AI Platform",
+      "signUpWithGoogle": "Sign up with Google",
+      "signUpWithFacebook": "Sign up with Facebook",
+      "divider": "or with your email",
+      "fullNameLabel": "Full name",
+      "emailLabel": "Email address",
+      "passwordLabel": "Password",
+      "confirmPasswordLabel": "Confirm password",
+      "createAccountButton": "Create my account",
+      "haveAccount": "Already have an account?",
+      "signInLink": "Sign in"
+    },
+    "forgotPassword": {
+      "title": "Forgot password",
+      "subtitle": "Forgot password?",
+      "description": "No problem! Enter your email address and we'll send you a link to reset your password.",
+      "emailLabel": "Email address",
+      "sendResetLink": "Send reset link",
+      "sending": "Sending...",
+      "backToLogin": "Back to login",
+      "emailSent": "Email sent",
+      "checkEmail": "Check your email",
+      "resetLinkSent": "We have sent a reset link to",
+      "ifNoEmail": "If you don't receive the email in the next few minutes:",
+      "tryAgain": "Try again with another address"
+    }
+  },
+  "footer": {
+    "description": "is your all-in-one platform for AI content generation. Easily create professional content with our advanced artificial intelligence tools for all your creative and marketing needs.",
+    "moreServices": "More Services",
+    "needHelp": "Need help?",
+    "contactSupport": "Contact our support team",
+    "allRightsReserved": "All rights reserved.",
+    "privacy": "Privacy",
+    "terms": "Terms of Service",
+    "cookies": "Cookies"
+  },
+  "dashboard": {
+    "home": {
+      "title": "Home",
+      "searchPlaceholder": "Search for functionalities...",
+      "all": "All",
+      "categories": {
+        "hr": "HR",
+        "content": "Content",
+        "musique": "Music"
+      },
+      "noFeaturesFound": "No features found",
+      "noFeaturesDescription": "No features match your search criteria.",
+      "resetFilters": "Reset filters",
+      "totalFeatures": "{{count}} functionalities in total",
+      "searchResults": "{{count}} result{{plural}} out of {{total}} functionalities",
+      "features": {
+        "GenerateurInteligentdarticle": {
+          "title": "Intelligent Article Generator",
+          "desc": "Generate your professional articles with Content flow.",
+          "badge": "Free"
+        },
+        "Simplechat": {
+          "title": "Simple chat",
+          "desc": "Get a simple and effective chat to mark your days.",
+          "badge": "Free"
+        },
+        "TexttoSpeechAI": {
+          "title": "Text-to-Speech AI",
+          "desc": "Generate audio from text using AI. Supports 30+ languages.",
+          "badge": ""
+        }
+      }
+    },
+    "stats": {
+      "generatedContent": "Generated Content",
+      "totalViews": "Total Views",
+      "timeSaved": "Time Saved",
+      "collaborators": "Collaborators",
+      "vsLastMonth": "vs last month"
+    }
+  },
+  "form": {
+    "subject": "Subject of your publication",
+    "subjectPlaceholder": "Ex: Marketing trends 2024...",
+    "targetAudience": "Target audience",
+    "selectAudience": "Select an audience",
+    "tone": "Publication tone",
+    "selectTone": "Select a tone",
+    "contentLength": "Content length",
+    "short": "short",
+    "medium": "medium",
+    "long": "long",
+    "renderFormat": "Render format",
+    "selectPlatform": "Select a platform",
+    "generateContent": "Generate content"
+  },
+  "pricing": {
+    "title": "Choose your plan",
+    "subtitle": "Solutions adapted to all your AI content creation needs",
+    "monthly": "Monthly",
+    "annual": "Annual",
+    "mostPopular": "Most popular",
+    "customSolution": "Need a custom solution?",
+    "contactSales": "Contact our sales team",
+    "toggleBilling": "Toggle between monthly and annual",
+    "plans": {
+      "basique": {
+        "name": "Basic",
+        "description": "Perfect for getting started with AI",
+        "badge": "Free",
+        "buttonText": "Start for free",
+        "features": {
+          "5 générations de contenu/jour": "5 content generations/day",
+          "Chat avec MARKy (limité)": "Chat with MARKy (limited)",
+          "Templates de base": "Basic templates",
+          "Export en format texte": "Text format export",
+          "Support communautaire": "Community support",
+          "Watermark sur les images": "Watermark on images"
+        },
+        "limitations": {
+          "Pas d'export avancé": "No advanced export",
+          "Pas de support prioritaire": "No priority support",
+          "Fonctionnalités limitées": "Limited features"
+        }
+      },
+      "individuel": {
+        "name": "Individual",
+        "description": "Ideal for creative professionals",
+        "badge": "Popular",
+        "buttonText": "Start free trial",
+        "features": {
+          "Générations illimitées": "Unlimited generations",
+          "Chat avec MARKy complet": "Full MARKy chat",
+          "Tous les templates premium": "All premium templates",
+          "AI Text-to-Speech (30+ langues)": "AI Text-to-Speech (30+ languages)",
+          "AI Art & Images (sans watermark)": "AI Art & Images (no watermark)",
+          "AI Video Generator": "AI Video Generator",
+          "Export en tous formats": "Export in all formats",
+          "Support prioritaire par email": "Priority email support",
+          "Historique des projets": "Project history",
+          "API Access (100 req/jour)": "API Access (100 req/day)"
+        }
+      },
+      "entreprise": {
+        "name": "Enterprise",
+        "description": "For teams and organizations",
+        "badge": "Pro",
+        "buttonText": "Contact sales",
+        "features": {
+          "Tout du plan Individuel": "Everything from Individual plan",
+          "Gestion d'équipe (jusqu'à 10 utilisateurs)": "Team management (up to 10 users)",
+          "AI Talking Videos": "AI Talking Videos",
+          "AI Photo Generator": "AI Photo Generator",
+          "AI Headshot Generator": "AI Headshot Generator",
+          "News Article Generator": "News Article Generator",
+          "Branding personnalisé": "Custom branding",
+          "API Access illimité": "Unlimited API Access",
+          "Support téléphonique dédié": "Dedicated phone support",
+          "Formation personnalisée": "Custom training",
+          "Intégrations avancées": "Advanced integrations",
+          "Rapports d'utilisation détaillés": "Detailed usage reports"
+        }
+      }
+    }
+  },
+  "generate": {
+    "title": "Content Generator",
+    "description": "Describe the content you want to create and our AI will generate it for you.",
+    "placeholder": "Describe the content you want to create...",
+    "settings": "Generation settings",
+    "targetAudience": "Target audience",
+    "tone": "Publication tone",
+    "length": "Content length",
+    "platform": "Platform",
+    "disclaimer": "Content Flow can make mistakes. Consider checking important information.",
+    "newConversation": "New conversation",
+    "viewHistory": "View history",
+    "history": {
+      "title": "Generation History",
+      "searchPlaceholder": "Search in history...",
+      "refresh": "Refresh",
+      "conversations": "Conversations",
+      "totalMessages": "Total messages",
+      "thisMonth": "This month",
+      "noConversationsFound": "No conversations found",
+      "noResultsFound": "No results match your criteria",
+      "startFirstConversation": "Start by creating your first conversation.",
+      "tryModifyFilters": "Try modifying your search filters.",
+      "messagesCount": "{{count}} messages",
+      "you": "You",
+      "viewConversation": "View conversation",
+      "collapse": "Collapse",
+      "download": "Download",
+      "continue": "Continue",
+      "copy": "Copy"
+    }
+  },
+  "header": {
+    "solutions": "Solutions",
+    "reviews": "Reviews",
+    "resources": "Resources",
+    "aiVoice": "AI Voice",
+    "pricing": "Pricing",
+    "signIn": "Sign in",
+    "dashboard": "Dashboard"
+  },
+  "sidebar": {
+    "menu": "Menu",
+    "collapse": "Collapse",
+    "expand": "Expand",
+    "loading": "Loading...",
+    "error": "Error loading history"
+  },
+  "errors": {
+    "generic": "An error occurred",
+    "network": "Connection error",
+    "unauthorized": "Unauthorized",
+    "notFound": "Resource not found",
+    "serverError": "Server error",
+    "validation": "Validation error",
+    "required": "This field is required",
+    "invalidEmail": "Invalid email",
+    "passwordTooShort": "Password is too short",
+    "passwordsDoNotMatch": "Passwords do not match"
+  },
+  "success": {
+    "saved": "Saved successfully",
+    "deleted": "Deleted successfully",
+    "updated": "Updated successfully",
+    "created": "Created successfully",
+    "copied": "Copied to clipboard",
+    "sent": "Sent successfully"
+  }
+}

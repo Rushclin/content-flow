@@ -7,6 +7,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import Input from "@/components/common/Input";
+import { useTranslation } from "react-i18next";
 
 // Schéma de validation pour les filtres
 const filterSchema = z.object({
@@ -17,6 +18,8 @@ const filterSchema = z.object({
 type FilterFormData = z.infer<typeof filterSchema>;
 
 const HomePage = () => {
+  const { t } = useTranslation();
+  
   // Extraction des catégories uniques depuis les features
   const categories = useMemo(() => {
     const uniqueCategories = new Set<string>();
@@ -39,24 +42,31 @@ const HomePage = () => {
   const searchTerm = watch("search");
   const selectedCategory = watch("category");
 
-  // Logique de filtrage
+  // Logique de filtrage avec traductions
   const filteredFeatures = useMemo(() => {
-    return appConfig.features.filter((feature) => {
-      // Filtrage par recherche
-      const matchesSearch =
-        searchTerm === "" ||
-        feature.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        feature.desc.toLowerCase().includes(searchTerm.toLowerCase());
+    return appConfig.features
+      .map((feature) => ({
+        ...feature,
+        title: t(`dashboard.home.features.${feature.title.replace(/[^a-zA-Z0-9]/g, '')}.title`, feature.title),
+        desc: t(`dashboard.home.features.${feature.title.replace(/[^a-zA-Z0-9]/g, '')}.desc`, feature.desc),
+        badge: t(`dashboard.home.features.${feature.title.replace(/[^a-zA-Z0-9]/g, '')}.badge`, feature.badge || ''),
+      }))
+      .filter((feature) => {
+        // Filtrage par recherche
+        const matchesSearch =
+          searchTerm === "" ||
+          feature.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          feature.desc.toLowerCase().includes(searchTerm.toLowerCase());
 
-      // Filtrage par catégorie
-      const matchesCategory =
-        selectedCategory === "all" ||
-        feature.category === selectedCategory ||
-        (selectedCategory === "uncategorized" && !feature.category);
+        // Filtrage par catégorie
+        const matchesCategory =
+          selectedCategory === "all" ||
+          feature.category === selectedCategory ||
+          (selectedCategory === "uncategorized" && !feature.category);
 
-      return matchesSearch && matchesCategory;
-    });
-  }, [searchTerm, selectedCategory]);
+        return matchesSearch && matchesCategory;
+      });
+  }, [searchTerm, selectedCategory, t]);
 
   const handleCategoryClick = (category: string) => {
     setValue("category", category);
@@ -68,14 +78,14 @@ const HomePage = () => {
   };
 
   return (
-    <DashboardLayout title="Accueil">
+    <DashboardLayout title={t("dashboard.home.title", "Accueil")}>
       <div className="mb-6 space-y-4">
         <div className="relative">
           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"></div>
           <Input
             {...register("search")}
             type="text"
-            placeholder="Rechercher des fonctionnalités..."
+            placeholder={t("dashboard.home.searchPlaceholder", "Rechercher des fonctionnalités...")}
             prefix={<Search className="h-5 w-5 text-gray-400" />}
             inputClassName="py-3"
           />
@@ -90,7 +100,7 @@ const HomePage = () => {
                 : "bg-gray-100 text-gray-700 hover:bg-gray-200"
             }`}
           >
-            Tout ({appConfig.features.length})
+            {t("dashboard.home.all", "Tout")} ({appConfig.features.length})
           </button>
 
           {categories.map((category) => {
@@ -108,7 +118,7 @@ const HomePage = () => {
                     : "bg-gray-100 text-gray-700 hover:bg-gray-200"
                 }`}
               >
-                {category.charAt(0).toUpperCase() + category.slice(1)} (
+                {t(`dashboard.home.categories.${category}`, category.charAt(0).toUpperCase() + category.slice(1))} (
                 {categoryCount})
               </button>
             );
@@ -130,10 +140,12 @@ const HomePage = () => {
 
         <div className="text-sm text-gray-600">
           {filteredFeatures.length === appConfig.features.length
-            ? `${filteredFeatures.length} fonctionnalités au total`
-            : `${filteredFeatures.length} résultat${
-                filteredFeatures.length > 1 ? "s" : ""
-              } sur ${appConfig.features.length} fonctionnalités`}
+            ? t("dashboard.home.totalFeatures", "{{count}} fonctionnalités au total", { count: filteredFeatures.length })
+            : t("dashboard.home.searchResults", "{{count}} résultat{{plural}} sur {{total}} fonctionnalités", { 
+                count: filteredFeatures.length,
+                plural: filteredFeatures.length > 1 ? "s" : "",
+                total: appConfig.features.length
+              })}
         </div>
       </div>
 
@@ -149,16 +161,16 @@ const HomePage = () => {
         <div className="bg-white rounded-lg border border-gray-200 p-12 text-center">
           <div className="text-6xl mb-4">🔍</div>
           <h3 className="text-lg font-semibold text-gray-900 mb-2">
-            Aucune fonctionnalité trouvée
+            {t("dashboard.home.noFeaturesFound", "Aucune fonctionnalité trouvée")}
           </h3>
           <p className="text-gray-600 mb-4">
-            Aucune fonctionnalité ne correspond à vos critères de recherche.
+            {t("dashboard.home.noFeaturesDescription", "Aucune fonctionnalité ne correspond à vos critères de recherche.")}
           </p>
           <button
             onClick={clearFilters}
             className="bg-slate-500 text-white px-4 py-2 hover:bg-slate-600 transition-colors rounded-full"
           >
-            Réinitialiser les filtres
+            {t("dashboard.home.resetFilters", "Réinitialiser les filtres")}
           </button>
         </div>
       )}

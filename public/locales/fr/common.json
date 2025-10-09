@@ -1,0 +1,448 @@
+{
+  "common": {
+    "loading": "Chargement...",
+    "error": "Erreur",
+    "success": "Succès",
+    "cancel": "Annuler",
+    "save": "Enregistrer",
+    "delete": "Supprimer",
+    "edit": "Modifier",
+    "create": "Créer",
+    "search": "Rechercher",
+    "filter": "Filtrer",
+    "refresh": "Actualiser",
+    "back": "Retour",
+    "next": "Suivant",
+    "previous": "Précédent",
+    "close": "Fermer",
+    "open": "Ouvrir",
+    "yes": "Oui",
+    "no": "Non",
+    "untitled": "Sans titre",
+    "chooseLanguage": "Choisir votre langue"
+  },
+  "navigation": {
+    "home": "Accueil",
+    "dashboard": "Tableau de bord",
+    "generate": "Générateur",
+    "history": "Historique",
+    "chat": "Chat",
+    "settings": "Paramètres",
+    "profile": "Profil",
+    "logout": "Déconnexion",
+    "moreTools": "Plus d'outils",
+    "voiceToVoice": "Voice to voice"
+  },
+  "auth": {
+    "login": "Connexion",
+    "register": "Inscription",
+    "logout": "Déconnexion",
+    "forgotPassword": "Mot de passe oublié ?",
+    "email": "Email",
+    "password": "Mot de passe",
+    "confirmPassword": "Confirmer le mot de passe",
+    "firstName": "Prénom",
+    "lastName": "Nom",
+    "loginButton": "Se connecter",
+    "registerButton": "S'inscrire",
+    "resetPasswordButton": "Réinitialiser le mot de passe",
+    "alreadyHaveAccount": "Vous avez déjà un compte ?",
+    "dontHaveAccount": "Vous n'avez pas de compte ?",
+    "loginError": "Erreur lors de la connexion",
+    "registerError": "Erreur lors de l'inscription",
+    "passwordResetSent": "Email de réinitialisation envoyé"
+  },
+  "generation": {
+    "title": "Générateur de contenu",
+    "subtitle": "Générez du contenu professionnel rapidement",
+    "platform": "Plateforme",
+    "tone": "Ton",
+    "length": "Longueur",
+    "audience": "Audience",
+    "subject": "Sujet",
+    "generate": "Générer",
+    "generating": "Génération en cours...",
+    "generated": "Contenu généré",
+    "copy": "Copier",
+    "download": "Télécharger",
+    "share": "Partager",
+    "save": "Enregistrer",
+    "history": "Historique",
+    "newGeneration": "Nouvelle génération",
+    "platforms": {
+      "linkedin": "LinkedIn",
+      "facebook": "Facebook",
+      "twitter": "Twitter/X",
+      "wordpress": "WordPress",
+      "reddit": "Reddit"
+    },
+    "tones": {
+      "professional": "Professionnel",
+      "friendly": "Amical",
+      "formal": "Formel",
+      "casual": "Décontracté"
+    },
+    "lengths": {
+      "short": "Court",
+      "medium": "Moyen",
+      "long": "Long"
+    },
+    "audiences": {
+      "professionals": "Professionnels",
+      "students": "Étudiants",
+      "entrepreneurs": "Entrepreneurs",
+      "general": "Grand public"
+    }
+  },
+  "chat": {
+    "title": "Chat",
+    "subtitle": "Obtenez un chat simple et efficace",
+    "sendMessage": "Envoyer un message",
+    "typeMessage": "Tapez votre message...",
+    "emptyState": "Aucune conversation",
+    "emptyStateDescription": "Commencez une nouvelle conversation",
+    "newChat": "Nouveau chat",
+    "conversationHistory": "Historique des conversations",
+    "loading": "Chargement des messages...",
+    "error": "Erreur lors du chargement",
+    "retry": "Réessayer"
+  },
+  "history": {
+    "title": "Historique",
+    "subtitle": "Vos générations précédentes",
+    "emptyState": "Aucun historique",
+    "emptyStateDescription": "Vos générations apparaîtront ici",
+    "search": "Rechercher dans l'historique",
+    "filter": "Filtrer par",
+    "date": "Date",
+    "platform": "Plateforme",
+    "tone": "Ton",
+    "view": "Voir",
+    "delete": "Supprimer",
+    "download": "Télécharger",
+    "share": "Partager",
+    "conversationNotFound": "Conversation non trouvée",
+    "unauthorized": "Non autorisé",
+    "loadError": "Erreur lors du chargement de la conversation"
+  },
+  "dashboard": {
+    "welcome": "Bienvenue",
+    "stats": "Statistiques",
+    "recentActivity": "Activité récente",
+    "quickActions": "Actions rapides",
+    "totalGenerations": "Total des générations",
+    "totalChats": "Total des chats",
+    "thisMonth": "Ce mois-ci",
+    "lastMonth": "Le mois dernier",
+    "generateContent": "Générer du contenu",
+    "startChat": "Commencer un chat",
+    "viewHistory": "Voir l'historique"
+  },
+  "auth": {
+    "login": {
+      "title": "Se connecter",
+      "subtitle": "Plateforme IA tout-en-un",
+      "continueWithGoogle": "Continuer avec Google",
+      "continueWithFacebook": "Continuer avec Facebook",
+      "divider": "ou par email et mot de passe",
+      "emailLabel": "Adresse email",
+      "passwordLabel": "Mot de passe",
+      "forgotPassword": "Mot de passe oublié ?",
+      "signInButton": "Se connecter",
+      "noAccount": "Pas encore de compte ?",
+      "createAccount": "Créer un compte"
+    },
+    "register": {
+      "title": "Inscription",
+      "subtitle": "Plateforme IA tout-en-un",
+      "signUpWithGoogle": "S'inscrire avec Google",
+      "signUpWithFacebook": "S'inscrire avec Facebook",
+      "divider": "ou avec votre email",
+      "fullNameLabel": "Nom complet",
+      "emailLabel": "Adresse email",
+      "passwordLabel": "Mot de passe",
+      "confirmPasswordLabel": "Confirmer le mot de passe",
+      "createAccountButton": "Créer mon compte",
+      "haveAccount": "Déjà un compte ?",
+      "signInLink": "Se connecter"
+    },
+    "forgotPassword": {
+      "title": "Mot de passe oublié",
+      "subtitle": "Mot de passe oublié ?",
+      "description": "Pas de problème ! Entrez votre adresse email et nous vous enverrons un lien pour réinitialiser votre mot de passe.",
+      "emailLabel": "Adresse email",
+      "sendResetLink": "Envoyer le lien de réinitialisation",
+      "sending": "Envoi en cours...",
+      "backToLogin": "Retour à la connexion",
+      "emailSent": "Email envoyé",
+      "checkEmail": "Vérifiez votre boîte mail",
+      "resetLinkSent": "Nous avons envoyé un lien de réinitialisation à",
+      "ifNoEmail": "Si vous ne recevez pas l'email dans les prochaines minutes :",
+      "tryAgain": "Réessayer avec une autre adresse"
+    }
+  },
+  "footer": {
+    "description": "est votre plateforme tout-en-un pour la génération de contenu IA. Créez facilement du contenu professionnel avec nos outils d'intelligence artificielle avancés pour tous vos besoins créatifs et marketing.",
+    "moreServices": "Plus de Services",
+    "needHelp": "Besoin d'aide ?",
+    "contactSupport": "Contactez notre équipe support",
+    "allRightsReserved": "Tous droits réservés.",
+    "privacy": "Confidentialité",
+    "terms": "Conditions d'utilisation",
+    "cookies": "Cookies"
+  },
+  "history": {
+    "title": "Historique",
+    "conversationsTitle": "Historique des conversations",
+    "copyAll": "Copier tout",
+    "clear": "Effacer",
+    "you": "Vous",
+    "copy": "Copier",
+    "download": "Télécharger"
+  },
+  "dashboard": {
+    "home": {
+      "title": "Accueil",
+      "searchPlaceholder": "Rechercher des fonctionnalités...",
+      "all": "Tout",
+      "categories": {
+        "hr": "HR",
+        "content": "Content",
+        "musique": "Musique"
+      },
+      "noFeaturesFound": "Aucune fonctionnalité trouvée",
+      "noFeaturesDescription": "Aucune fonctionnalité ne correspond à vos critères de recherche.",
+      "resetFilters": "Réinitialiser les filtres",
+      "totalFeatures": "{{count}} fonctionnalités au total",
+      "searchResults": "{{count}} résultat{{plural}} sur {{total}} fonctionnalités",
+      "features": {
+        "GenerateurInteligentdarticle": {
+          "title": "Generateur Inteligent d'article",
+          "desc": "Generez vos articles professionnels avec Content flow.",
+          "badge": "Gratuit"
+        },
+        "Simplechat": {
+          "title": "Simple chat",
+          "desc": "Obtenez un chat simple et éfficace pour marquer vos journées.",
+          "badge": "Gratuit"
+        },
+        "TexttoSpeechAI": {
+          "title": "Text-to-Speech AI",
+          "desc": "Generate audio from text using AI. Supports 30+ languages.",
+          "badge": ""
+        }
+      }
+    },
+    "stats": {
+      "generatedContent": "Contenus générés",
+      "totalViews": "Vues totales",
+      "timeSaved": "Temps économisé",
+      "collaborators": "Collaborateurs",
+      "vsLastMonth": "vs mois dernier"
+    }
+  },
+  "form": {
+    "subject": "Sujet de votre publication",
+    "subjectPlaceholder": "Ex: Les tendances marketing 2024...",
+    "targetAudience": "Public cible",
+    "selectAudience": "Sélectionne une audiance",
+    "tone": "Ton de la publication",
+    "selectTone": "Sélectionne un ton",
+    "contentLength": "Longueur du contenu",
+    "short": "courte",
+    "medium": "moyenne",
+    "long": "longue",
+    "renderFormat": "Format de rendu",
+    "selectPlatform": "Sélectionne une plateforme",
+    "generateContent": "Générer le contenu"
+  },
+  "pricing": {
+    "title": "Choisissez votre plan",
+    "subtitle": "Des solutions adaptées à tous vos besoins de création de contenu IA",
+    "monthly": "Mensuel",
+    "annual": "Annuel",
+    "mostPopular": "Le plus populaire",
+    "customSolution": "Besoin d'une solution sur mesure ?",
+    "contactSales": "Contactez notre équipe commerciale",
+    "toggleBilling": "Basculer entre mensuel et annuel",
+    "plans": {
+      "basique": {
+        "name": "Basique",
+        "description": "Parfait pour débuter avec l'IA",
+        "badge": "Gratuit",
+        "buttonText": "Commencer gratuitement",
+        "features": {
+          "5 générations de contenu/jour": "5 générations de contenu/jour",
+          "Chat avec MARKy (limité)": "Chat avec MARKy (limité)",
+          "Templates de base": "Templates de base",
+          "Export en format texte": "Export en format texte",
+          "Support communautaire": "Support communautaire",
+          "Watermark sur les images": "Watermark sur les images"
+        },
+        "limitations": {
+          "Pas d'export avancé": "Pas d'export avancé",
+          "Pas de support prioritaire": "Pas de support prioritaire",
+          "Fonctionnalités limitées": "Fonctionnalités limitées"
+        }
+      },
+      "individuel": {
+        "name": "Individuel",
+        "description": "Idéal pour les professionnels créatifs",
+        "badge": "Populaire",
+        "buttonText": "Commencer l'essai gratuit",
+        "features": {
+          "Générations illimitées": "Générations illimitées",
+          "Chat avec MARKy complet": "Chat avec MARKy complet",
+          "Tous les templates premium": "Tous les templates premium",
+          "AI Text-to-Speech (30+ langues)": "AI Text-to-Speech (30+ langues)",
+          "AI Art & Images (sans watermark)": "AI Art & Images (sans watermark)",
+          "AI Video Generator": "AI Video Generator",
+          "Export en tous formats": "Export en tous formats",
+          "Support prioritaire par email": "Support prioritaire par email",
+          "Historique des projets": "Historique des projets",
+          "API Access (100 req/jour)": "API Access (100 req/jour)"
+        }
+      },
+      "entreprise": {
+        "name": "Entreprise",
+        "description": "Pour les équipes et organisations",
+        "badge": "Pro",
+        "buttonText": "Contacter les ventes",
+        "features": {
+          "Tout du plan Individuel": "Tout du plan Individuel",
+          "Gestion d'équipe (jusqu'à 10 utilisateurs)": "Gestion d'équipe (jusqu'à 10 utilisateurs)",
+          "AI Talking Videos": "AI Talking Videos",
+          "AI Photo Generator": "AI Photo Generator",
+          "AI Headshot Generator": "AI Headshot Generator",
+          "News Article Generator": "News Article Generator",
+          "Branding personnalisé": "Branding personnalisé",
+          "API Access illimité": "API Access illimité",
+          "Support téléphonique dédié": "Support téléphonique dédié",
+          "Formation personnalisée": "Formation personnalisée",
+          "Intégrations avancées": "Intégrations avancées",
+          "Rapports d'utilisation détaillés": "Rapports d'utilisation détaillés"
+        }
+      }
+    }
+  },
+  "generate": {
+    "title": "Générateur de Contenu",
+    "description": "Décrivez le contenu que vous souhaitez créer et notre IA le générera pour vous.",
+    "placeholder": "Décrivez le contenu que vous souhaitez créer...",
+    "settings": "Paramètres de génération",
+    "targetAudience": "Public cible",
+    "tone": "Ton de la publication",
+    "length": "Longueur du contenu",
+    "platform": "Plateforme",
+    "disclaimer": "Content Flow peut faire des erreurs. Envisagez de vérifier les informations importantes.",
+    "newConversation": "Nouvelle conversation",
+    "viewHistory": "Voir l'historique",
+    "history": {
+      "title": "Historique des Générations",
+      "searchPlaceholder": "Rechercher dans l'historique...",
+      "refresh": "Actualiser",
+      "conversations": "Conversations",
+      "totalMessages": "Messages totaux",
+      "thisMonth": "Ce mois-ci",
+      "noConversationsFound": "Aucune conversation trouvée",
+      "noResultsFound": "Aucun résultat ne correspond à vos critères",
+      "startFirstConversation": "Commencez par créer votre première conversation.",
+      "tryModifyFilters": "Essayez de modifier vos filtres de recherche.",
+      "messagesCount": "{{count}} messages",
+      "you": "Vous",
+      "viewConversation": "Voir conversation",
+      "collapse": "Réduire",
+      "download": "Télécharger",
+      "continue": "Continuer",
+      "copy": "Copier"
+    }
+  },
+  "header": {
+    "solutions": "Solutions",
+    "reviews": "Revues",
+    "resources": "Ressource",
+    "aiVoice": "AI Voice",
+    "pricing": "Pricing",
+    "signIn": "Se connecter",
+    "dashboard": "Dashboard"
+  },
+  "home": {
+    "title": "Content Flow Toolbox",
+    "subtitle": "Générez du contenu rapidement",
+    "description": "Générez vos articles professionnels avec Content Flow.",
+    "getStarted": "Commencer",
+    "learnMore": "En savoir plus",
+    "hero": {
+      "title": "Générez vos articles plus facilement avec Content Flow Toolbox",
+      "tryFree": "Essayer gratuitement",
+      "noCreditCard": "Pas de carte de crédit requis"
+    },
+    "tryTool": "Essayez notre outil",
+    "intuitiveFriendly": "Intuitif et convivial pour vos publications",
+    "features": {
+      "title": "Fonctionnalités",
+      "subtitle": "Découvrez nos outils puissants",
+      "intelligentGenerator": {
+        "title": "Générateur Intelligent d'article",
+        "description": "Générez vos articles professionnels avec Content flow.",
+        "badge": "Gratuit"
+      },
+      "simpleChat": {
+        "title": "Chat simple",
+        "description": "Obtenez un chat simple et efficace pour marquer vos journées.",
+        "badge": "Gratuit"
+      },
+      "textToSpeech": {
+        "title": "Text-to-Speech AI",
+        "description": "Générez de l'audio à partir de texte en utilisant l'IA. Supporte 30+ langues.",
+        "badge": "Pro"
+      }
+    },
+    "pricing": {
+      "title": "Tarification",
+      "subtitle": "Choisissez le plan qui vous convient",
+      "basic": {
+        "name": "Basique",
+        "price": "Gratuit",
+        "description": "Parfait pour commencer"
+      },
+      "pro": {
+        "name": "Pro",
+        "price": "9.99€/mois",
+        "description": "Pour les professionnels"
+      },
+      "enterprise": {
+        "name": "Entreprise",
+        "price": "Sur mesure",
+        "description": "Pour les grandes équipes"
+      }
+    }
+  },
+  "sidebar": {
+    "menu": "Menu",
+    "collapse": "Réduire",
+    "expand": "Développer",
+    "loading": "Chargement...",
+    "error": "Erreur lors du chargement de l'historique"
+  },
+  "errors": {
+    "generic": "Une erreur s'est produite",
+    "network": "Erreur de connexion",
+    "unauthorized": "Non autorisé",
+    "notFound": "Ressource non trouvée",
+    "serverError": "Erreur du serveur",
+    "validation": "Erreur de validation",
+    "required": "Ce champ est requis",
+    "invalidEmail": "Email invalide",
+    "passwordTooShort": "Le mot de passe est trop court",
+    "passwordsDoNotMatch": "Les mots de passe ne correspondent pas"
+  },
+  "success": {
+    "saved": "Enregistré avec succès",
+    "deleted": "Supprimé avec succès",
+    "updated": "Mis à jour avec succès",
+    "created": "Créé avec succès",
+    "copied": "Copié dans le presse-papiers",
+    "sent": "Envoyé avec succès"
+  }
+}

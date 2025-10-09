@@ -12,6 +12,7 @@ import ChatInput from "@/components/chat/ChatInput";
 import ChatLoadingIndicator from "@/components/chat/ChatLoadingIndicator";
 import ChatEmptyState from "@/components/chat/ChatEmptyState";
 import GenerationSettings from "@/components/chat/GenerationSettings";
+import { useTranslation } from "react-i18next";
 
 interface GeneratedContent {
   id: string;
@@ -26,6 +27,7 @@ interface GeneratedContent {
 
 const GenerateChatPage = () => {
   const { user } = useUser();
+  const { t } = useTranslation();
   const router = useRouter();
 
   const [form, setForm] = useState({
@@ -243,7 +245,7 @@ const GenerateChatPage = () => {
   }, [form]);
 
   return (
-    <DashboardLayout title="Générateur de Contenu">
+    <DashboardLayout title={t("generate.title", "Générateur de Contenu")}>
       <div className="flex-1 overflow-hidden bg-white relative h-full">
         <div className="overflow-y-auto h-full px-6 py-6 pb-80">
           <div className="max-w-4xl mx-auto">
@@ -264,7 +266,7 @@ const GenerateChatPage = () => {
               <ChatEmptyState
                 icon={Sparkles}
                 title={appConfig.name}
-                description="Décrivez le contenu que vous souhaitez créer et notre IA le générera pour vous."
+                description={t("generate.description", "Décrivez le contenu que vous souhaitez créer et notre IA le générera pour vous.")}
               />
             )}
           </div>
@@ -275,7 +277,7 @@ const GenerateChatPage = () => {
           onChange={(value) => handleChange("subject", value)}
           onSubmit={() => handleSubmit()}
           isLoading={isLoading}
-          placeholder="Décrivez le contenu que vous souhaitez créer..."
+          placeholder={t("generate.placeholder", "Décrivez le contenu que vous souhaitez créer...")}
           showSettings={showSettings}
           onToggleSettings={() => setShowSettings(!showSettings)}
           settingsPanel={
@@ -295,8 +297,7 @@ const GenerateChatPage = () => {
           footerContent={
             <div className="space-y-2">
               <p className="text-xs text-gray-500">
-                Content Flow peut faire des erreurs. Envisagez de vérifier les
-                informations importantes.
+                {t("generate.disclaimer", "Content Flow peut faire des erreurs. Envisagez de vérifier les informations importantes.")}
               </p>
               <div className="flex items-center justify-center space-x-4">
                 {conversationHistory.length > 0 && (
@@ -305,7 +306,7 @@ const GenerateChatPage = () => {
                     className="text-xs text-green-600 hover:text-green-800 transition-colors flex items-center space-x-1"
                   >
                     <Sparkles className="w-3 h-3" />
-                    <span>Nouvelle conversation</span>
+                    <span>{t("generate.newConversation", "Nouvelle conversation")}</span>
                   </button>
                 )}
                 <Link
@@ -313,7 +314,7 @@ const GenerateChatPage = () => {
                   className="text-xs text-primary/90 hover:text-primary transition-colors flex items-center space-x-1"
                 >
                   <History className="w-3 h-3" />
-                  <span>Voir l&apos;historique</span>
+                  <span>{t("generate.viewHistory", "Voir l'historique")}</span>
                 </Link>
               </div>
             </div>

@@ -4,6 +4,13 @@ export const appConfig = {
   n8nBaseUrl: process.env["NEXT_PUBLIC_N8N_BASE_URL"],
   name: "Content Flow Toolbox",
   description: "Generate content fastly",
+  
+  // Translation keys for dynamic content
+  translationKeys: {
+    name: "home.title",
+    description: "home.subtitle",
+  },
+  
   targetPeoples: [
     {
       value: "Professionnels",
