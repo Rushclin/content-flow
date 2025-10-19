@@ -5,5 +5,33 @@
     "subtitle": "Save time, amplify your impact, and let AI help boost your online presence.",
     "try": "Try it for free",
     "noCreditCard": "No credit card required"
+  },
+  "aboutUs": {
+    "points": {
+      "unlimitedCreativity": {
+        "title": "🌟 Unlimited Creativity",
+        "description": "Our AI transforms your ideas into impactful content. Whether it's for social media, blogs, or campaigns — let technology boost your creativity."
+      },
+      "cuttingEdgeTechnology": {
+        "title": "⚙️ Cutting-Edge Technology",
+        "description": "We combine artificial intelligence, semantic analysis, and social trends to produce content that captures attention and drives engagement."
+      },
+      "savePreciousTime": {
+        "title": "🕒 Save Precious Time",
+        "description": "Write, plan, and publish in just a few clicks. No more endless brainstorming — your content is ready in seconds."
+      },
+      "builtForCreators": {
+        "title": "🤝 Built for Creators and Teams",
+        "description": "Whether you’re a community manager, brand, or independent creator, our platform adapts to your workflow and supports seamless collaboration."
+      },
+      "publishEverywhere": {
+        "title": "🌍 Publish Everywhere from One Place",
+        "description": "Centralize your posts for all your social media — Instagram, LinkedIn, TikTok, X, Facebook, and more — all managed in one interface."
+      },
+      "securityPrivacy": {
+        "title": "🔒 Security and Privacy First",
+        "description": "Your ideas and data belong to you. We ensure ethical, secure, and private use of your content at every step."
+      }
+    }
   }
 }

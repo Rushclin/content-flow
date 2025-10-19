@@ -40,7 +40,7 @@ const Header = ({ hideMenu = false }) => {
       <div className={twMerge("hidden " + (hideMenu ? "" : " md:flex"))}>
         <ul className="text-md flex justify-between text-slate-800 md:gap-4 xl:gap-12">
           <li>
-            <Link href={"/solutions"}>{t("header.solutions", "Solutions")}</Link>
+            <Link href="#Solutions">{t("header.solutions", "Solutions")}</Link>
           </li>
           <li>
             <a href={"/reviews"}>{t("header.reviews", "Revues")}</a>

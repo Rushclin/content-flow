@@ -20,7 +20,7 @@ const Hero = () => {
         >
           <div className="flex flex-shrink-0 flex-col items-center justify-start ">
             <div
-              className="flex flex-col justify-center gap-2 text-center text-5xl font-semibold leading-tight md:text-4xl lg:text-5xl 2xl:text-6xl"
+              className="flex flex-col justify-center gap-2 text-center text-4xl font-semibold leading-tight md:text-5xl"
               dangerouslySetInnerHTML={{
                 __html: `<span class='text-slate-700'>${t(
                   "hero.title",

@@ -1,4 +1,5 @@
 import Loading from "@/components/common/Loading";
+import AboutUs from "@/components/public/AboutUs";
 import Footer from "@/components/public/Footer";
 import FormGeneration from "@/components/public/FormGeneration";
 import Header from "@/components/public/Header";
@@ -11,7 +12,7 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 const HomePage = () => {
-  const {t} = useTranslation("home")
+  const { t } = useTranslation("home");
   const [mounted, setMounted] = useState(false); // https://stackoverflow.com/questions/73162551/how-to-solve-react-hydration-error-in-nextjs
 
   useEffect(() => {
@@ -24,6 +25,7 @@ const HomePage = () => {
     <PublicLayout title={t("title")}>
       <Header />
       <Hero />
+      <AboutUs />
       <FormGeneration />
       <Pricing />
       <Footer />
