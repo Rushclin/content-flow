@@ -1,0 +1,37 @@
+{
+  "title": "Content Flow est votre plateforme tout-en-un idéale pour la publication.",
+  "hero": {
+    "title": "L'avenir de la création de contenu est arrivé. De l'idée à la publication.",
+    "subtitle": "Gagnez du temps, amplifiez votre impact et laissez l'IA vous aider à booster votre présence en ligne.",
+    "try": "Essayer gratuitement",
+    "noCreditCard": "Aucune carte de crédit requise"
+  },
+  "aboutUs": {
+    "points": {
+      "unlimitedCreativity": {
+        "title": "🌟 Créativité Illimitée",
+        "description": "Notre IA transforme vos idées en contenus percutants. Que ce soit pour les réseaux sociaux, les blogs ou vos campagnes — laissez la technologie stimuler votre créativité."
+      },
+      "cuttingEdgeTechnology": {
+        "title": "⚙️ Technologie de Pointe",
+        "description": "Nous combinons intelligence artificielle, analyse sémantique et tendances sociales pour produire des contenus captivants et engageants."
+      },
+      "savePreciousTime": {
+        "title": "🕒 Gagnez un Temps Précieux",
+        "description": "Rédigez, planifiez et publiez en quelques clics. Fini les longues séances de réflexion — vos contenus sont prêts en quelques secondes."
+      },
+      "builtForCreators": {
+        "title": "🤝 Conçu pour les Créateurs et les Équipes",
+        "description": "Que vous soyez community manager, marque ou créateur indépendant, notre plateforme s’adapte à votre façon de travailler et facilite la collaboration."
+      },
+      "publishEverywhere": {
+        "title": "🌍 Publiez Partout depuis une Seule Interface",
+        "description": "Centralisez vos publications sur tous vos réseaux sociaux — Instagram, LinkedIn, TikTok, X, Facebook et plus encore — le tout depuis un seul espace."
+      },
+      "securityPrivacy": {
+        "title": "🔒 Sécurité et Confidentialité Avant Tout",
+        "description": "Vos idées et vos données vous appartiennent. Nous garantissons une utilisation éthique, sécurisée et privée de vos contenus à chaque étape."
+      }
+    }
+  }
+}

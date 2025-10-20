@@ -1,23 +1,15 @@
 import { appConfig } from "@/config/app";
 import { SidebarProvider } from "@/context/SidebarContext";
 import { ClerkProvider } from "@clerk/nextjs";
-import "@/styles/globals.css";
 import type { AppProps } from "next/app";
 import Head from "next/head";
-import { useEffect } from "react";
-import { useRouter } from "next/router";
-import i18n from "@/lib/i18n";
+import { Suspense } from "react";
+import { Loader2 } from "lucide-react";
+import NextNProgress from "nextjs-progressbar";
+import { appWithTranslation } from "next-i18next";
+import "@/styles/globals.css";
 
 const App = ({ Component, pageProps }: AppProps) => {
-  const router = useRouter();
-
-  useEffect(() => {
-    // Initialize i18n with the current locale and sync on every locale change
-    if (router.locale) {
-      i18n.changeLanguage(router.locale);
-    }
-  }, [router.locale]);
-
   return (
     <>
       <Head>
@@ -27,35 +19,45 @@ const App = ({ Component, pageProps }: AppProps) => {
 
         <meta name="description" content={appConfig.description} />
         <meta name="keywords" content="AI, Generation, Automation" />
-        <meta name="author" content="Rushclin Takam From Novalitix" />
+        <meta name="author" content="Novalitix" />
 
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <meta name="theme-color" content="#0f172a" />
+        <meta name="theme-color" content="#036eb7" />
 
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:site" content="@ContentFlowAI" />
-        <meta name="twitter:creator" content="@RushclinTakam" />
+        <meta name="twitter:creator" content="@Novalitix" />
         <meta name="twitter:title" content={appConfig.name} />
         <meta name="twitter:description" content={appConfig.description} />
         <meta name="twitter:image" content="/og-image.png" />
-        <meta name="twitter:image:alt" content={`${appConfig.name} - ${appConfig.description}`} />
+        <meta
+          name="twitter:image:alt"
+          content={`${appConfig.name} - ${appConfig.description}`}
+        />
 
         <link rel="icon" href="/favicon.png" />
-        <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
-        <link rel="manifest" href="/manifest.json" />
       </Head>
-      <ClerkProvider
-        {...pageProps}
-        appearance={{
-          cssLayerName: "clerk",
-        }}
-      >
-        <SidebarProvider>
-          <Component {...pageProps} />
-        </SidebarProvider>
-      </ClerkProvider>
+      <Suspense fallback={<Loader2 className="animate-spin ease-in" />}>
+        <NextNProgress
+          color="#036eb7"
+          startPosition={0.3}
+          stopDelayMs={100}
+          height={5}
+        />
+        <ClerkProvider
+          {...pageProps}
+          appearance={{
+            cssLayerName: "clerk",
+          }}
+        >
+          <SidebarProvider>
+            <Component {...pageProps} />
+          </SidebarProvider>
+        </ClerkProvider>
+      </Suspense>
     </>
   );
 };
 
-export default App;
+export default appWithTranslation(App);
+

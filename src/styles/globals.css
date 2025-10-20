@@ -8,8 +8,8 @@
 @theme inline {
   /* --color-background: var(--background);
   --color-foreground: var(--foreground); */
-  --color-primary: #036EB7;
-  --color-secondary: #FDC622;
+  --color-primary: #036eb7;
+  --color-secondary: #fdc622;
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
@@ -22,31 +22,89 @@
 }
 
 @font-face {
-  font-family: "Recoleta";
-  src: url("/fonts/recoleta/Recoleta-Regular.ttf");
+  font-family: "ClashDisplay-Extralight";
+  src: url("/fonts/clashdisplay/ClashDisplay-Extralight.woff2") format("woff2"),
+    url("/fonts/clashdisplay/ClashDisplay-Extralight.woff") format("woff"),
+    url("/fonts/clashdisplay/ClashDisplay-Extralight.ttf") format("truetype");
+  font-weight: 200;
   font-display: swap;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "ClashDisplay-Light";
+  src: url("/fonts/clashdisplay/ClashDisplay-Light.woff2") format("woff2"),
+    url("/fonts/clashdisplay/ClashDisplay-Light.woff") format("woff"),
+    url("/fonts/clashdisplay/ClashDisplay-Light.ttf") format("truetype");
+  font-weight: 300;
+  font-display: swap;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "ClashDisplay-Regular";
+  src: url("/fonts/clashdisplay/ClashDisplay-Regular.woff2") format("woff2"),
+    url("/fonts/clashdisplay/ClashDisplay-Regular.woff") format("woff"),
+    url("/fonts/clashdisplay/ClashDisplay-Regular.ttf") format("truetype");
   font-weight: 400;
+  font-display: swap;
+  font-style: normal;
 }
 
 @font-face {
-  font-family: "Recoleta";
-  src: url("/fonts/recoleta/Recoleta-Medium.ttf");
-  font-display: swap;
+  font-family: "ClashDisplay-Medium";
+  src: url("/fonts/clashdisplay/ClashDisplay-Medium.woff2") format("woff2"),
+    url("/fonts/clashdisplay/ClashDisplay-Medium.woff") format("woff"),
+    url("/fonts/clashdisplay/ClashDisplay-Medium.ttf") format("truetype");
   font-weight: 500;
+  font-display: swap;
+  font-style: normal;
 }
 
 @font-face {
-  font-family: "Recoleta";
-  src: url("/fonts/recoleta/Recoleta-SemiBold.ttf");
-  font-display: swap;
+  font-family: "ClashDisplay-Semibold";
+  src: url("/fonts/clashdisplay/ClashDisplay-Semibold.woff2") format("woff2"),
+    url("/fonts/clashdisplay/ClashDisplay-Semibold.woff") format("woff"),
+    url("/fonts/clashdisplay/ClashDisplay-Semibold.ttf") format("truetype");
   font-weight: 600;
+  font-display: swap;
+  font-style: normal;
 }
 
 @font-face {
-  font-family: "Recoleta";
-  src: url("/fonts/recoleta/Recoleta-Bold.ttf");
-  font-display: swap;
+  font-family: "ClashDisplay-Bold";
+  src: url("/fonts/clashdisplay/ClashDisplay-Bold.woff2") format("woff2"),
+    url("/fonts/clashdisplay/ClashDisplay-Bold.woff") format("woff"),
+    url("/fonts/clashdisplay/ClashDisplay-Bold.ttf") format("truetype");
   font-weight: 700;
+  font-display: swap;
+  font-style: normal;
+}
+
+/**
+* This is a variable font
+* You can control variable axes as shown below:
+* font-variation-settings: wght 700.0;
+*
+* available axes:
+'wght' (range from 200.0 to 700.0
+*/
+@font-face {
+  font-family: "ClashDisplay-Variable";
+  src: url("/fonts/clashdisplay/ClashDisplay-Variable.woff2") format("woff2"),
+    url("/fonts/clashdisplay/ClashDisplay-Variable.woff") format("woff"),
+    url("/fonts/clashdisplay/ClashDisplay-Variable.ttf") format("truetype");
+  font-weight: 200 700;
+  font-display: swap;
+  font-style: normal;
+}
+
+.clashdisplay {
+  font-family: "ClashDisplay-Regular";
+}
+
+.clashdisplay-bold {
+  font-family: "ClashDisplay-Bold";
 }
 
 body {
@@ -60,10 +118,6 @@ html {
   -webkit-text-size-adjust: 100%;
 }
 
-.recoleta {
-  font-family: "Recoleta";
-}
-
 /* Adding CSS for Sidebar Layout */
 
 @utility menu-item {
@@ -75,7 +129,7 @@ html {
 }
 
 @utility menu-item-inactive {
-  @apply text-gray-700 hover:bg-gray-100 group-hover:text-gray-700 ;
+  @apply text-gray-700 hover:bg-gray-100 group-hover:text-gray-700;
 }
 
 @utility menu-item-icon {
@@ -126,14 +180,12 @@ html {
   @apply text-gray-100 bg-slate-50 group-hover:bg-slate-100;
 }
 
-
 .libre-franklin {
   font-family: "Libre Franklin", sans-serif;
   font-optical-sizing: auto;
   /* font-weight: 800; */
   font-style: normal;
 }
-
 
 .montserrat {
   font-family: "Montserrat", sans-serif;

@@ -1,7 +1,6 @@
 import { useRouter } from "next/router";
-import { useEffect, useCallback, ChangeEvent } from "react";
+import { useEffect, useCallback } from "react";
 import { twMerge } from "tailwind-merge";
-import { useTranslation } from "react-i18next";
 
 const LANGUAGES = {
   en: { full: "English", short: "EN", flag: "🇬🇧" },
@@ -10,10 +9,9 @@ const LANGUAGES = {
 
 const LanguageSwitcher = ({ className = "" }) => {
   const router = useRouter();
-  const { t, i18n: i18nInstance } = useTranslation();
 
   useEffect(() => {
-    const savedLocale = localStorage.getItem("i18nextLng");
+    const savedLocale = localStorage.getItem("locale");
     if (savedLocale && savedLocale !== router.locale) {
       router.push(
         {
@@ -21,49 +19,38 @@ const LanguageSwitcher = ({ className = "" }) => {
           query: router.query,
         },
         router.asPath,
-        { locale: savedLocale, scroll: false }
+        { locale: savedLocale, scroll: false },
       );
     }
-  }, [router]);
-
-  const updateUserLanguage = useCallback(async (lang: string) => {
-    console.log("New language => ", lang);
-    // Update i18n language
-    i18nInstance.changeLanguage(lang);
-  }, [i18nInstance]);
+  }, []);
 
   const onChange = useCallback(
-    async (e: ChangeEvent<HTMLSelectElement>) => {
+    async (e: React.ChangeEvent<HTMLSelectElement>) => {
       const newLocale = e.target.value;
-      localStorage.setItem("i18nextLng", newLocale);
+      localStorage.setItem("locale", newLocale);
 
-      // Update i18n language immediately
-      i18nInstance.changeLanguage(newLocale);
-
-      // Use Next.js router to change locale
       router.push(
         {
           pathname: router.pathname,
           query: router.query,
         },
         router.asPath,
-        { locale: newLocale, scroll: false }
+        { locale: newLocale, scroll: false },
       );
 
-      updateUserLanguage(newLocale);
     },
-    [router, updateUserLanguage]
+    [router],
   );
 
   return (
     <div
       className={twMerge(
-        "fixed bottom-20 right-5 z-[30] overflow-hidden rounded-md bg-white shadow-md p-1 lg:bottom-5",
-        className
+        "fixed bottom-20 right-5 z-[30] overflow-hidden  bg-white shadow-md lg:bottom-5",
+        className,
       )}
     >
       <label className="sr-only hidden" htmlFor="language-switcher-desktop">
-        {t("common.chooseLanguage", "Choose your language")}
+        Choose your language
       </label>
       <select
         id="language-switcher-desktop"
@@ -83,7 +70,6 @@ const LanguageSwitcher = ({ className = "" }) => {
         className="inline-block cursor-pointer border-none text-center text-sm transition-colors hover:bg-gray-50 lg:hidden"
         onChange={onChange}
         value={router.locale}
-        title={t("common.chooseLanguage", "Choose your language")}
       >
         {Object.entries(LANGUAGES).map(([key, { short, flag }]) => (
           <option key={key} value={key}>
@@ -95,4 +81,4 @@ const LanguageSwitcher = ({ className = "" }) => {
   );
 }
 
-export default LanguageSwitcher;
+export default LanguageSwitcher
