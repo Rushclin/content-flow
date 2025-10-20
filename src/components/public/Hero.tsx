@@ -39,7 +39,7 @@ const Hero = () => {
             <div className="">
               <div className="my-5 flex flex-col items-center justify-center gap-1 text-slate-500">
                 <Link
-                  href="#FormGeneration"
+                  href="/try-it"
                   className="flex items-center mt-2 rounded-full bg-primary/80 transition-colors ease-in p-2 hover:bg-primary px-14 py-3 text-xl text-white hover:bg-orangePrimary md:px-14"
                 >
                   {t("hero.try", "Try it for free")}
