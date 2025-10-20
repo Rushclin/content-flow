@@ -4,6 +4,7 @@ import Footer from "@/components/public/Footer";
 import Header from "@/components/public/Header";
 import Hero from "@/components/public/Hero";
 import Pricing from "@/components/public/Pricing";
+import ExamplesCarousel from "@/components/public/ExamplesCarousel";
 import PublicLayout from "@/layout/public/PublicLayout";
 import { GetStaticProps } from "next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
@@ -24,6 +25,7 @@ const HomePage = () => {
     <PublicLayout title={t("title")}>
       <Header />
       <Hero />
+      <ExamplesCarousel />
       <AboutUs />
       <Pricing />
       <Footer />
