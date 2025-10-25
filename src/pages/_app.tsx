@@ -1,6 +1,5 @@
 import { appConfig } from "@/config/app";
 import { SidebarProvider } from "@/context/SidebarContext";
-import { ClerkProvider } from "@clerk/nextjs";
 import type { AppProps } from "next/app";
 import Head from "next/head";
 import { Suspense } from "react";
@@ -8,6 +7,8 @@ import { Loader2 } from "lucide-react";
 import NextNProgress from "nextjs-progressbar";
 import { appWithTranslation } from "next-i18next";
 import "@/styles/globals.css";
+import { AuthProvider } from "@/context/AuthContext";
+import { ToastProvider } from "@/context/ToastProvider";
 
 const App = ({ Component, pageProps }: AppProps) => {
   return (
@@ -44,20 +45,15 @@ const App = ({ Component, pageProps }: AppProps) => {
           stopDelayMs={100}
           height={5}
         />
-        <ClerkProvider
-          {...pageProps}
-          appearance={{
-            cssLayerName: "clerk",
-          }}
-        >
+        <AuthProvider>
           <SidebarProvider>
             <Component {...pageProps} />
           </SidebarProvider>
-        </ClerkProvider>
+        </AuthProvider>
+        <ToastProvider />
       </Suspense>
     </>
   );
 };
 
 export default appWithTranslation(App);
-

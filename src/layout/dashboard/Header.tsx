@@ -1,5 +1,4 @@
 import { useSidebar } from "@/context/SidebarContext";
-import { SignedIn, UserButton } from "@clerk/nextjs";
 import { PanelLeftOpen } from "lucide-react";
 import React, { useEffect, useRef } from "react";
 
@@ -46,13 +45,13 @@ const Header: React.FC<HeaderProps> = ({ actions }) => {
             <PanelLeftOpen className="h-5 w-5 text-slate-500 hover:text-slate-700 transition-colors" />
           </button>
 
-          {actions ? (
+          {/* {actions ? (
             actions
           ) : (
             <SignedIn>
               <UserButton showName />
             </SignedIn>
-          )}
+          )} */}
         </div>
       </div>
     </header>

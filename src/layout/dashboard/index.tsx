@@ -1,11 +1,13 @@
 import { useSidebar } from "@/context/SidebarContext";
-import React from "react";
+import React, { useEffect } from "react";
 import Header from "./Header";
 import Sidebar from "./Sidebar";
 import Backdrop from "./Backdrop";
 import Head from "next/head";
 import { appConfig } from "@/config/app";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
+import { useAuth } from "@/context/AuthContext";
+import { useRouter } from "next/router";
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
@@ -18,9 +20,11 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
   children,
   description,
   title,
-  actions
+  actions,
 }) => {
   const { isExpanded, isHovered, isMobileOpen } = useSidebar();
+  const { isAuthenticated, isLoading } = useAuth();
+  const router = useRouter();
 
   const mainContentMargin = isMobileOpen
     ? "ml-0"
@@ -28,6 +32,9 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
     ? "lg:ml-[290px]"
     : "lg:ml-[90px]";
 
+  useEffect(() => {
+    if (!isLoading) if (!isAuthenticated) router.push("/auth/login");
+  }, [isAuthenticated, isLoading]);
   return (
     <div className="min-h-screen xl:flex">
       <Head>

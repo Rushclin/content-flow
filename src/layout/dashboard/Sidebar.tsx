@@ -5,14 +5,15 @@ import { useSidebar } from "@/context/SidebarContext";
 import { ChevronDown } from "lucide-react";
 import Logo from "@/components/common/Logo";
 import { NavItem, navItems } from "@/navigation";
-import { SignedIn, UserButton, useUser } from "@clerk/nextjs";
+// import { SignedIn, UserButton, useUser } from "@clerk/nextjs";
 import axios from "axios";
 import { useTranslation } from "react-i18next";
+import { useAuth } from "@/context/AuthContext";
 
 const Sidebar: React.FC = () => {
   const { isExpanded, isMobileOpen, isHovered, setIsHovered } = useSidebar();
   const pathname = usePathname();
-  const { user } = useUser();
+  const { user } = useAuth();
   const { t } = useTranslation();
 
   const [conversations, setConversations] = useState<Array<{ id: string; title: string }>>([]);
@@ -287,7 +288,7 @@ const Sidebar: React.FC = () => {
             {renderMenuItems(dynamicNavItems, "main")}
           </div>
 
-          <div
+          {/* <div
             className={`absolute ${
               isMobileOpen ? "bottom-24" : "bottom-5"
             } right-10`}
@@ -295,7 +296,7 @@ const Sidebar: React.FC = () => {
             <SignedIn>
               <UserButton showName={isExpanded || isMobileOpen} />
             </SignedIn>
-          </div>
+          </div> */}
         </nav>
       </div>
     </aside>
