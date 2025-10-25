@@ -1,6 +1,5 @@
 import { appConfig } from "@/config/app";
 import { SidebarProvider } from "@/context/SidebarContext";
-import { ClerkProvider } from "@clerk/nextjs";
 import type { AppProps } from "next/app";
 import Head from "next/head";
 import { Suspense } from "react";
@@ -44,20 +43,12 @@ const App = ({ Component, pageProps }: AppProps) => {
           stopDelayMs={100}
           height={5}
         />
-        <ClerkProvider
-          {...pageProps}
-          appearance={{
-            cssLayerName: "clerk",
-          }}
-        >
-          <SidebarProvider>
-            <Component {...pageProps} />
-          </SidebarProvider>
-        </ClerkProvider>
+        <SidebarProvider>
+          <Component {...pageProps} />
+        </SidebarProvider>
       </Suspense>
     </>
   );
 };
 
 export default appWithTranslation(App);
-
