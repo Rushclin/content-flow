@@ -8,6 +8,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import Input from "@/components/common/Input";
 import { useTranslation } from "react-i18next";
+import { useAuth } from "@/context/AuthContext";
 
 const registerSchema = z
   .object({
@@ -41,6 +42,8 @@ type RegisterFormData = z.infer<typeof registerSchema>;
 
 const RegisterForm = () => {
   const { t } = useTranslation();
+  const { register: registerUser } = useAuth();
+
   const {
     register,
     handleSubmit,
@@ -51,10 +54,12 @@ const RegisterForm = () => {
   });
 
   const onSubmit = async (data: RegisterFormData) => {
-    // Simulation d'un délai
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-
-    console.log("Tentative d'inscription avec:", data);
+    try {
+      const { confirmPassword, ...credentials } = data;
+      await registerUser(credentials);
+    } catch (err: any) {
+      // Les erreurs sont déjà gérées par le contexte via toast
+    }
   };
 
   return (

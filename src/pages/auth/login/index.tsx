@@ -9,6 +9,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import Input from "@/components/common/Input";
 import { useTranslation } from "react-i18next";
+import { useAuth } from "@/context/AuthContext";
 
 const loginSchema = z.object({
   email: z
@@ -25,6 +26,8 @@ type LoginFormData = z.infer<typeof loginSchema>;
 
 const LoginPage = () => {
   const { t } = useTranslation();
+  const { login } = useAuth();
+
   const {
     register,
     handleSubmit,
@@ -35,8 +38,11 @@ const LoginPage = () => {
   });
 
   const onSubmit = async (data: LoginFormData) => {
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    console.log("Tentative de connexion avec:", data);
+    try {
+      await login(data);
+    } catch (err: any) {
+      // Les erreurs sont déjà gérées par le contexte via toast
+    }
   };
 
   return (

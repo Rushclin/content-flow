@@ -7,6 +7,8 @@ import { Loader2 } from "lucide-react";
 import NextNProgress from "nextjs-progressbar";
 import { appWithTranslation } from "next-i18next";
 import "@/styles/globals.css";
+import { AuthProvider } from "@/context/AuthContext";
+import { ToastProvider } from "@/context/ToastProvider";
 
 const App = ({ Component, pageProps }: AppProps) => {
   return (
@@ -43,9 +45,12 @@ const App = ({ Component, pageProps }: AppProps) => {
           stopDelayMs={100}
           height={5}
         />
-        <SidebarProvider>
-          <Component {...pageProps} />
-        </SidebarProvider>
+        <AuthProvider>
+          <SidebarProvider>
+            <Component {...pageProps} />
+          </SidebarProvider>
+        </AuthProvider>
+        <ToastProvider />
       </Suspense>
     </>
   );
