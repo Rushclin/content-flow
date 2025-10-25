@@ -11,10 +11,8 @@ const axiosInstance = axios.create({
   timeout: 10000,
 });
 
-// Intercepteur de requête pour ajouter le token
 axiosInstance.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
-    // Récupérer le token depuis localStorage
     if (typeof window !== 'undefined') {
       const token = localStorage.getItem(TOKEN_KEY);
 
@@ -30,17 +28,14 @@ axiosInstance.interceptors.request.use(
   }
 );
 
-// Intercepteur de réponse pour gérer les erreurs d'authentification
 axiosInstance.interceptors.response.use(
   (response) => response,
   (error: AxiosError) => {
-    // Si l'erreur est 401 (non autorisé), déconnecter l'utilisateur
     if (error.response?.status === 401) {
       if (typeof window !== 'undefined') {
         localStorage.removeItem(TOKEN_KEY);
         localStorage.removeItem('auth_user');
 
-        // Rediriger vers la page de connexion si on n'y est pas déjà
         if (!window.location.pathname.includes('/auth/')) {
           window.location.href = '/auth/login';
         }
