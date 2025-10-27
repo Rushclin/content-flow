@@ -20,9 +20,9 @@ const TryPage = () => {
   return (
     <PublicLayout title="Essayez notre outil de generation">
       <Header />
-      <div className="py-10 mt-10 text-center max-w-3xl mx-auto">
+      {/* <div className="py-10 mt-10 text-center max-w-3xl mx-auto">
         <h1 className="text-2xl mt-10">Essayez notre outil</h1>
-      </div>
+      </div> */}
       <FormGeneration />
     </PublicLayout>
   );

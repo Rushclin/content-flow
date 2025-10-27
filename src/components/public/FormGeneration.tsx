@@ -36,9 +36,17 @@ const ComposerForm: React.FC<ComposerFormProps> = ({
     const textarea = textareaRef.current;
     if (textarea) {
       textarea.style.height = "auto";
-      textarea.style.height = `${textarea.scrollHeight}px`;
-
       const lineHeight = parseFloat(getComputedStyle(textarea).lineHeight);
+      const maxHeight = lineHeight * 5;
+
+      if (textarea.scrollHeight > maxHeight) {
+        textarea.style.height = `${maxHeight}px`;
+        textarea.style.overflowY = "auto";
+      } else {
+        textarea.style.height = `${textarea.scrollHeight}px`;
+        textarea.style.overflowY = "hidden";
+      }
+
       setIsMultiline(textarea.scrollHeight > lineHeight + 4);
     }
   }, [message]);
@@ -48,9 +56,9 @@ const ComposerForm: React.FC<ComposerFormProps> = ({
       <div
         className={`flex ${
           isMultiline ? "items-end" : "items-center"
-        } w-full rounded-md shadow-sm border border-slate-200 px-3 py-2 focus-within:ring-1 focus-within:ring-primary transition-all`}
+        } w-full rounded-full shadow-sm border border-slate-200 px-3 py-2 focus-within:ring-1 focus-within:ring-primary transition-all`}
       >
-        <Popover>
+        {/* <Popover>
           <Popover.Button
             as="button"
             type="button"
@@ -131,12 +139,12 @@ const ComposerForm: React.FC<ComposerFormProps> = ({
               </FormSelect>
             </div>
           </Popover.Panel>
-        </Popover>
+        </Popover> */}
 
         <textarea
           ref={textareaRef}
           {...register("subject")}
-          className="flex-1 resize-none border-none bg-transparent text-slate-800 placeholder-gray-400 focus:outline-none px-2 text-sm md:text-base max-h-40 overflow-y-auto"
+          className="flex-1 resize-none border-none bg-transparent text-slate-800 placeholder-gray-400 focus:outline-none px-2 text-sm md:text-base"
           placeholder={t(
             "form.subjectPlaceholder",
             "Sujet de votre publication..."
@@ -319,36 +327,6 @@ const FormGeneration = () => {
           />
         </div>
       </div>
-
-      {/* <div className="text-center max-w-5xl mx-auto ">
-      <div className="relative bottom-0 bg-red-500">
-        <ComposerForm
-          register={register}
-          errors={errors}
-          control={control}
-          isValid={isValid}
-          isLoading={isLoading}
-          onSubmit={handleSubmit(onSubmitHandler)}
-          message={message}
-          setMessage={setMessage}
-        />
-      </div>
-
-      {generatedContent && (
-        <div className="mt-8 p-4 border rounded-md bg-gray-50 text-left space-y-4">
-          <h2 className="text-xl font-semibold">{generatedContent.title}</h2>
-          <p className="whitespace-pre-line">{generatedContent.content}</p>
-          <div className="flex gap-4 mt-2">
-            <button
-              onClick={copyToClipboard}
-              className="flex items-center gap-2 px-3 py-1.5 bg-purple-600 text-white rounded-md hover:bg-purple-700 transition"
-            >
-              <Copy className="w-4 h-4" /> {t("common.copy", "Copier")}
-            </button>
-          </div>
-        </div>
-      )}
-    </div> */}
     </>
   );
 };
