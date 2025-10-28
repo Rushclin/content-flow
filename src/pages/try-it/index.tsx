@@ -149,7 +149,7 @@ const TryPage = () => {
                 }`}
               >
                 <div
-                  className={`max-w-[75%] ${
+                  className={`md:max-w-[75%] w-full ${
                     message.type === "user"
                       ? "bg-primary text-white rounded-2xl rounded-tr-sm"
                       : "bg-white dark:bg-[#2b2b2b] border border-slate-200 rounded-2xl rounded-tl-sm shadow-sm"
