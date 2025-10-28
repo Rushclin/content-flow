@@ -4,11 +4,13 @@ import { twMerge } from "tailwind-merge";
 import Logo from "../common/Logo";
 import { ArrowRightCircle } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { useAuth } from "@/context/AuthContext";
 
 const Header = ({ hideMenu = false }) => {
   const [, setIsMenuOpen] = useState(false);
   const [scrollStart, setScrollStart] = useState(0);
   const { t } = useTranslation();
+  const { isAuthenticated } = useAuth();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -70,21 +72,32 @@ const Header = ({ hideMenu = false }) => {
       </div>
       <div className="flex items-center justify-between gap-2">
         <>
-          <Link
-            href="/auth/login"
-            className="cursor-pointer rounded-full p-2 px-5 text-center text-white bg-primary/90 transition-colors ease-in hover:bg-primary lg:w-28 "
-          >
-            Login
-          </Link>
-          <Link
-            href="/auth/register"
-            className="flex cursor-pointer items-center justify-evenly rounded-full bg-primary/90 p-2 px-2 text-white hover:bg-primary md:w-32"
-          >
-            Register
-            <span className="hidden md:inline-block">
-              <ArrowRightCircle className="h-4 w-4" />
-            </span>
-          </Link>
+          {!isAuthenticated ? (
+            <>
+              <Link
+                href="/auth/login"
+                className="cursor-pointer rounded-full p-2 px-5 text-center text-white bg-primary/90 transition-colors ease-in hover:bg-primary lg:w-28 "
+              >
+                Login
+              </Link>
+              <Link
+                href="/auth/register"
+                className="flex cursor-pointer items-center justify-evenly rounded-full bg-primary/90 p-2 px-2 text-white hover:bg-primary md:w-32"
+              >
+                Register
+                <span className="hidden md:inline-block">
+                  <ArrowRightCircle className="h-4 w-4" />
+                </span>
+              </Link>
+            </>
+          ) : (
+            <Link
+              href="/home"
+              className="flex cursor-pointer items-center justify-evenly rounded-full bg-primary/90 p-2 px-2 text-white hover:bg-primary md:w-32"
+            >
+              Dashboard
+            </Link>
+          )}
         </>
       </div>
     </div>
