@@ -48,7 +48,6 @@ const TryPage = () => {
     console.log({ data });
     setIsLoading(true);
 
-    // Ajouter le message de l'utilisateur
     const userMessage: ChatMessageType = {
       id: `user-${Date.now()}`,
       type: "user",
@@ -78,7 +77,6 @@ const TryPage = () => {
       const { output } = responseDatas.data;
       console.log({ output });
 
-      // Ajouter la réponse de l'IA
       const aiMessage: ChatMessageType = {
         id: `ai-${Date.now()}`,
         type: "ai",
@@ -93,7 +91,6 @@ const TryPage = () => {
 
       setMessages((prev) => [...prev, aiMessage]);
 
-      // Réinitialiser le formulaire
       form.reset({
         subject: "",
         targetAudience: data.targetAudience,
@@ -121,8 +118,8 @@ const TryPage = () => {
       <Header />
 
       {messages.length === 0 ? (
-        <div className="flex items-center justify-center min-h-[calc(100vh-200px)] px-4">
-          <div className="w-full max-w-2xl">
+        <div className="flex items-center justify-center max-w-6xl mx-auto min-h-[calc(100vh-200px)] px-4">
+          <div className="w-full">
             <div className="text-center mb-8">
               <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
                 {t("title", "Générez votre contenu")}
