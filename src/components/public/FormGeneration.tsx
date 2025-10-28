@@ -1,175 +1,254 @@
-import React, { useState, useCallback, useRef, useEffect } from "react";
-import { Copy, Send, Settings } from "lucide-react";
+import React, { useState } from "react";
+import { Loader2, Plus, Send } from "lucide-react";
 import { appConfig } from "@/config/app";
-import axios from "axios";
-import { Controller, useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { Controller, UseFormReturn } from "react-hook-form";
 import { z } from "zod";
 import { useTranslation } from "react-i18next";
-import Popover from "../base/Headless/Popover";
-import { FormSelect, FormLabel } from "../base/Form";
+import { FormLabel } from "../base/Form";
+import { PopoverContent, PopoverTrigger, Popover } from "../ui/popover";
+import { motion } from "framer-motion";
+import { Textarea } from "../ui/textarea";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Button as ShadCnButton } from "@/components/ui/button";
 
-interface ComposerFormProps {
-  register: any;
-  errors: any;
-  control: any;
-  isValid: boolean;
-  isLoading: boolean;
-  onSubmit: (e: React.FormEvent) => void;
-  message: string;
-  setMessage: (message: string) => void;
+export interface ComposerFormProps {
+  form: UseFormReturn<FormGenerationData>;
+  onSubmit: (data: FormGenerationData) => void;
+  isLoading?: boolean;
 }
 
-const ComposerForm: React.FC<ComposerFormProps> = ({
-  register,
-  control,
+export const ComposerForm: React.FC<ComposerFormProps> = ({
+  form,
   isLoading,
   onSubmit,
-  message,
-  setMessage,
 }) => {
   const { t } = useTranslation();
-  const [isMultiline, setIsMultiline] = useState(false);
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const { control, register, handleSubmit } = form;
 
-  useEffect(() => {
-    const textarea = textareaRef.current;
-    if (textarea) {
-      textarea.style.height = "auto";
-      const lineHeight = parseFloat(getComputedStyle(textarea).lineHeight);
-      const maxHeight = lineHeight * 5;
-
-      if (textarea.scrollHeight > maxHeight) {
-        textarea.style.height = `${maxHeight}px`;
-        textarea.style.overflowY = "auto";
-      } else {
-        textarea.style.height = `${textarea.scrollHeight}px`;
-        textarea.style.overflowY = "hidden";
-      }
-
-      setIsMultiline(textarea.scrollHeight > lineHeight + 4);
-    }
-  }, [message]);
+  const [isFocused, setIsFocused] = useState(false);
 
   return (
-    <form onSubmit={onSubmit}>
-      <div
-        className={`flex ${
-          isMultiline ? "items-end" : "items-center"
-        } w-full rounded-full shadow-sm border border-slate-200 px-3 py-2 focus-within:ring-1 focus-within:ring-primary transition-all`}
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <motion.div
+        className="relative rounded-2xl p-4 z-10"
+        animate={{
+          borderColor: isFocused ? "#036eb7" : "#0a0a0a",
+        }}
+        transition={{
+          duration: 0.3,
+        }}
+        style={{
+          borderWidth: "1px",
+          borderStyle: "solid",
+        }}
       >
-        {/* <Popover>
-          <Popover.Button
-            as="button"
-            type="button"
-            className="p-2 text-gray-500 hover:text-primary transition-colors cursor-pointer"
-            aria-label="Open settings"
-          >
-            <Settings className="w-5 h-5" />
-          </Popover.Button>
-
-          <Popover.Panel
-            placement="bottom-start"
-            className="w-80 p-4 space-y-4 bg-slate-50"
-          >
-            <div>
-              <FormLabel htmlFor="targetAudience">
-                {t("form.targetAudience", "Public cible")}
-              </FormLabel>
-              <FormSelect id="targetAudience" {...register("targetAudience")}>
-                <option value="">
-                  {t("form.selectAudience", "Sélectionner une audience")}
-                </option>
-                {appConfig.targetPeoples.map((audience, index) => (
-                  <option key={index} value={audience.value}>
-                    {audience.label}
-                  </option>
-                ))}
-              </FormSelect>
-            </div>
-
-            <div>
-              <FormLabel htmlFor="tone">
-                {t("form.tone", "Ton de la publication")}
-              </FormLabel>
-              <FormSelect id="tone" {...register("tone")}>
-                <option value="">
-                  {t("form.selectTone", "Sélectionner un ton")}
-                </option>
-                {appConfig.pupblicationTonalities.map((tone, index) => (
-                  <option key={index} value={tone.value}>
-                    {tone.label}
-                  </option>
-                ))}
-              </FormSelect>
-            </div>
-
-            <div>
-              <FormLabel htmlFor="length">
-                {t("form.contentLength", "Longueur du contenu")}
-              </FormLabel>
-              <Controller
-                name="length"
-                control={control}
-                render={({ field }) => (
-                  <FormSelect id="length" {...field}>
-                    <option value="courte">{t("form.short", "Courte")}</option>
-                    <option value="moyenne">
-                      {t("form.medium", "Moyenne")}
-                    </option>
-                    <option value="longue">{t("form.long", "Longue")}</option>
-                  </FormSelect>
-                )}
-              />
-            </div>
-
-            <div>
-              <FormLabel htmlFor="platform">
-                {t("form.renderFormat", "Format de rendu")}
-              </FormLabel>
-              <FormSelect id="platform" {...register("platform")}>
-                <option value="">
-                  {t("form.selectPlatform", "Sélectionner une plateforme")}
-                </option>
-                {appConfig.platforms.map((platform, index) => (
-                  <option key={index} value={platform.value}>
-                    {platform.label}
-                  </option>
-                ))}
-              </FormSelect>
-            </div>
-          </Popover.Panel>
-        </Popover> */}
-
-        <textarea
-          ref={textareaRef}
-          {...register("subject")}
-          className="flex-1 resize-none border-none bg-transparent text-slate-800 placeholder-gray-400 focus:outline-none px-2 text-sm md:text-base"
-          placeholder={t(
-            "form.subjectPlaceholder",
-            "Sujet de votre publication..."
-          )}
-          rows={1}
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-        />
-
-        <div className="flex items-center gap-1 ml-2">
-          <button
-            type="submit"
-            disabled={isLoading}
-            className="p-2 text-slate-500 hover:text-primary transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
-            aria-label="Send message"
-          >
-            <Send className="w-5 h-5" />
-          </button>
+        <div className="relative mb-6">
+          <Textarea
+            {...register("subject")}
+            placeholder={t(
+              "form.subjectPlaceholder",
+              "Sujet de votre publication..."
+            )}
+            autoFocus
+            className="min-h-[60px] resize-none bg-transparent border-none text-base placeholder:text-slate-400
+                focus:ring-0 focus:outline-none focus-visible:ring-0 focus-visible:outline-none shadow-none
+                [&:focus]:ring-0 [&:focus]:outline-none [&:focus-visible]:ring-0 [&:focus-visible]:outline-none"
+            onFocus={() => setIsFocused(true)}
+            onBlur={() => setIsFocused(false)}
+          />
         </div>
-      </div>
+
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <Popover>
+              <PopoverTrigger asChild>
+                <ShadCnButton
+                  variant="ghost"
+                  size="sm"
+                  className="h-9 w-9 cursor-pointer rounded-full bg-primary/10 text-primary hover:bg-primary hover:text-white p-0 transition-colors"
+                >
+                  <Plus className="h-4 w-4" />
+                </ShadCnButton>
+              </PopoverTrigger>
+              <PopoverContent
+                side="top"
+                align="start"
+                className="bg-white border-slate-400 w-80 space-y-4 p-4"
+              >
+                <div className="space-y-2">
+                  <FormLabel className="text-sm font-medium">
+                    {t("form.targetAudience", "Public cible")}
+                  </FormLabel>
+                  <Controller
+                    name="targetAudience"
+                    control={control}
+                    render={({ field }) => (
+                      <Select
+                        value={field.value}
+                        onValueChange={field.onChange}
+                      >
+                        <SelectTrigger className="w-full">
+                          <SelectValue
+                            placeholder={t(
+                              "form.selectAudience",
+                              "Sélectionner une audience"
+                            )}
+                          />
+                        </SelectTrigger>
+                        <SelectContent className="bg-white">
+                          <SelectGroup>
+                            {appConfig.targetPeoples.map((audience, index) => (
+                              <SelectItem key={index} value={audience.value}>
+                                {audience.label}
+                              </SelectItem>
+                            ))}
+                          </SelectGroup>
+                        </SelectContent>
+                      </Select>
+                    )}
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <FormLabel className="text-sm font-medium">
+                    {t("form.tone", "Ton de la publication")}
+                  </FormLabel>
+                  <Controller
+                    name="tone"
+                    control={control}
+                    render={({ field }) => (
+                      <Select
+                        value={field.value}
+                        onValueChange={field.onChange}
+                      >
+                        <SelectTrigger className="w-full">
+                          <SelectValue
+                            placeholder={t(
+                              "form.selectTone",
+                              "Sélectionner un ton"
+                            )}
+                          />
+                        </SelectTrigger>
+                        <SelectContent className="bg-white">
+                          <SelectGroup>
+                            {appConfig.pupblicationTonalities.map(
+                              (tone, index) => (
+                                <SelectItem key={index} value={tone.value}>
+                                  {tone.label}
+                                </SelectItem>
+                              )
+                            )}
+                          </SelectGroup>
+                        </SelectContent>
+                      </Select>
+                    )}
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <FormLabel className="text-sm font-medium">
+                    {t("form.contentLength", "Longueur du contenu")}
+                  </FormLabel>
+                  <Controller
+                    name="length"
+                    control={control}
+                    render={({ field }) => (
+                      <Select
+                        value={field.value}
+                        onValueChange={field.onChange}
+                      >
+                        <SelectTrigger className="w-full">
+                          <SelectValue
+                            placeholder={t(
+                              "form.selectLength",
+                              "Sélectionner une longueur"
+                            )}
+                          />
+                        </SelectTrigger>
+                        <SelectContent className="bg-white">
+                          <SelectGroup>
+                            <SelectItem value="courte">
+                              {t("form.short", "Courte")}
+                            </SelectItem>
+                            <SelectItem value="moyenne">
+                              {t("form.medium", "Moyenne")}
+                            </SelectItem>
+                            <SelectItem value="longue">
+                              {t("form.long", "Longue")}
+                            </SelectItem>
+                          </SelectGroup>
+                        </SelectContent>
+                      </Select>
+                    )}
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <FormLabel className="text-sm font-medium">
+                    {t("form.renderFormat", "Format de rendu")}
+                  </FormLabel>
+                  <Controller
+                    name="platform"
+                    control={control}
+                    render={({ field }) => (
+                      <Select
+                        value={field.value}
+                        onValueChange={field.onChange}
+                      >
+                        <SelectTrigger className="w-full">
+                          <SelectValue
+                            placeholder={t(
+                              "form.selectPlatform",
+                              "Sélectionner une plateforme"
+                            )}
+                          />
+                        </SelectTrigger>
+                        <SelectContent className="bg-white">
+                          <SelectGroup>
+                            {appConfig.platforms.map((platform, index) => (
+                              <SelectItem key={index} value={platform.value}>
+                                {platform.label}
+                              </SelectItem>
+                            ))}
+                          </SelectGroup>
+                        </SelectContent>
+                      </Select>
+                    )}
+                  />
+                </div>
+              </PopoverContent>
+            </Popover>
+          </div>
+
+          <div className="flex items-center gap-3">
+            <ShadCnButton
+              type="submit"
+              disabled={isLoading}
+              variant="ghost"
+              size="sm"
+              className="h-10 w-10 cursor-pointer rounded-full bg-primary text-white hover:bg-primary/90 p-0 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {isLoading ? (
+                <Loader2 className="animate-spin w-5 h-5" />
+              ) : (
+                <Send className="h-5 w-5" />
+              )}
+            </ShadCnButton>
+          </div>
+        </div>
+      </motion.div>
     </form>
   );
 };
 
-interface GeneratedContent {
+export interface GeneratedContent {
   id: string;
   title: string;
   content: string;
@@ -183,7 +262,7 @@ interface GeneratedContent {
   videos?: string[];
 }
 
-const formGenerationSchema = z.object({
+export const formGenerationSchema = z.object({
   subject: z
     .string()
     .min(1, "Le sujet est obligatoire")
@@ -207,128 +286,4 @@ const formGenerationSchema = z.object({
   }),
 });
 
-type FormGenerationData = z.infer<typeof formGenerationSchema>;
-
-const FormGeneration = () => {
-  const { t } = useTranslation();
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isValid },
-    control,
-    watch,
-  } = useForm<FormGenerationData>({
-    resolver: zodResolver(formGenerationSchema),
-    mode: "onChange",
-    defaultValues: {
-      subject: "",
-      targetAudience: "Professionnels",
-      tone: "professionnel",
-      length: "moyenne",
-      platform: "LinkedIn",
-      language: "fr",
-    },
-  });
-
-  const [generatedContent, setGeneratedContent] =
-    useState<GeneratedContent | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [message, setMessage] = useState("");
-
-  const subject = watch("subject");
-
-  useEffect(() => {
-    setMessage(subject || "");
-  }, [subject]);
-
-  const onSubmitHandler = useCallback(async (data: FormGenerationData) => {
-    setIsLoading(true);
-
-    try {
-      const response = await axios.post(
-        appConfig.n8nBaseUrl ||
-          "https://automation.novalitix.com/webhook/generate-content",
-        {
-          theme: data.subject,
-          details: `Public cible: ${data.targetAudience}, Ton: ${data.tone}, Longueur: ${data.length}`,
-          platform: data.platform,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-
-      const { output } = response.data;
-
-      const newContent: GeneratedContent = {
-        id: Date.now().toString(),
-        title: data.subject,
-        content: output,
-        platform: data.platform,
-        tone: data.tone,
-        length: data.length,
-        language: data.language,
-        createdAt: new Date(),
-        isFavorite: false,
-      };
-
-      setGeneratedContent(newContent);
-      setMessage("");
-    } catch (error) {
-      console.error("Erreur réseau:", error);
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
-
-  const copyToClipboard = useCallback(() => {
-    if (generatedContent) {
-      navigator.clipboard.writeText(generatedContent.content);
-      alert(t("success.copied", "Contenu copié !"));
-    }
-  }, [generatedContent, t]);
-
-  return (
-    <>
-      <div className="flex flex-col h-[100vh] max-w-5xl mx-auto bg-white dark:bg-[#1f1f1f]">
-        <div className="flex-1 overflow-y-auto px-4 py-6 space-y-6">
-          {generatedContent && (
-            <div className="p-4 border rounded-md bg-gray-50 dark:bg-[#2b2b2b] text-left space-y-4 shadow-sm">
-              <h2 className="text-xl font-semibold">
-                {generatedContent.title}
-              </h2>
-              <p className="whitespace-pre-line text-gray-800 dark:text-gray-200">
-                {generatedContent.content}
-              </p>
-              <div className="flex gap-4 mt-2">
-                <button
-                  onClick={copyToClipboard}
-                  className="flex items-center gap-2 px-3 py-1.5 bg-primary text-white rounded-md hover:bg-primary/90 transition"
-                >
-                  <Copy className="w-4 h-4" /> {t("common.copy", "Copier")}
-                </button>
-              </div>
-            </div>
-          )}
-        </div>
-
-        <div className="sticky bottom-0 left-0 right-0 bg-white px-4 py-3">
-          <ComposerForm
-            register={register}
-            errors={errors}
-            control={control}
-            isValid={isValid}
-            isLoading={isLoading}
-            onSubmit={handleSubmit(onSubmitHandler)}
-            message={message}
-            setMessage={setMessage}
-          />
-        </div>
-      </div>
-    </>
-  );
-};
-
-export default FormGeneration;
+export type FormGenerationData = z.infer<typeof formGenerationSchema>;
