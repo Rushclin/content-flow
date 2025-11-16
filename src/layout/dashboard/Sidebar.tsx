@@ -15,8 +15,6 @@ const Sidebar: React.FC = () => {
   const { user } = useAuth();
   const { t } = useTranslation();
 
-  console.log({ user });
-
   const [conversations, setConversations] = useState<
     Array<{ id: string; title: string }>
   >([]);
@@ -42,21 +40,19 @@ const Sidebar: React.FC = () => {
 
   useEffect(() => {
     fetchHistory();
-    console.log("Fetching history for user:", user);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // fusionner les items du menu statique + historique récupéré
   const dynamicNavItems: NavItem[] = navItems.map((item) => {
     if (item.name === "Générateur") {
       return {
         ...item,
         subItems: [
           ...(item.subItems || []),
-          // {
-          //   name: "Historique",
-          //   path: "/generate/history",
-          // },
+          {
+            name: "Historique",
+            path: "/generate/history",
+          },
           // Injecter les conversations ici
           ...conversations.map((conv) => ({
             name: conv.title || t("common.untitled", "Sans titre"),
@@ -291,7 +287,7 @@ const Sidebar: React.FC = () => {
       <div className="flex flex-col overflow-y-auto duration-300 ease-linear no-scrollbar">
         <nav className="mb-6">
           <div className="flex flex-col gap-4">
-            {renderMenuItems(dynamicNavItems, "main")}
+            {renderMenuItems(navItems, "main")}
           </div>
 
           <div
