@@ -5,7 +5,6 @@ import { useSidebar } from "@/context/SidebarContext";
 import { ChevronDown } from "lucide-react";
 import Logo from "@/components/common/Logo";
 import { NavItem, navItems } from "@/navigation";
-// import { SignedIn, UserButton, useUser } from "@clerk/nextjs";
 import axios from "axios";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "@/context/AuthContext";
@@ -16,7 +15,11 @@ const Sidebar: React.FC = () => {
   const { user } = useAuth();
   const { t } = useTranslation();
 
-  const [conversations, setConversations] = useState<Array<{ id: string; title: string }>>([]);
+  console.log({ user });
+
+  const [conversations, setConversations] = useState<
+    Array<{ id: string; title: string }>
+  >([]);
   const [isLoading, setIsLoading] = useState(false);
 
   const fetchHistory = async () => {
@@ -39,8 +42,9 @@ const Sidebar: React.FC = () => {
 
   useEffect(() => {
     fetchHistory();
+    console.log("Fetching history for user:", user);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user?.id]);
+  }, []);
 
   // fusionner les items du menu statique + historique récupéré
   const dynamicNavItems: NavItem[] = navItems.map((item) => {
@@ -127,9 +131,9 @@ const Sidebar: React.FC = () => {
                   {nav.icon}
                 </span>
                 {(isExpanded || isHovered || isMobileOpen) && (
-                <span className={`menu-item-text`}>
-                  {nav.nameKey ? t(nav.nameKey, nav.name) : nav.name}
-                </span>
+                  <span className={`menu-item-text`}>
+                    {nav.nameKey ? t(nav.nameKey, nav.name) : nav.name}
+                  </span>
                 )}
               </Link>
             )
@@ -158,7 +162,9 @@ const Sidebar: React.FC = () => {
                           : "menu-dropdown-item-inactive"
                       }`}
                     >
-                      {subItem.nameKey ? t(subItem.nameKey, subItem.name) : subItem.name}
+                      {subItem.nameKey
+                        ? t(subItem.nameKey, subItem.name)
+                        : subItem.name}
                       <span className="flex items-center gap-1 ml-auto">
                         {subItem.new && (
                           <span
@@ -288,15 +294,14 @@ const Sidebar: React.FC = () => {
             {renderMenuItems(dynamicNavItems, "main")}
           </div>
 
-          {/* <div
+          <div
             className={`absolute ${
               isMobileOpen ? "bottom-24" : "bottom-5"
             } right-10`}
           >
-            <SignedIn>
-              <UserButton showName={isExpanded || isMobileOpen} />
-            </SignedIn>
-          </div> */}
+            <span>{user?.name}</span>
+
+          </div>
         </nav>
       </div>
     </aside>
