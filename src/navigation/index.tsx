@@ -29,7 +29,7 @@ export const navItems: NavItem[] = [
     icon: <Bot className="h-5 w-5 font-extralight" />,
     name: "Générateur",
     nameKey: "navigation.generate",
-    path: "/generate",
+    path: "/quick-off",
     // subItems: [
     //   { name: "Nouveau chat", nameKey: "generation.newGeneration", path: "/generate" },
     // ],
