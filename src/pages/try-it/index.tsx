@@ -152,7 +152,7 @@ const TryPage = () => {
                   className={`md:max-w-[75%] w-full ${
                     message.type === "user"
                       ? "bg-primary text-white rounded-2xl rounded-tr-sm"
-                      : "bg-white dark:bg-[#2b2b2b] border border-slate-200 rounded-2xl rounded-tl-sm shadow-sm"
+                      : "bg-white border border-slate-200 rounded-2xl rounded-tl-sm shadow-sm"
                   } p-5`}
                 >
                   {message.type === "ai" && message.metadata && (
@@ -174,7 +174,7 @@ const TryPage = () => {
                       className={`whitespace-pre-line leading-relaxed ${
                         message.type === "user"
                           ? "text-white"
-                          : "text-gray-800 dark:text-gray-200"
+                          : "text-gray-800"
                       }`}
                     >
                       {message.content}
@@ -215,7 +215,7 @@ const TryPage = () => {
             <div ref={messagesEndRef} />
           </div>
 
-          <div className="sticky bottom-0 left-0 right-0 bg-white dark:bg-[#1a1a1a] border-t border-slate-200 dark:border-slate-800 px-4 py-4">
+          <div className="sticky bottom-0 left-0 right-0 bg-white border-t border-slate-200 px-4 py-4">
             <ComposerForm
               isLoading={isLoading}
               form={form}
