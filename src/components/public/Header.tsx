@@ -92,7 +92,7 @@ const Header = ({ hideMenu = false }) => {
             </>
           ) : (
             <Link
-              href="/home"
+              href="/dashboard"
               className="flex cursor-pointer items-center justify-evenly rounded-full bg-primary/90 p-2 px-2 text-white hover:bg-primary md:w-32"
             >
               Dashboard
