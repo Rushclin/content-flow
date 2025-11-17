@@ -1,4 +1,3 @@
-import { SenderType } from "@prisma/client";
 
 export type Platform = "wordpress" | "twitter" | "facebook" | "linkedin" | "reddit";
 export type Tone = "professionnel" | "amical" | "formel" | "décontracté";
@@ -53,28 +52,11 @@ export interface ConversationHistory {
   messages: ChatMessage[];
 }
 
-// export interface ConversationWithMessages {
-//   id: string;
-//   title: string;
-//   type: string;
-//   createdAt: string;
-//   updatedAt: string;
-//   lastMessageAt: string;
-//   meta: any;
-//   messages: Array<{
-//     id: string;
-//     content: string;
-//     senderType: string;
-//     createdAt: string;
-//     contentJson: any;
-//   }>;
-// }
-
 export interface MessageData {
   id: string;
   content: string;
   contentJson?: Record<string, unknown>;
-  senderType: SenderType;
+  senderType: string;
   senderUserId?: string | null;
   createdAt: Date;
   isDeleted: boolean;
