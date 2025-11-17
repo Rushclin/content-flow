@@ -1,10 +1,12 @@
-import { ArrowDown } from "lucide-react";
+import { useAuth } from "@/context/AuthContext";
+import { ArrowDown, ArrowRight } from "lucide-react";
 import Link from "next/link";
 import React from "react";
 import { useTranslation } from "react-i18next";
 
 const Hero = () => {
   const { t } = useTranslation("home");
+  const { isAuthenticated } = useAuth();
 
   return (
     <div
@@ -38,16 +40,30 @@ const Hero = () => {
 
             <div className="">
               <div className="my-5 flex flex-col items-center justify-center gap-1 text-slate-500">
-                <Link
-                  href="/try-it"
-                  className="flex items-center mt-2 rounded-full bg-primary/80 transition-colors ease-in p-2 hover:bg-primary px-14 py-3 text-xl text-white hover:bg-orangePrimary md:px-14"
-                >
-                  {t("hero.try", "Try it for free")}
-                  <ArrowDown className="w-4 h-4 mx-3" />
-                </Link>
-                <small>
-                  {t("hero.noCreditCard", "No credit card required")}
-                </small>
+                {isAuthenticated ? (
+                  <>
+                    <Link
+                      href="/dashboard"
+                      className="flex items-center mt-2 rounded-full bg-primary/80 transition-colors ease-in p-2 hover:bg-primary px-14 py-3 text-xl text-white hover:bg-orangePrimary md:px-14"
+                    >
+                      Dashboard
+                      <ArrowRight className="w-4 h-4 mx-3" />
+                    </Link>
+                  </>
+                ) : (
+                  <>
+                    <Link
+                      href="/try-it"
+                      className="flex items-center mt-2 rounded-full bg-primary/80 transition-colors ease-in p-2 hover:bg-primary px-14 py-3 text-xl text-white hover:bg-orangePrimary md:px-14"
+                    >
+                      {t("hero.try", "Try it for free")}
+                      <ArrowDown className="w-4 h-4 mx-3" />
+                    </Link>
+                    <small>
+                      {t("hero.noCreditCard", "No credit card required")}
+                    </small>
+                  </>
+                )}
               </div>
             </div>
           </div>
