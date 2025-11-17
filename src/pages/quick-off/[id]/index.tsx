@@ -1,6 +1,6 @@
 import { useState, useCallback, useEffect, useRef } from "react";
 import { useRouter } from "next/router";
-import { Copy, ArrowLeft, Loader2 } from "lucide-react";
+import { Copy, Loader2 } from "lucide-react";
 import DashboardLayout from "@/layout/dashboard";
 import {
   ChatMessageType,
@@ -17,7 +17,6 @@ import { useForm } from "react-hook-form";
 import axiosInstance from "@/lib/axios";
 import toast from "react-hot-toast";
 import { useTranslation } from "react-i18next";
-import Link from "next/link";
 
 const GenerateChatDetails = () => {
   const { t } = useTranslation();
@@ -60,17 +59,14 @@ const GenerateChatDetails = () => {
         const conversationData = data.data;
         setConversation(conversationData);
 
-        // Convertir les messages de l'API en messages pour l'affichage
         const convertedMessages: ChatMessageType[] =
           conversationData.messages.map((msg) => {
-            // Parser le contenu si c'est un message assistant avec JSON
             let content = msg.content;
             if (msg.role === "assistant") {
               try {
                 const parsed = JSON.parse(msg.content);
                 content = parsed.output || msg.content;
               } catch (e) {
-                // Si ce n'est pas du JSON, garder le contenu tel quel
                 content = msg.content;
               }
             }
@@ -120,7 +116,6 @@ const GenerateChatDetails = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [conversationId, router.isReady]);
 
-  // Auto-scroll vers le bas quand de nouveaux messages arrivent
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
@@ -165,11 +160,8 @@ const GenerateChatDetails = () => {
         );
 
         const apiResponse = responseData.data;
-
-        // Extraire le contenu généré depuis generated_content.output
         const generatedContent = apiResponse.generated_content.output;
 
-        // Créer le message AI avec le contenu parsé
         const aiMessage: ChatMessageType = {
           id: apiResponse.assistant_message.id,
           type: "ai",
@@ -198,7 +190,6 @@ const GenerateChatDetails = () => {
           t("error.generation", "Erreur lors de la génération du contenu")
         );
 
-        // Retirer le message utilisateur en cas d'erreur
         setMessages((prev) => prev.filter((msg) => msg.id !== userMessage.id));
       } finally {
         setIsLoading(false);
@@ -235,34 +226,6 @@ const GenerateChatDetails = () => {
       title={conversation?.title || t("generate.conversation", "Conversation")}
     >
       <div className="flex flex-col max-w-6xl mx-auto ">
-        {/* En-tête de la conversation */}
-        {/* <div className="px-4 py-4 border-b border-slate-200 bg-white">
-          <div className="flex items-center gap-4">
-            <Link
-              href="/quick-off"
-              className="flex items-center gap-2 text-gray-600 hover:text-primary transition-colors"
-            >
-              <ArrowLeft className="w-5 h-5" />
-              <span className="text-sm font-medium">
-                {t("common.back", "Retour")}
-              </span>
-            </Link>
-            <div className="flex-1">
-              <h1 className="text-xl font-bold text-gray-900">
-                {conversation?.title}
-              </h1>
-              {conversation?.metadata.platform && (
-                <div className="flex gap-2 mt-2">
-                  <span className="px-2.5 py-1 text-xs font-medium rounded-full bg-primary/10 text-primary">
-                    {conversation.metadata.platform}
-                  </span>
-                </div>
-              )}
-            </div>
-          </div>
-        </div> */}
-
-        {/* Messages de la conversation */}
         <div className="flex-1 overflow-y-auto px-4 py-6 space-y-6">
           {messages.map((message) => (
             <div
@@ -350,7 +313,6 @@ const GenerateChatDetails = () => {
           <div ref={messagesEndRef} />
         </div>
 
-        {/* Zone de saisie */}
         <div className="sticky bottom-0 left-0 right-0 bg-white border-t border-slate-200 px-4 py-4">
           <ComposerForm
             isLoading={isLoading}
