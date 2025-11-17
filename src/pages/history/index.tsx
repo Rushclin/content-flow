@@ -112,7 +112,6 @@ const HistoryPage = () => {
                     <div className="p-6">
                       <div className="flex items-start justify-between gap-4">
                         <div className="flex-1 min-w-0">
-                          {/* Titre et plateforme */}
                           <div className="flex items-center gap-3 mb-2">
                             <h3 className="text-lg font-semibold text-gray-900 truncate group-hover:text-primary transition-colors">
                               {conversation.title}
@@ -124,14 +123,12 @@ const HistoryPage = () => {
                             )}
                           </div>
 
-                          {/* Aperçu du dernier message */}
                           {conversation.last_message_preview && (
                             <p className="text-gray-600 text-sm line-clamp-2 mb-3">
                               {conversation.last_message_preview}
                             </p>
                           )}
 
-                          {/* Métadonnées */}
                           <div className="flex items-center gap-4 text-sm text-gray-500">
                             <div className="flex items-center gap-1.5">
                               <MessageSquare className="w-4 h-4" />
@@ -146,7 +143,6 @@ const HistoryPage = () => {
                           </div>
                         </div>
 
-                        {/* Icône de navigation */}
                         <div className="flex items-center">
                           <ChevronRight className="w-5 h-5 text-gray-400 group-hover:text-primary transition-colors" />
                         </div>
