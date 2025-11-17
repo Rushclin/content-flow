@@ -30,27 +30,11 @@ export const navItems: NavItem[] = [
     name: "Générateur",
     nameKey: "navigation.generate",
     path: "/quick-off",
-    // subItems: [
-    //   { name: "Nouveau chat", nameKey: "generation.newGeneration", path: "/generate" },
-    // ],
   },
-  // {
-  //   icon: <MessageCircleDashedIcon className="h-5 w-5 font-extralight" />,
-  //   name: "Chat",
-  //   nameKey: "navigation.chat",
-  //   path: "/chat",
-  // },
   {
     icon: <History className="h-5 w-5 font-extralight" />,
     name: "Historique",
     nameKey: "navigation.history",
     path: "/history",
   },
-
-  // {
-  //   name: "Plus d'outil",
-  //   nameKey: "navigation.moreTools",
-  //   icon: <Blend className="h-5 w-5 font-extralight" />,
-  //   subItems: [{ name: "Voice to voice", nameKey: "navigation.voiceToVoice", path: "/voice", pro: true }],
-  // },
 ];

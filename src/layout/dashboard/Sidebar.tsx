@@ -2,12 +2,13 @@ import React, { useEffect, useRef, useState, useCallback } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useSidebar } from "@/context/SidebarContext";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, MessageSquare, Loader2 } from "lucide-react";
 import Logo from "@/components/common/Logo";
 import { NavItem, navItems } from "@/navigation";
-import axios from "axios";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "@/context/AuthContext";
+import axiosInstance from "@/lib/axios";
+import { ConversationListItem } from "@/types/chat";
 
 const Sidebar: React.FC = () => {
   const { isExpanded, isMobileOpen, isHovered, setIsHovered } = useSidebar();
@@ -15,54 +16,28 @@ const Sidebar: React.FC = () => {
   const { user } = useAuth();
   const { t } = useTranslation();
 
-  const [conversations, setConversations] = useState<
-    Array<{ id: string; title: string }>
-  >([]);
-  const [isLoading, setIsLoading] = useState(false);
-
-  const fetchHistory = async () => {
-    if (!user?.id) return;
-
-    setIsLoading(true);
-    try {
-      const response = await axios.get(
-        `/api/generation/history?userId=${user.id}`
-      );
-      if (response.data.success) {
-        setConversations(response.data.data);
-      }
-    } catch (error) {
-      console.error(t("sidebar.error"), error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  const [conversations, setConversations] = useState<ConversationListItem[]>(
+    []
+  );
+  const [isLoadingConversations, setIsLoadingConversations] = useState(true);
 
   useEffect(() => {
-    fetchHistory();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    const fetchHistory = async () => {
+      setIsLoadingConversations(true);
+      try {
+        const { data } = await axiosInstance.get<{
+          data: ConversationListItem[];
+        }>("/conversations");
 
-  const dynamicNavItems: NavItem[] = navItems.map((item) => {
-    if (item.name === "Générateur") {
-      return {
-        ...item,
-        subItems: [
-          ...(item.subItems || []),
-          {
-            name: "Historique",
-            path: "/generate/history",
-          },
-          // Injecter les conversations ici
-          ...conversations.map((conv) => ({
-            name: conv.title || t("common.untitled", "Sans titre"),
-            path: `/generate/history/${conv.id}`,
-          })),
-        ],
-      };
-    }
-    return item;
-  });
+        setConversations(data.data);
+      } catch (error) {
+        console.error("Erreur lors du chargement des conversations:", error);
+      } finally {
+        setIsLoadingConversations(false);
+      }
+    };
+    fetchHistory();
+  }, []);
 
   const renderMenuItems = (
     navItems: NavItem[],
@@ -188,9 +163,9 @@ const Sidebar: React.FC = () => {
                     </Link>
                   </li>
                 ))}
-                {isLoading && (
+                {isLoadingConversations && (
                   <li className="text-xs italic text-gray-400">
-                    {t("sidebar.loading")}
+                    {t("sidebar.loading", "Chargement...")}
                   </li>
                 )}
               </ul>
@@ -211,28 +186,6 @@ const Sidebar: React.FC = () => {
   const subMenuRefs = useRef<Record<string, HTMLDivElement | null>>({});
 
   const isActive = useCallback((path: string) => path === pathname, [pathname]);
-
-  useEffect(() => {
-    let submenuMatched = false;
-    const items = dynamicNavItems;
-    items.forEach((nav, index) => {
-      if (nav.subItems) {
-        nav.subItems.forEach((subItem) => {
-          if (isActive(subItem.path)) {
-            setOpenSubmenu({
-              type: "main",
-              index,
-            });
-            submenuMatched = true;
-          }
-        });
-      }
-    });
-
-    if (!submenuMatched) {
-      setOpenSubmenu(null);
-    }
-  }, [pathname, isActive, dynamicNavItems]);
 
   useEffect(() => {
     if (openSubmenu !== null) {
@@ -284,19 +237,69 @@ const Sidebar: React.FC = () => {
           size={140}
         />
       </div>
-      <div className="flex flex-col overflow-y-auto duration-300 ease-linear no-scrollbar">
-        <nav className="mb-6">
-          <div className="flex flex-col gap-4">
+      <div className="flex flex-col flex-1 overflow-y-auto duration-300 ease-linear no-scrollbar">
+        <nav className="flex flex-col flex-1 pb-20">
+          <div className="flex flex-col gap-4 mb-6">
             {renderMenuItems(navItems, "main")}
           </div>
+
+          {(isExpanded || isHovered || isMobileOpen) && (
+            <div className="mt-auto pt-4 border-t border-gray-200">
+              <div className="mb-3 px-3">
+                <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                  {t("sidebar.history", "Historique")}
+                </h3>
+              </div>
+
+              {isLoadingConversations ? (
+                <div className="flex items-center justify-center py-4">
+                  <Loader2 className="w-5 h-5 animate-spin text-gray-400" />
+                </div>
+              ) : conversations.length === 0 ? (
+                <div className="px-3 py-2 text-xs text-gray-400 italic">
+                  {t("sidebar.noConversations", "Aucune conversation")}
+                </div>
+              ) : (
+                <ul className="space-y-1 max-h-64 overflow-y-auto">
+                  {conversations.slice(0, 10).map((conversation) => (
+                    <li key={conversation.id}>
+                      <Link
+                        href={`/quick-off/${conversation.id}`}
+                        className={`flex items-start gap-2 px-3 py-2 text-sm rounded-lg transition-colors ${
+                          pathname === `/quick-off/${conversation.id}`
+                            ? "bg-primary/10 text-primary font-medium"
+                            : "text-gray-700 hover:bg-gray-100"
+                        }`}
+                      >
+                        <MessageSquare className="w-4 h-4 mt-0.5 flex-shrink-0" />
+                        <span className="truncate flex-1">
+                          {conversation.title}
+                        </span>
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              )}
+
+              {conversations.length > 10 && (
+                <div className="mt-2 px-3">
+                  <Link
+                    href="/history"
+                    className="text-xs text-primary hover:text-primary/80 font-medium"
+                  >
+                    {t("sidebar.viewAll", "Voir tout")} ({conversations.length})
+                  </Link>
+                </div>
+              )}
+            </div>
+          )}
 
           <div
             className={`absolute ${
               isMobileOpen ? "bottom-24" : "bottom-5"
             } right-10`}
           >
-            <span>{user?.name}</span>
-
+            <span className="text-sm text-gray-600">{user?.name}</span>
           </div>
         </nav>
       </div>
