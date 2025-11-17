@@ -1,19 +1,21 @@
 {
-  "name": "front",
-  "version": "0.1.0",
+  "name": "content-flow",
+  "version": "0.1.2",
   "private": true,
+  "authors": {
+    "name": "Rushclin Takam From Novalitix",
+    "email": "rushclin.takam@novalitix.com",
+    "url": "https://novalitix.com"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build --turbopack",
     "start": "next start",
-    "lint": "eslint",
-    "postinstall": "prisma generate && npx prisma db push"
+    "lint": "eslint"
   },
   "dependencies": {
-    "@auth/prisma-adapter": "^2.10.0",
     "@headlessui/react": "^2.2.9",
     "@hookform/resolvers": "^5.2.1",
-    "@prisma/client": "^6.16.1",
     "@radix-ui/react-popover": "^1.1.15",
     "@radix-ui/react-select": "^2.2.6",
     "@radix-ui/react-slot": "^1.2.3",
@@ -32,7 +34,6 @@
     "next": "15.5.2",
     "next-i18next": "^15.4.2",
     "nextjs-progressbar": "^0.0.16",
-    "prisma": "^6.16.1",
     "react": "19.1.0",
     "react-dom": "19.1.0",
     "react-hook-form": "^7.62.0",
