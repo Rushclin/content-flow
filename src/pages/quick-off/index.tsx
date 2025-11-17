@@ -5,7 +5,13 @@ import axios from "axios";
 import { Sparkles, History, Copy } from "lucide-react";
 import { appConfig } from "@/config/app";
 import DashboardLayout from "@/layout/dashboard";
-import { Platform, Tone, Length, ChatMessageType } from "@/types/chat";
+import {
+  Platform,
+  Tone,
+  Length,
+  ChatMessageType,
+  GenerateWithConversationResponse,
+} from "@/types/chat";
 import ChatMessage from "@/components/chat/ChatMessage";
 import ChatInput from "@/components/chat/ChatInput";
 import ChatLoadingIndicator from "@/components/chat/ChatLoadingIndicator";
@@ -76,7 +82,6 @@ const GenerateChatPage = () => {
 
   const onSubmitHandler = useCallback(
     async (data: FormGenerationData) => {
-      console.log({ data });
       setIsLoading(true);
 
       const userMessage: ChatMessageType = {
@@ -94,26 +99,32 @@ const GenerateChatPage = () => {
       setMessages((prev) => [...prev, userMessage]);
 
       try {
-        const { data: responseDatas } = await axiosInstance.post(
+        const { data: responseData } = await axiosInstance.post<{
+          data: GenerateWithConversationResponse;
+        }>(
           "/content/generate-with-conversation",
           {
             theme: data.subject,
             details: `Public cible: ${data.targetAudience}, Ton: ${data.tone}, Longueur: ${data.length}`,
             platform: data.platform,
-            message: data.subject
+            message: data.subject,
           },
           {
             timeout: 50000,
           }
         );
-        const { output } = responseDatas.data;
-        console.log({ output });
 
+        const apiResponse = responseData.data;
+
+        // Extraire le contenu généré depuis generated_content.output
+        const generatedContent = apiResponse.generated_content.output;
+
+        // Créer le message AI avec le contenu parsé
         const aiMessage: ChatMessageType = {
-          id: `ai-${Date.now()}`,
+          id: apiResponse.assistant_message.id,
           type: "ai",
-          content: output,
-          timestamp: new Date(),
+          content: generatedContent,
+          timestamp: new Date(apiResponse.assistant_message.created_at),
           metadata: {
             platform: data.platform,
             tone: data.tone,
@@ -122,6 +133,13 @@ const GenerateChatPage = () => {
         };
 
         setMessages((prev) => [...prev, aiMessage]);
+
+        // Stocker l'ID de la conversation
+        const conversationId = apiResponse.conversation.id;
+        setCurrentConversationId(conversationId);
+
+        // Rediriger vers la route historique de la conversation
+        router.push(`/quick-off/${conversationId}`);
 
         form.reset({
           subject: "",
@@ -133,11 +151,14 @@ const GenerateChatPage = () => {
         });
       } catch (error) {
         console.error("Erreur réseau:", error);
+        toast.error(
+          t("error.generation", "Erreur lors de la génération du contenu")
+        );
       } finally {
         setIsLoading(false);
       }
     },
-    [form]
+    [form, router, t]
   );
 
   const copyToClipboard = useCallback(

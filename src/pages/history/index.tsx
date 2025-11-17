@@ -1,156 +1,156 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 import DashboardLayout from "@/layout/dashboard";
-import { Copy, Trash2, Download, Sparkles } from "lucide-react";
+import { MessageSquare, Loader2, Calendar, ChevronRight } from "lucide-react";
 import { useTranslation } from "react-i18next";
-
-type HistoryMessage = {
-  type: "user" | "ai";
-  content: string;
-  timestamp: Date;
-  metadata?: { platform: string; tone: string; length: string };
-};
+import axiosInstance from "@/lib/axios";
+import toast from "react-hot-toast";
+import { ConversationListItem } from "@/types/chat";
 
 const HistoryPage = () => {
   const { t } = useTranslation();
-  const [items, setItems] = useState<HistoryMessage[]>([]);
+  const router = useRouter();
+  const [conversations, setConversations] = useState<ConversationListItem[]>(
+    []
+  );
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    try {
-      const raw = localStorage.getItem("cf_conversation_history");
-      if (!raw) return;
-      const parsed = JSON.parse(raw) as Array<
-        Omit<HistoryMessage, "timestamp"> & { timestamp: string }
-      >;
-      const withDates = parsed.map((m) => ({ ...m, timestamp: new Date(m.timestamp) }));
-      setItems(withDates);
-    } catch (e) {
-      console.error("Erreur de chargement de l'historique", e);
-    }
+    const loadConversations = async () => {
+      setIsLoading(true);
+      try {
+        const { data } = await axiosInstance.get<{
+          data: ConversationListItem[];
+        }>("/conversations");
+
+        setConversations(data.data);
+      } catch (error) {
+        console.error("Erreur lors du chargement des conversations:", error);
+        toast.error(
+          t(
+            "error.loadConversations",
+            "Erreur lors du chargement des conversations"
+          )
+        );
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadConversations();
   }, []);
 
-  const handleClear = () => {
-    localStorage.removeItem("cf_conversation_history");
-    setItems([]);
+  const handleConversationClick = (conversationId: string) => {
+    router.push(`/quick-off/${conversationId}`);
   };
 
-  const handleCopyAll = async () => {
-    const text = items
-      .map((m) => `${m.type === "user" ? t("history.you", "Vous") : "Content Flow"} (${m.timestamp.toLocaleString()}):\n${m.content}`)
-      .join("\n\n");
-    await navigator.clipboard.writeText(text);
-  };
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    const now = new Date();
+    const diffInDays = Math.floor(
+      (now.getTime() - date.getTime()) / (1000 * 60 * 60 * 24)
+    );
 
-  // Regrouper par date (AAAA-MM-JJ)
-  const groupedByDay = useMemo(() => {
-    const groups: Record<string, HistoryMessage[]> = {};
-    for (const m of items) {
-      const key = m.timestamp.toISOString().slice(0, 10);
-      if (!groups[key]) groups[key] = [];
-      groups[key].push(m);
+    if (diffInDays === 0) {
+      return t("date.today", "Aujourd'hui");
+    } else if (diffInDays === 1) {
+      return t("date.yesterday", "Hier");
+    } else if (diffInDays < 7) {
+      return t("date.daysAgo", "Il y a {{count}} jours", { count: diffInDays });
+    } else {
+      return date.toLocaleDateString("fr-FR", {
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+      });
     }
-    // Conserver l'ordre d'origine
-    return Object.entries(groups).sort(([a], [b]) => (a < b ? 1 : -1));
-  }, [items]);
+  };
+
+  const getMessageCountText = (count: number) => {
+    if (count === 0) return t("messages.none", "Aucun message");
+    if (count === 1) return t("messages.one", "1 message");
+    return t("messages.count", "{{count}} messages", { count });
+  };
 
   return (
     <DashboardLayout title={t("history.title", "Historique")}>
-      <div className="flex-1 overflow-hidden bg-white relative h-full">
-        {/* En-tête collant avec actions */}
-        <div className="sticky top-0 z-10 bg-white/80 backdrop-blur border-b border-gray-100">
-          <div className="max-w-4xl mx-auto px-6 py-3 flex items-center justify-between">
-            <h1 className="text-base font-semibold text-gray-900">{t("history.conversationsTitle", "Historique des conversations")}</h1>
-            <div className="flex items-center gap-2">
-              <button
-                onClick={handleCopyAll}
-                className="px-3 py-2 text-sm border rounded-lg text-gray-700 hover:bg-gray-50 flex items-center gap-1"
-              >
-                <Copy className="w-4 h-4" /> {t("history.copyAll", "Copier tout")}
-              </button>
-              <button
-                onClick={handleClear}
-                className="px-3 py-2 text-sm border rounded-lg text-red-600 border-red-200 hover:bg-red-50 flex items-center gap-1"
-              >
-                <Trash2 className="w-4 h-4" /> {t("history.clear", "Effacer")}
-              </button>
-            </div>
-          </div>
-        </div>
+      <div className="flex-1 overflow-hidden relative h-full">
 
+        {/* Contenu */}
         <div className="overflow-y-auto h-full px-6 py-6">
-          <div className="max-w-4xl mx-auto">
-            {items.length === 0 ? (
+          <div className="max-w-6xl mx-auto">
+            {isLoading ? (
               <div className="flex items-center justify-center h-64">
-                <p className="text-gray-500">Aucun historique pour le moment. Générez du contenu pour commencer.</p>
+                <div className="text-center">
+                  <Loader2 className="w-12 h-12 animate-spin mx-auto text-primary mb-4" />
+                  <p className="text-gray-600">
+                    {t("loading.conversations", "Chargement des conversations...")}
+                  </p>
+                </div>
+              </div>
+            ) : conversations.length === 0 ? (
+              <div className="flex flex-col items-center justify-center h-64 bg-white rounded-xl border-2 border-dashed border-gray-300">
+                <MessageSquare className="w-16 h-16 text-gray-400 mb-4" />
+                <p className="text-gray-600 text-lg font-medium mb-2">
+                  {t("history.empty", "Aucune conversation")}
+                </p>
+                <p className="text-gray-500 text-sm">
+                  {t(
+                    "history.emptyDescription",
+                    "Commencez par générer du contenu pour voir vos conversations ici"
+                  )}
+                </p>
               </div>
             ) : (
-              <div className="space-y-10">
-                {groupedByDay.map(([day, messages]) => (
-                  <div key={day}>
-                    {/* Séparateur de jour */}
-                    <div className="flex items-center gap-3 my-2">
-                      <div className="h-px bg-gray-200 flex-1" />
-                      <div className="text-xs text-gray-500">
-                        {new Date(day).toLocaleDateString()}
-                      </div>
-                      <div className="h-px bg-gray-200 flex-1" />
-                    </div>
-
-                    <div className="space-y-6">
-                      {messages.map((m, idx) => (
-                        <div key={`${day}-${idx}`} className={`flex ${m.type === 'user' ? 'justify-end' : 'justify-start'}`}>
-                          <div className="max-w-3xl">
-                            {m.type === 'user' ? (
-                              <div className="bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-2xl rounded-br-md px-6 py-4 shadow">
-                                <div className="text-sm opacity-90 mb-1">
-                                  {t("history.you", "Vous")} • {m.timestamp.toLocaleTimeString()}
-                                </div>
-                                <div className="text-lg font-medium whitespace-pre-line">{m.content}</div>
-                                {m.metadata && (
-                                  <div className="mt-2 text-xs opacity-90">
-                                    <span className="bg-white/20 px-2 py-1 rounded-full mr-2">{m.metadata.platform}</span>
-                                    <span className="bg-white/20 px-2 py-1 rounded-full mr-2">{m.metadata.tone}</span>
-                                    <span className="bg-white/20 px-2 py-1 rounded-full">{m.metadata.length}</span>
-                                  </div>
-                                )}
-                              </div>
-                            ) : (
-                              <div className="flex items-start space-x-3">
-                                <div className="w-8 h-8 bg-gradient-to-r from-purple-600 to-indigo-600 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
-                                  <Sparkles className="w-4 h-4 text-white" />
-                                </div>
-                                <div className="flex-1">
-                                  <div className="bg-white border border-gray-200 rounded-2xl rounded-bl-md px-6 py-4 shadow-sm">
-                                    <div className="text-sm text-gray-500 mb-1">Content Flow • {m.timestamp.toLocaleTimeString()}</div>
-                                    <div className="text-gray-800 whitespace-pre-line leading-relaxed text-lg">{m.content}</div>
-                                  </div>
-                                  <div className="flex items-center gap-4 mt-2 ml-11">
-                                    <button
-                                      onClick={() => navigator.clipboard.writeText(m.content)}
-                                      className="flex items-center gap-1 text-sm text-gray-500 hover:text-gray-700"
-                                    >
-                                      <Copy className="w-4 h-4" /> {t("history.copy", "Copier")}
-                                    </button>
-                                    <button
-                                      onClick={() => {
-                                        const blob = new Blob([m.content], { type: 'text/plain' });
-                                        const url = URL.createObjectURL(blob);
-                                        const a = document.createElement('a');
-                                        a.href = url;
-                                        a.download = `contenu_${day}_${idx}.txt`;
-                                        a.click();
-                                        URL.revokeObjectURL(url);
-                                      }}
-                                      className="flex items-center gap-1 text-sm text-gray-500 hover:text-gray-700"
-                                    >
-                                      <Download className="w-4 h-4" /> {t("history.download", "Télécharger")}
-                                    </button>
-                                  </div>
-                                </div>
-                              </div>
+              <div className="grid gap-4">
+                {conversations.map((conversation) => (
+                  <div
+                    key={conversation.id}
+                    onClick={() => handleConversationClick(conversation.id)}
+                    className="bg-white rounded-xl border border-gray-200 hover:border-primary hover:shadow-md transition-all duration-200 cursor-pointer group"
+                  >
+                    <div className="p-6">
+                      <div className="flex items-start justify-between gap-4">
+                        <div className="flex-1 min-w-0">
+                          {/* Titre et plateforme */}
+                          <div className="flex items-center gap-3 mb-2">
+                            <h3 className="text-lg font-semibold text-gray-900 truncate group-hover:text-primary transition-colors">
+                              {conversation.title}
+                            </h3>
+                            {conversation.metadata.platform && (
+                              <span className="px-2.5 py-1 text-xs font-medium rounded-full bg-primary/10 text-primary flex-shrink-0">
+                                {conversation.metadata.platform}
+                              </span>
                             )}
                           </div>
+
+                          {/* Aperçu du dernier message */}
+                          {conversation.last_message_preview && (
+                            <p className="text-gray-600 text-sm line-clamp-2 mb-3">
+                              {conversation.last_message_preview}
+                            </p>
+                          )}
+
+                          {/* Métadonnées */}
+                          <div className="flex items-center gap-4 text-sm text-gray-500">
+                            <div className="flex items-center gap-1.5">
+                              <MessageSquare className="w-4 h-4" />
+                              <span>
+                                {getMessageCountText(conversation.message_count)}
+                              </span>
+                            </div>
+                            <div className="flex items-center gap-1.5">
+                              <Calendar className="w-4 h-4" />
+                              <span>{formatDate(conversation.updated_at)}</span>
+                            </div>
+                          </div>
                         </div>
-                      ))}
+
+                        {/* Icône de navigation */}
+                        <div className="flex items-center">
+                          <ChevronRight className="w-5 h-5 text-gray-400 group-hover:text-primary transition-colors" />
+                        </div>
+                      </div>
                     </div>
                   </div>
                 ))}
@@ -164,5 +164,3 @@ const HistoryPage = () => {
 };
 
 export default HistoryPage;
-
-
