@@ -9,7 +9,6 @@ import { z } from "zod";
 import Input from "@/components/common/Input";
 import { useTranslation } from "react-i18next";
 
-// Schéma de validation avec zod
 const forgotPasswordSchema = z.object({
   email: z
     .string()
@@ -34,7 +33,6 @@ const ForgotPasswordForm = () => {
   });
 
   const onSubmit = async (data: ForgotPasswordFormData) => {
-    // Simulation d'un délai
     await new Promise((resolve) => setTimeout(resolve, 1000));
 
     console.log("Envoi d'email de réinitialisation pour:", data.email);

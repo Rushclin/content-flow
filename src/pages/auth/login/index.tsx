@@ -41,7 +41,6 @@ const LoginPage = () => {
     try {
       await login(data);
     } catch (err: any) {
-      // Les erreurs sont déjà gérées par le contexte via toast
     }
   };
 

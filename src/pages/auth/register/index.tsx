@@ -58,7 +58,6 @@ const RegisterForm = () => {
       const { confirmPassword, ...credentials } = data;
       await registerUser(credentials);
     } catch (err: any) {
-      // Les erreurs sont déjà gérées par le contexte via toast
     }
   };
 
@@ -102,7 +101,6 @@ const RegisterForm = () => {
           required
           error={errors.password?.message}
           inputClassName="pl-5 py-3 text-base border border-gray-300 rounded-lg focus:border-primary focus:ring-primary"
-          // smallText="Le mot de passe doit contenir au moins 8 caractères, une minuscule, une majuscule et un chiffre"
         />
 
         <Input
